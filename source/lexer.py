@@ -22,7 +22,9 @@ reserved = {
     'from': 'FROM',
     'until': 'UNTIL',
     'attributes': 'ATTRIBUTES',
-    'methods': 'METHODS'
+    'methods': 'METHODS',
+    'void': 'VOID',
+    'returns': 'RETURNS'
 }
 
 # tokens

@@ -60,6 +60,8 @@ t_DOT = r'\.'
 
 t_EQ = r'='
 
+t_EXCLAMATION = r'!'
+
 t_LB = r'\{'
 t_RB = r'\}'
 t_LP = r'\('

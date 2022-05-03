@@ -1,0 +1,3695 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> PROGRAM ID SEMI prog1 prog2 prog3 main
+Rule 2     prog1 -> class
+Rule 3     prog1 -> empty
+Rule 4     prog2 -> vars
+Rule 5     prog2 -> empty
+Rule 6     prog3 -> function
+Rule 7     prog3 -> empty
+Rule 8     class -> class class
+Rule 9     class -> CLASS ID class1 LB class2 class3 RB SEMI
+Rule 10    class1 -> INHERITS ID
+Rule 11    class1 -> empty
+Rule 12    class2 -> attrs
+Rule 13    class2 -> empty
+Rule 14    class3 -> mthds
+Rule 15    class3 -> empty
+Rule 16    attrs -> ATTRIBUTES attrs1
+Rule 17    attrs1 -> lista_ids COLON tipo SEMI attrs2
+Rule 18    attrs2 -> attrs1
+Rule 19    attrs2 -> empty
+Rule 20    mthds -> METHODS function
+Rule 21    vars -> VARIABLES attrs1
+Rule 22    tipo -> tipo_param
+Rule 23    tipo -> ID
+Rule 24    lista_ids -> ID list1 list2
+Rule 25    list1 -> LS CTEI RS
+Rule 26    list1 -> LS CTEI COMMA CTEI RS
+Rule 27    list1 -> empty
+Rule 28    list2 -> COMMA lista_ids
+Rule 29    list2 -> empty
+Rule 30    main -> MAIN LP RP LB main1 RB
+Rule 31    main1 -> statement
+Rule 32    main1 -> empty
+Rule 33    function -> function function
+Rule 34    function -> tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB
+Rule 35    func1 -> params
+Rule 36    func1 -> empty
+Rule 37    func2 -> vars
+Rule 38    func2 -> empty
+Rule 39    tipo_param -> INT
+Rule 40    tipo_param -> FLOAT
+Rule 41    tipo_param -> CHAR
+Rule 42    params -> ID COLON tipo_param par1
+Rule 43    par1 -> COMMA params
+Rule 44    par1 -> empty
+Rule 45    tipo_retorno -> tipo_param
+Rule 46    tipo_retorno -> VOID
+Rule 47    statement -> statement statement
+Rule 48    statement -> assignment SEMI
+Rule 49    statement -> void_call SEMI
+Rule 50    statement -> read SEMI
+Rule 51    statement -> write SEMI
+Rule 52    statement -> if_st
+Rule 53    statement -> while_st
+Rule 54    statement -> from_st
+Rule 55    statement -> return_st SEMI
+Rule 56    assignment -> var EQ expression
+Rule 57    var -> ID list1
+Rule 58    var -> ID DOT ID
+Rule 59    void_call -> ID call1 LP func1 RP
+Rule 60    call1 -> DOT ID
+Rule 61    call1 -> empty
+Rule 62    read -> READ LP var read1 RP
+Rule 63    read1 -> COMMA var
+Rule 64    read1 -> empty
+Rule 65    write -> WRITE LP write1 RP
+Rule 66    write1 -> expression write2
+Rule 67    write1 -> CTES write2
+Rule 68    write2 -> COMMA write1
+Rule 69    write2 -> empty
+Rule 70    if_st -> IF LP expression RP THEN LB statement RB if1
+Rule 71    if1 -> ELSE LB main1 RB
+Rule 72    while_st -> WHILE LP expression RP DO LB main1 RB
+Rule 73    from_st -> FROM ID list1 EQ expression UNTIL expression DO LB main1 RB
+Rule 74    return_st -> RETURN LP expression RP
+Rule 75    expression -> exp
+Rule 76    expression -> exp OR exp
+Rule 77    exp -> k_exp
+Rule 78    exp -> k_exp AND k_exp
+Rule 79    k_exp -> m_exp
+Rule 80    k_exp -> m_exp LT m_exp
+Rule 81    k_exp -> m_exp GT m_exp
+Rule 82    k_exp -> m_exp COMP m_exp
+Rule 83    k_exp -> m_exp NE m_exp
+Rule 84    k_exp -> m_exp LTE m_exp
+Rule 85    k_exp -> m_exp GTE m_exp
+Rule 86    m_exp -> term
+Rule 87    m_exp -> term PLUS term
+Rule 88    m_exp -> term MIN term
+Rule 89    term -> fact
+Rule 90    term -> fact MUL fact
+Rule 91    term -> fact DIV fact
+Rule 92    fact -> LP expression RP
+Rule 93    fact -> void_call
+Rule 94    fact -> var_cte
+Rule 95    fact -> var
+Rule 96    var_cte -> CTEI
+Rule 97    var_cte -> CTEF
+Rule 98    var_cte -> CTEC
+Rule 99    empty -> <empty>
+
+Terminals, with rules where they appear
+
+AND                  : 78
+ATTRIBUTES           : 16
+CHAR                 : 41
+CLASS                : 9
+COLON                : 17 42
+COMMA                : 26 28 43 63 68
+COMP                 : 82
+CTEC                 : 98
+CTEF                 : 97
+CTEI                 : 25 26 26 96
+CTES                 : 67
+DIV                  : 91
+DO                   : 72 73
+DOT                  : 58 60
+ELSE                 : 71
+EQ                   : 56 73
+FLOAT                : 40
+FROM                 : 73
+FUNCTION             : 34
+GT                   : 81
+GTE                  : 85
+ID                   : 1 9 10 23 24 34 42 57 58 58 59 60 73
+IF                   : 70
+INHERITS             : 10
+INT                  : 39
+LB                   : 9 30 34 70 71 72 73
+LP                   : 30 34 59 62 65 70 72 74 92
+LS                   : 25 26
+LT                   : 80
+LTE                  : 84
+MAIN                 : 30
+METHODS              : 20
+MIN                  : 88
+MUL                  : 90
+NE                   : 83
+OR                   : 76
+PLUS                 : 87
+PROGRAM              : 1
+RB                   : 9 30 34 70 71 72 73
+READ                 : 62
+RETURN               : 74
+RP                   : 30 34 59 62 65 70 72 74 92
+RS                   : 25 26
+SEMI                 : 1 9 17 48 49 50 51 55
+THEN                 : 70
+UNTIL                : 73
+VARIABLES            : 21
+VOID                 : 46
+WHILE                : 72
+WRITE                : 65
+error                : 
+
+Nonterminals, with rules where they appear
+
+assignment           : 48
+attrs                : 12
+attrs1               : 16 18 21
+attrs2               : 17
+call1                : 59
+class                : 2 8 8
+class1               : 9
+class2               : 9
+class3               : 9
+empty                : 3 5 7 11 13 15 19 27 29 32 36 38 44 61 64 69
+exp                  : 75 76 76
+expression           : 56 66 70 72 73 73 74 92
+fact                 : 89 90 90 91 91
+from_st              : 54
+func1                : 34 59
+func2                : 34
+function             : 6 20 33 33
+if1                  : 70
+if_st                : 52
+k_exp                : 77 78 78
+list1                : 24 57 73
+list2                : 24
+lista_ids            : 17 28
+m_exp                : 79 80 80 81 81 82 82 83 83 84 84 85 85
+main                 : 1
+main1                : 30 34 71 72 73
+mthds                : 14
+par1                 : 42
+params               : 35 43
+prog1                : 1
+prog2                : 1
+prog3                : 1
+program              : 0
+read                 : 50
+read1                : 62
+return_st            : 55
+statement            : 31 47 47 70
+term                 : 86 87 87 88 88
+tipo                 : 17
+tipo_param           : 22 42 45
+tipo_retorno         : 34
+var                  : 56 62 63 95
+var_cte              : 94
+vars                 : 4 37
+void_call            : 49 93
+while_st             : 53
+write                : 51
+write1               : 65 68
+write2               : 66 67
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . PROGRAM ID SEMI prog1 prog2 prog3 main
+
+    PROGRAM         shift and go to state 2
+
+    program                        shift and go to state 1
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> PROGRAM . ID SEMI prog1 prog2 prog3 main
+
+    ID              shift and go to state 3
+
+
+state 3
+
+    (1) program -> PROGRAM ID . SEMI prog1 prog2 prog3 main
+
+    SEMI            shift and go to state 4
+
+
+state 4
+
+    (1) program -> PROGRAM ID SEMI . prog1 prog2 prog3 main
+    (2) prog1 -> . class
+    (3) prog1 -> . empty
+    (8) class -> . class class
+    (9) class -> . CLASS ID class1 LB class2 class3 RB SEMI
+    (99) empty -> .
+
+    CLASS           shift and go to state 8
+    VARIABLES       reduce using rule 99 (empty -> .)
+    VOID            reduce using rule 99 (empty -> .)
+    INT             reduce using rule 99 (empty -> .)
+    FLOAT           reduce using rule 99 (empty -> .)
+    CHAR            reduce using rule 99 (empty -> .)
+    MAIN            reduce using rule 99 (empty -> .)
+
+    prog1                          shift and go to state 5
+    class                          shift and go to state 6
+    empty                          shift and go to state 7
+
+state 5
+
+    (1) program -> PROGRAM ID SEMI prog1 . prog2 prog3 main
+    (4) prog2 -> . vars
+    (5) prog2 -> . empty
+    (21) vars -> . VARIABLES attrs1
+    (99) empty -> .
+
+    VARIABLES       shift and go to state 12
+    VOID            reduce using rule 99 (empty -> .)
+    INT             reduce using rule 99 (empty -> .)
+    FLOAT           reduce using rule 99 (empty -> .)
+    CHAR            reduce using rule 99 (empty -> .)
+    MAIN            reduce using rule 99 (empty -> .)
+
+    prog2                          shift and go to state 9
+    vars                           shift and go to state 10
+    empty                          shift and go to state 11
+
+state 6
+
+    (2) prog1 -> class .
+    (8) class -> class . class
+    (8) class -> . class class
+    (9) class -> . CLASS ID class1 LB class2 class3 RB SEMI
+
+    VARIABLES       reduce using rule 2 (prog1 -> class .)
+    VOID            reduce using rule 2 (prog1 -> class .)
+    INT             reduce using rule 2 (prog1 -> class .)
+    FLOAT           reduce using rule 2 (prog1 -> class .)
+    CHAR            reduce using rule 2 (prog1 -> class .)
+    MAIN            reduce using rule 2 (prog1 -> class .)
+    CLASS           shift and go to state 8
+
+    class                          shift and go to state 13
+
+state 7
+
+    (3) prog1 -> empty .
+
+    VARIABLES       reduce using rule 3 (prog1 -> empty .)
+    VOID            reduce using rule 3 (prog1 -> empty .)
+    INT             reduce using rule 3 (prog1 -> empty .)
+    FLOAT           reduce using rule 3 (prog1 -> empty .)
+    CHAR            reduce using rule 3 (prog1 -> empty .)
+    MAIN            reduce using rule 3 (prog1 -> empty .)
+
+
+state 8
+
+    (9) class -> CLASS . ID class1 LB class2 class3 RB SEMI
+
+    ID              shift and go to state 14
+
+
+state 9
+
+    (1) program -> PROGRAM ID SEMI prog1 prog2 . prog3 main
+    (6) prog3 -> . function
+    (7) prog3 -> . empty
+    (33) function -> . function function
+    (34) function -> . tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB
+    (99) empty -> .
+    (45) tipo_retorno -> . tipo_param
+    (46) tipo_retorno -> . VOID
+    (39) tipo_param -> . INT
+    (40) tipo_param -> . FLOAT
+    (41) tipo_param -> . CHAR
+
+    MAIN            reduce using rule 99 (empty -> .)
+    VOID            shift and go to state 20
+    INT             shift and go to state 21
+    FLOAT           shift and go to state 22
+    CHAR            shift and go to state 23
+
+    prog3                          shift and go to state 15
+    function                       shift and go to state 16
+    empty                          shift and go to state 17
+    tipo_retorno                   shift and go to state 18
+    tipo_param                     shift and go to state 19
+
+state 10
+
+    (4) prog2 -> vars .
+
+    VOID            reduce using rule 4 (prog2 -> vars .)
+    INT             reduce using rule 4 (prog2 -> vars .)
+    FLOAT           reduce using rule 4 (prog2 -> vars .)
+    CHAR            reduce using rule 4 (prog2 -> vars .)
+    MAIN            reduce using rule 4 (prog2 -> vars .)
+
+
+state 11
+
+    (5) prog2 -> empty .
+
+    VOID            reduce using rule 5 (prog2 -> empty .)
+    INT             reduce using rule 5 (prog2 -> empty .)
+    FLOAT           reduce using rule 5 (prog2 -> empty .)
+    CHAR            reduce using rule 5 (prog2 -> empty .)
+    MAIN            reduce using rule 5 (prog2 -> empty .)
+
+
+state 12
+
+    (21) vars -> VARIABLES . attrs1
+    (17) attrs1 -> . lista_ids COLON tipo SEMI attrs2
+    (24) lista_ids -> . ID list1 list2
+
+    ID              shift and go to state 26
+
+    attrs1                         shift and go to state 24
+    lista_ids                      shift and go to state 25
+
+state 13
+
+    (8) class -> class class .
+    (8) class -> class . class
+    (8) class -> . class class
+    (9) class -> . CLASS ID class1 LB class2 class3 RB SEMI
+
+  ! shift/reduce conflict for CLASS resolved as shift
+    VARIABLES       reduce using rule 8 (class -> class class .)
+    VOID            reduce using rule 8 (class -> class class .)
+    INT             reduce using rule 8 (class -> class class .)
+    FLOAT           reduce using rule 8 (class -> class class .)
+    CHAR            reduce using rule 8 (class -> class class .)
+    MAIN            reduce using rule 8 (class -> class class .)
+    CLASS           shift and go to state 8
+
+  ! CLASS           [ reduce using rule 8 (class -> class class .) ]
+
+    class                          shift and go to state 13
+
+state 14
+
+    (9) class -> CLASS ID . class1 LB class2 class3 RB SEMI
+    (10) class1 -> . INHERITS ID
+    (11) class1 -> . empty
+    (99) empty -> .
+
+    INHERITS        shift and go to state 28
+    LB              reduce using rule 99 (empty -> .)
+
+    class1                         shift and go to state 27
+    empty                          shift and go to state 29
+
+state 15
+
+    (1) program -> PROGRAM ID SEMI prog1 prog2 prog3 . main
+    (30) main -> . MAIN LP RP LB main1 RB
+
+    MAIN            shift and go to state 31
+
+    main                           shift and go to state 30
+
+state 16
+
+    (6) prog3 -> function .
+    (33) function -> function . function
+    (33) function -> . function function
+    (34) function -> . tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB
+    (45) tipo_retorno -> . tipo_param
+    (46) tipo_retorno -> . VOID
+    (39) tipo_param -> . INT
+    (40) tipo_param -> . FLOAT
+    (41) tipo_param -> . CHAR
+
+    MAIN            reduce using rule 6 (prog3 -> function .)
+    VOID            shift and go to state 20
+    INT             shift and go to state 21
+    FLOAT           shift and go to state 22
+    CHAR            shift and go to state 23
+
+    function                       shift and go to state 32
+    tipo_retorno                   shift and go to state 18
+    tipo_param                     shift and go to state 19
+
+state 17
+
+    (7) prog3 -> empty .
+
+    MAIN            reduce using rule 7 (prog3 -> empty .)
+
+
+state 18
+
+    (34) function -> tipo_retorno . FUNCTION ID LP func1 RP LB func2 main1 RB
+
+    FUNCTION        shift and go to state 33
+
+
+state 19
+
+    (45) tipo_retorno -> tipo_param .
+
+    FUNCTION        reduce using rule 45 (tipo_retorno -> tipo_param .)
+
+
+state 20
+
+    (46) tipo_retorno -> VOID .
+
+    FUNCTION        reduce using rule 46 (tipo_retorno -> VOID .)
+
+
+state 21
+
+    (39) tipo_param -> INT .
+
+    FUNCTION        reduce using rule 39 (tipo_param -> INT .)
+    SEMI            reduce using rule 39 (tipo_param -> INT .)
+    COMMA           reduce using rule 39 (tipo_param -> INT .)
+    RP              reduce using rule 39 (tipo_param -> INT .)
+
+
+state 22
+
+    (40) tipo_param -> FLOAT .
+
+    FUNCTION        reduce using rule 40 (tipo_param -> FLOAT .)
+    SEMI            reduce using rule 40 (tipo_param -> FLOAT .)
+    COMMA           reduce using rule 40 (tipo_param -> FLOAT .)
+    RP              reduce using rule 40 (tipo_param -> FLOAT .)
+
+
+state 23
+
+    (41) tipo_param -> CHAR .
+
+    FUNCTION        reduce using rule 41 (tipo_param -> CHAR .)
+    SEMI            reduce using rule 41 (tipo_param -> CHAR .)
+    COMMA           reduce using rule 41 (tipo_param -> CHAR .)
+    RP              reduce using rule 41 (tipo_param -> CHAR .)
+
+
+state 24
+
+    (21) vars -> VARIABLES attrs1 .
+
+    VOID            reduce using rule 21 (vars -> VARIABLES attrs1 .)
+    INT             reduce using rule 21 (vars -> VARIABLES attrs1 .)
+    FLOAT           reduce using rule 21 (vars -> VARIABLES attrs1 .)
+    CHAR            reduce using rule 21 (vars -> VARIABLES attrs1 .)
+    MAIN            reduce using rule 21 (vars -> VARIABLES attrs1 .)
+    ID              reduce using rule 21 (vars -> VARIABLES attrs1 .)
+    READ            reduce using rule 21 (vars -> VARIABLES attrs1 .)
+    WRITE           reduce using rule 21 (vars -> VARIABLES attrs1 .)
+    IF              reduce using rule 21 (vars -> VARIABLES attrs1 .)
+    WHILE           reduce using rule 21 (vars -> VARIABLES attrs1 .)
+    FROM            reduce using rule 21 (vars -> VARIABLES attrs1 .)
+    RETURN          reduce using rule 21 (vars -> VARIABLES attrs1 .)
+    RB              reduce using rule 21 (vars -> VARIABLES attrs1 .)
+
+
+state 25
+
+    (17) attrs1 -> lista_ids . COLON tipo SEMI attrs2
+
+    COLON           shift and go to state 34
+
+
+state 26
+
+    (24) lista_ids -> ID . list1 list2
+    (25) list1 -> . LS CTEI RS
+    (26) list1 -> . LS CTEI COMMA CTEI RS
+    (27) list1 -> . empty
+    (99) empty -> .
+
+    LS              shift and go to state 36
+    COMMA           reduce using rule 99 (empty -> .)
+    COLON           reduce using rule 99 (empty -> .)
+
+    list1                          shift and go to state 35
+    empty                          shift and go to state 37
+
+state 27
+
+    (9) class -> CLASS ID class1 . LB class2 class3 RB SEMI
+
+    LB              shift and go to state 38
+
+
+state 28
+
+    (10) class1 -> INHERITS . ID
+
+    ID              shift and go to state 39
+
+
+state 29
+
+    (11) class1 -> empty .
+
+    LB              reduce using rule 11 (class1 -> empty .)
+
+
+state 30
+
+    (1) program -> PROGRAM ID SEMI prog1 prog2 prog3 main .
+
+    $end            reduce using rule 1 (program -> PROGRAM ID SEMI prog1 prog2 prog3 main .)
+
+
+state 31
+
+    (30) main -> MAIN . LP RP LB main1 RB
+
+    LP              shift and go to state 40
+
+
+state 32
+
+    (33) function -> function function .
+    (33) function -> function . function
+    (33) function -> . function function
+    (34) function -> . tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB
+    (45) tipo_retorno -> . tipo_param
+    (46) tipo_retorno -> . VOID
+    (39) tipo_param -> . INT
+    (40) tipo_param -> . FLOAT
+    (41) tipo_param -> . CHAR
+
+  ! shift/reduce conflict for VOID resolved as shift
+  ! shift/reduce conflict for INT resolved as shift
+  ! shift/reduce conflict for FLOAT resolved as shift
+  ! shift/reduce conflict for CHAR resolved as shift
+    MAIN            reduce using rule 33 (function -> function function .)
+    RB              reduce using rule 33 (function -> function function .)
+    VOID            shift and go to state 20
+    INT             shift and go to state 21
+    FLOAT           shift and go to state 22
+    CHAR            shift and go to state 23
+
+  ! VOID            [ reduce using rule 33 (function -> function function .) ]
+  ! INT             [ reduce using rule 33 (function -> function function .) ]
+  ! FLOAT           [ reduce using rule 33 (function -> function function .) ]
+  ! CHAR            [ reduce using rule 33 (function -> function function .) ]
+
+    function                       shift and go to state 32
+    tipo_retorno                   shift and go to state 18
+    tipo_param                     shift and go to state 19
+
+state 33
+
+    (34) function -> tipo_retorno FUNCTION . ID LP func1 RP LB func2 main1 RB
+
+    ID              shift and go to state 41
+
+
+state 34
+
+    (17) attrs1 -> lista_ids COLON . tipo SEMI attrs2
+    (22) tipo -> . tipo_param
+    (23) tipo -> . ID
+    (39) tipo_param -> . INT
+    (40) tipo_param -> . FLOAT
+    (41) tipo_param -> . CHAR
+
+    ID              shift and go to state 44
+    INT             shift and go to state 21
+    FLOAT           shift and go to state 22
+    CHAR            shift and go to state 23
+
+    tipo                           shift and go to state 42
+    tipo_param                     shift and go to state 43
+
+state 35
+
+    (24) lista_ids -> ID list1 . list2
+    (28) list2 -> . COMMA lista_ids
+    (29) list2 -> . empty
+    (99) empty -> .
+
+    COMMA           shift and go to state 46
+    COLON           reduce using rule 99 (empty -> .)
+
+    list2                          shift and go to state 45
+    empty                          shift and go to state 47
+
+state 36
+
+    (25) list1 -> LS . CTEI RS
+    (26) list1 -> LS . CTEI COMMA CTEI RS
+
+    CTEI            shift and go to state 48
+
+
+state 37
+
+    (27) list1 -> empty .
+
+    COMMA           reduce using rule 27 (list1 -> empty .)
+    COLON           reduce using rule 27 (list1 -> empty .)
+    EQ              reduce using rule 27 (list1 -> empty .)
+    RP              reduce using rule 27 (list1 -> empty .)
+
+
+state 38
+
+    (9) class -> CLASS ID class1 LB . class2 class3 RB SEMI
+    (12) class2 -> . attrs
+    (13) class2 -> . empty
+    (16) attrs -> . ATTRIBUTES attrs1
+    (99) empty -> .
+
+    ATTRIBUTES      shift and go to state 52
+    METHODS         reduce using rule 99 (empty -> .)
+    RB              reduce using rule 99 (empty -> .)
+
+    class2                         shift and go to state 49
+    attrs                          shift and go to state 50
+    empty                          shift and go to state 51
+
+state 39
+
+    (10) class1 -> INHERITS ID .
+
+    LB              reduce using rule 10 (class1 -> INHERITS ID .)
+
+
+state 40
+
+    (30) main -> MAIN LP . RP LB main1 RB
+
+    RP              shift and go to state 53
+
+
+state 41
+
+    (34) function -> tipo_retorno FUNCTION ID . LP func1 RP LB func2 main1 RB
+
+    LP              shift and go to state 54
+
+
+state 42
+
+    (17) attrs1 -> lista_ids COLON tipo . SEMI attrs2
+
+    SEMI            shift and go to state 55
+
+
+state 43
+
+    (22) tipo -> tipo_param .
+
+    SEMI            reduce using rule 22 (tipo -> tipo_param .)
+
+
+state 44
+
+    (23) tipo -> ID .
+
+    SEMI            reduce using rule 23 (tipo -> ID .)
+
+
+state 45
+
+    (24) lista_ids -> ID list1 list2 .
+
+    COLON           reduce using rule 24 (lista_ids -> ID list1 list2 .)
+
+
+state 46
+
+    (28) list2 -> COMMA . lista_ids
+    (24) lista_ids -> . ID list1 list2
+
+    ID              shift and go to state 26
+
+    lista_ids                      shift and go to state 56
+
+state 47
+
+    (29) list2 -> empty .
+
+    COLON           reduce using rule 29 (list2 -> empty .)
+
+
+state 48
+
+    (25) list1 -> LS CTEI . RS
+    (26) list1 -> LS CTEI . COMMA CTEI RS
+
+    RS              shift and go to state 57
+    COMMA           shift and go to state 58
+
+
+state 49
+
+    (9) class -> CLASS ID class1 LB class2 . class3 RB SEMI
+    (14) class3 -> . mthds
+    (15) class3 -> . empty
+    (20) mthds -> . METHODS function
+    (99) empty -> .
+
+    METHODS         shift and go to state 62
+    RB              reduce using rule 99 (empty -> .)
+
+    class3                         shift and go to state 59
+    mthds                          shift and go to state 60
+    empty                          shift and go to state 61
+
+state 50
+
+    (12) class2 -> attrs .
+
+    METHODS         reduce using rule 12 (class2 -> attrs .)
+    RB              reduce using rule 12 (class2 -> attrs .)
+
+
+state 51
+
+    (13) class2 -> empty .
+
+    METHODS         reduce using rule 13 (class2 -> empty .)
+    RB              reduce using rule 13 (class2 -> empty .)
+
+
+state 52
+
+    (16) attrs -> ATTRIBUTES . attrs1
+    (17) attrs1 -> . lista_ids COLON tipo SEMI attrs2
+    (24) lista_ids -> . ID list1 list2
+
+    ID              shift and go to state 26
+
+    attrs1                         shift and go to state 63
+    lista_ids                      shift and go to state 25
+
+state 53
+
+    (30) main -> MAIN LP RP . LB main1 RB
+
+    LB              shift and go to state 64
+
+
+state 54
+
+    (34) function -> tipo_retorno FUNCTION ID LP . func1 RP LB func2 main1 RB
+    (35) func1 -> . params
+    (36) func1 -> . empty
+    (42) params -> . ID COLON tipo_param par1
+    (99) empty -> .
+
+    ID              shift and go to state 65
+    RP              reduce using rule 99 (empty -> .)
+
+    func1                          shift and go to state 66
+    params                         shift and go to state 67
+    empty                          shift and go to state 68
+
+state 55
+
+    (17) attrs1 -> lista_ids COLON tipo SEMI . attrs2
+    (18) attrs2 -> . attrs1
+    (19) attrs2 -> . empty
+    (17) attrs1 -> . lista_ids COLON tipo SEMI attrs2
+    (99) empty -> .
+    (24) lista_ids -> . ID list1 list2
+
+  ! shift/reduce conflict for ID resolved as shift
+    VOID            reduce using rule 99 (empty -> .)
+    INT             reduce using rule 99 (empty -> .)
+    FLOAT           reduce using rule 99 (empty -> .)
+    CHAR            reduce using rule 99 (empty -> .)
+    MAIN            reduce using rule 99 (empty -> .)
+    READ            reduce using rule 99 (empty -> .)
+    WRITE           reduce using rule 99 (empty -> .)
+    IF              reduce using rule 99 (empty -> .)
+    WHILE           reduce using rule 99 (empty -> .)
+    FROM            reduce using rule 99 (empty -> .)
+    RETURN          reduce using rule 99 (empty -> .)
+    RB              reduce using rule 99 (empty -> .)
+    METHODS         reduce using rule 99 (empty -> .)
+    ID              shift and go to state 26
+
+  ! ID              [ reduce using rule 99 (empty -> .) ]
+
+    lista_ids                      shift and go to state 25
+    attrs2                         shift and go to state 69
+    attrs1                         shift and go to state 70
+    empty                          shift and go to state 71
+
+state 56
+
+    (28) list2 -> COMMA lista_ids .
+
+    COLON           reduce using rule 28 (list2 -> COMMA lista_ids .)
+
+
+state 57
+
+    (25) list1 -> LS CTEI RS .
+
+    COMMA           reduce using rule 25 (list1 -> LS CTEI RS .)
+    COLON           reduce using rule 25 (list1 -> LS CTEI RS .)
+    EQ              reduce using rule 25 (list1 -> LS CTEI RS .)
+    MUL             reduce using rule 25 (list1 -> LS CTEI RS .)
+    DIV             reduce using rule 25 (list1 -> LS CTEI RS .)
+    PLUS            reduce using rule 25 (list1 -> LS CTEI RS .)
+    MIN             reduce using rule 25 (list1 -> LS CTEI RS .)
+    LT              reduce using rule 25 (list1 -> LS CTEI RS .)
+    GT              reduce using rule 25 (list1 -> LS CTEI RS .)
+    COMP            reduce using rule 25 (list1 -> LS CTEI RS .)
+    NE              reduce using rule 25 (list1 -> LS CTEI RS .)
+    LTE             reduce using rule 25 (list1 -> LS CTEI RS .)
+    GTE             reduce using rule 25 (list1 -> LS CTEI RS .)
+    AND             reduce using rule 25 (list1 -> LS CTEI RS .)
+    OR              reduce using rule 25 (list1 -> LS CTEI RS .)
+    SEMI            reduce using rule 25 (list1 -> LS CTEI RS .)
+    RP              reduce using rule 25 (list1 -> LS CTEI RS .)
+    UNTIL           reduce using rule 25 (list1 -> LS CTEI RS .)
+    DO              reduce using rule 25 (list1 -> LS CTEI RS .)
+
+
+state 58
+
+    (26) list1 -> LS CTEI COMMA . CTEI RS
+
+    CTEI            shift and go to state 72
+
+
+state 59
+
+    (9) class -> CLASS ID class1 LB class2 class3 . RB SEMI
+
+    RB              shift and go to state 73
+
+
+state 60
+
+    (14) class3 -> mthds .
+
+    RB              reduce using rule 14 (class3 -> mthds .)
+
+
+state 61
+
+    (15) class3 -> empty .
+
+    RB              reduce using rule 15 (class3 -> empty .)
+
+
+state 62
+
+    (20) mthds -> METHODS . function
+    (33) function -> . function function
+    (34) function -> . tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB
+    (45) tipo_retorno -> . tipo_param
+    (46) tipo_retorno -> . VOID
+    (39) tipo_param -> . INT
+    (40) tipo_param -> . FLOAT
+    (41) tipo_param -> . CHAR
+
+    VOID            shift and go to state 20
+    INT             shift and go to state 21
+    FLOAT           shift and go to state 22
+    CHAR            shift and go to state 23
+
+    function                       shift and go to state 74
+    tipo_retorno                   shift and go to state 18
+    tipo_param                     shift and go to state 19
+
+state 63
+
+    (16) attrs -> ATTRIBUTES attrs1 .
+
+    METHODS         reduce using rule 16 (attrs -> ATTRIBUTES attrs1 .)
+    RB              reduce using rule 16 (attrs -> ATTRIBUTES attrs1 .)
+
+
+state 64
+
+    (30) main -> MAIN LP RP LB . main1 RB
+    (31) main1 -> . statement
+    (32) main1 -> . empty
+    (47) statement -> . statement statement
+    (48) statement -> . assignment SEMI
+    (49) statement -> . void_call SEMI
+    (50) statement -> . read SEMI
+    (51) statement -> . write SEMI
+    (52) statement -> . if_st
+    (53) statement -> . while_st
+    (54) statement -> . from_st
+    (55) statement -> . return_st SEMI
+    (99) empty -> .
+    (56) assignment -> . var EQ expression
+    (59) void_call -> . ID call1 LP func1 RP
+    (62) read -> . READ LP var read1 RP
+    (65) write -> . WRITE LP write1 RP
+    (70) if_st -> . IF LP expression RP THEN LB statement RB if1
+    (72) while_st -> . WHILE LP expression RP DO LB main1 RB
+    (73) from_st -> . FROM ID list1 EQ expression UNTIL expression DO LB main1 RB
+    (74) return_st -> . RETURN LP expression RP
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    RB              reduce using rule 99 (empty -> .)
+    ID              shift and go to state 87
+    READ            shift and go to state 88
+    WRITE           shift and go to state 89
+    IF              shift and go to state 90
+    WHILE           shift and go to state 91
+    FROM            shift and go to state 92
+    RETURN          shift and go to state 93
+
+    main1                          shift and go to state 75
+    statement                      shift and go to state 76
+    empty                          shift and go to state 77
+    assignment                     shift and go to state 78
+    void_call                      shift and go to state 79
+    read                           shift and go to state 80
+    write                          shift and go to state 81
+    if_st                          shift and go to state 82
+    while_st                       shift and go to state 83
+    from_st                        shift and go to state 84
+    return_st                      shift and go to state 85
+    var                            shift and go to state 86
+
+state 65
+
+    (42) params -> ID . COLON tipo_param par1
+
+    COLON           shift and go to state 94
+
+
+state 66
+
+    (34) function -> tipo_retorno FUNCTION ID LP func1 . RP LB func2 main1 RB
+
+    RP              shift and go to state 95
+
+
+state 67
+
+    (35) func1 -> params .
+
+    RP              reduce using rule 35 (func1 -> params .)
+
+
+state 68
+
+    (36) func1 -> empty .
+
+    RP              reduce using rule 36 (func1 -> empty .)
+
+
+state 69
+
+    (17) attrs1 -> lista_ids COLON tipo SEMI attrs2 .
+
+    VOID            reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+    INT             reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+    FLOAT           reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+    CHAR            reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+    MAIN            reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+    ID              reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+    READ            reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+    WRITE           reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+    IF              reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+    WHILE           reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+    FROM            reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+    RETURN          reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+    RB              reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+    METHODS         reduce using rule 17 (attrs1 -> lista_ids COLON tipo SEMI attrs2 .)
+
+
+state 70
+
+    (18) attrs2 -> attrs1 .
+
+    VOID            reduce using rule 18 (attrs2 -> attrs1 .)
+    INT             reduce using rule 18 (attrs2 -> attrs1 .)
+    FLOAT           reduce using rule 18 (attrs2 -> attrs1 .)
+    CHAR            reduce using rule 18 (attrs2 -> attrs1 .)
+    MAIN            reduce using rule 18 (attrs2 -> attrs1 .)
+    ID              reduce using rule 18 (attrs2 -> attrs1 .)
+    READ            reduce using rule 18 (attrs2 -> attrs1 .)
+    WRITE           reduce using rule 18 (attrs2 -> attrs1 .)
+    IF              reduce using rule 18 (attrs2 -> attrs1 .)
+    WHILE           reduce using rule 18 (attrs2 -> attrs1 .)
+    FROM            reduce using rule 18 (attrs2 -> attrs1 .)
+    RETURN          reduce using rule 18 (attrs2 -> attrs1 .)
+    RB              reduce using rule 18 (attrs2 -> attrs1 .)
+    METHODS         reduce using rule 18 (attrs2 -> attrs1 .)
+
+
+state 71
+
+    (19) attrs2 -> empty .
+
+    VOID            reduce using rule 19 (attrs2 -> empty .)
+    INT             reduce using rule 19 (attrs2 -> empty .)
+    FLOAT           reduce using rule 19 (attrs2 -> empty .)
+    CHAR            reduce using rule 19 (attrs2 -> empty .)
+    MAIN            reduce using rule 19 (attrs2 -> empty .)
+    ID              reduce using rule 19 (attrs2 -> empty .)
+    READ            reduce using rule 19 (attrs2 -> empty .)
+    WRITE           reduce using rule 19 (attrs2 -> empty .)
+    IF              reduce using rule 19 (attrs2 -> empty .)
+    WHILE           reduce using rule 19 (attrs2 -> empty .)
+    FROM            reduce using rule 19 (attrs2 -> empty .)
+    RETURN          reduce using rule 19 (attrs2 -> empty .)
+    RB              reduce using rule 19 (attrs2 -> empty .)
+    METHODS         reduce using rule 19 (attrs2 -> empty .)
+
+
+state 72
+
+    (26) list1 -> LS CTEI COMMA CTEI . RS
+
+    RS              shift and go to state 96
+
+
+state 73
+
+    (9) class -> CLASS ID class1 LB class2 class3 RB . SEMI
+
+    SEMI            shift and go to state 97
+
+
+state 74
+
+    (20) mthds -> METHODS function .
+    (33) function -> function . function
+    (33) function -> . function function
+    (34) function -> . tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB
+    (45) tipo_retorno -> . tipo_param
+    (46) tipo_retorno -> . VOID
+    (39) tipo_param -> . INT
+    (40) tipo_param -> . FLOAT
+    (41) tipo_param -> . CHAR
+
+    RB              reduce using rule 20 (mthds -> METHODS function .)
+    VOID            shift and go to state 20
+    INT             shift and go to state 21
+    FLOAT           shift and go to state 22
+    CHAR            shift and go to state 23
+
+    function                       shift and go to state 32
+    tipo_retorno                   shift and go to state 18
+    tipo_param                     shift and go to state 19
+
+state 75
+
+    (30) main -> MAIN LP RP LB main1 . RB
+
+    RB              shift and go to state 98
+
+
+state 76
+
+    (31) main1 -> statement .
+    (47) statement -> statement . statement
+    (47) statement -> . statement statement
+    (48) statement -> . assignment SEMI
+    (49) statement -> . void_call SEMI
+    (50) statement -> . read SEMI
+    (51) statement -> . write SEMI
+    (52) statement -> . if_st
+    (53) statement -> . while_st
+    (54) statement -> . from_st
+    (55) statement -> . return_st SEMI
+    (56) assignment -> . var EQ expression
+    (59) void_call -> . ID call1 LP func1 RP
+    (62) read -> . READ LP var read1 RP
+    (65) write -> . WRITE LP write1 RP
+    (70) if_st -> . IF LP expression RP THEN LB statement RB if1
+    (72) while_st -> . WHILE LP expression RP DO LB main1 RB
+    (73) from_st -> . FROM ID list1 EQ expression UNTIL expression DO LB main1 RB
+    (74) return_st -> . RETURN LP expression RP
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    RB              reduce using rule 31 (main1 -> statement .)
+    ID              shift and go to state 87
+    READ            shift and go to state 88
+    WRITE           shift and go to state 89
+    IF              shift and go to state 90
+    WHILE           shift and go to state 91
+    FROM            shift and go to state 92
+    RETURN          shift and go to state 93
+
+    statement                      shift and go to state 99
+    assignment                     shift and go to state 78
+    void_call                      shift and go to state 79
+    read                           shift and go to state 80
+    write                          shift and go to state 81
+    if_st                          shift and go to state 82
+    while_st                       shift and go to state 83
+    from_st                        shift and go to state 84
+    return_st                      shift and go to state 85
+    var                            shift and go to state 86
+
+state 77
+
+    (32) main1 -> empty .
+
+    RB              reduce using rule 32 (main1 -> empty .)
+
+
+state 78
+
+    (48) statement -> assignment . SEMI
+
+    SEMI            shift and go to state 100
+
+
+state 79
+
+    (49) statement -> void_call . SEMI
+
+    SEMI            shift and go to state 101
+
+
+state 80
+
+    (50) statement -> read . SEMI
+
+    SEMI            shift and go to state 102
+
+
+state 81
+
+    (51) statement -> write . SEMI
+
+    SEMI            shift and go to state 103
+
+
+state 82
+
+    (52) statement -> if_st .
+
+    ID              reduce using rule 52 (statement -> if_st .)
+    READ            reduce using rule 52 (statement -> if_st .)
+    WRITE           reduce using rule 52 (statement -> if_st .)
+    IF              reduce using rule 52 (statement -> if_st .)
+    WHILE           reduce using rule 52 (statement -> if_st .)
+    FROM            reduce using rule 52 (statement -> if_st .)
+    RETURN          reduce using rule 52 (statement -> if_st .)
+    RB              reduce using rule 52 (statement -> if_st .)
+
+
+state 83
+
+    (53) statement -> while_st .
+
+    ID              reduce using rule 53 (statement -> while_st .)
+    READ            reduce using rule 53 (statement -> while_st .)
+    WRITE           reduce using rule 53 (statement -> while_st .)
+    IF              reduce using rule 53 (statement -> while_st .)
+    WHILE           reduce using rule 53 (statement -> while_st .)
+    FROM            reduce using rule 53 (statement -> while_st .)
+    RETURN          reduce using rule 53 (statement -> while_st .)
+    RB              reduce using rule 53 (statement -> while_st .)
+
+
+state 84
+
+    (54) statement -> from_st .
+
+    ID              reduce using rule 54 (statement -> from_st .)
+    READ            reduce using rule 54 (statement -> from_st .)
+    WRITE           reduce using rule 54 (statement -> from_st .)
+    IF              reduce using rule 54 (statement -> from_st .)
+    WHILE           reduce using rule 54 (statement -> from_st .)
+    FROM            reduce using rule 54 (statement -> from_st .)
+    RETURN          reduce using rule 54 (statement -> from_st .)
+    RB              reduce using rule 54 (statement -> from_st .)
+
+
+state 85
+
+    (55) statement -> return_st . SEMI
+
+    SEMI            shift and go to state 104
+
+
+state 86
+
+    (56) assignment -> var . EQ expression
+
+    EQ              shift and go to state 105
+
+
+state 87
+
+    (59) void_call -> ID . call1 LP func1 RP
+    (57) var -> ID . list1
+    (58) var -> ID . DOT ID
+    (60) call1 -> . DOT ID
+    (61) call1 -> . empty
+    (25) list1 -> . LS CTEI RS
+    (26) list1 -> . LS CTEI COMMA CTEI RS
+    (27) list1 -> . empty
+    (99) empty -> .
+
+    DOT             shift and go to state 108
+    LS              shift and go to state 36
+    LP              reduce using rule 99 (empty -> .)
+    EQ              reduce using rule 99 (empty -> .)
+    MUL             reduce using rule 99 (empty -> .)
+    DIV             reduce using rule 99 (empty -> .)
+    PLUS            reduce using rule 99 (empty -> .)
+    MIN             reduce using rule 99 (empty -> .)
+    LT              reduce using rule 99 (empty -> .)
+    GT              reduce using rule 99 (empty -> .)
+    COMP            reduce using rule 99 (empty -> .)
+    NE              reduce using rule 99 (empty -> .)
+    LTE             reduce using rule 99 (empty -> .)
+    GTE             reduce using rule 99 (empty -> .)
+    AND             reduce using rule 99 (empty -> .)
+    OR              reduce using rule 99 (empty -> .)
+    SEMI            reduce using rule 99 (empty -> .)
+    COMMA           reduce using rule 99 (empty -> .)
+    RP              reduce using rule 99 (empty -> .)
+    UNTIL           reduce using rule 99 (empty -> .)
+    DO              reduce using rule 99 (empty -> .)
+
+    call1                          shift and go to state 106
+    list1                          shift and go to state 107
+    empty                          shift and go to state 109
+
+state 88
+
+    (62) read -> READ . LP var read1 RP
+
+    LP              shift and go to state 110
+
+
+state 89
+
+    (65) write -> WRITE . LP write1 RP
+
+    LP              shift and go to state 111
+
+
+state 90
+
+    (70) if_st -> IF . LP expression RP THEN LB statement RB if1
+
+    LP              shift and go to state 112
+
+
+state 91
+
+    (72) while_st -> WHILE . LP expression RP DO LB main1 RB
+
+    LP              shift and go to state 113
+
+
+state 92
+
+    (73) from_st -> FROM . ID list1 EQ expression UNTIL expression DO LB main1 RB
+
+    ID              shift and go to state 114
+
+
+state 93
+
+    (74) return_st -> RETURN . LP expression RP
+
+    LP              shift and go to state 115
+
+
+state 94
+
+    (42) params -> ID COLON . tipo_param par1
+    (39) tipo_param -> . INT
+    (40) tipo_param -> . FLOAT
+    (41) tipo_param -> . CHAR
+
+    INT             shift and go to state 21
+    FLOAT           shift and go to state 22
+    CHAR            shift and go to state 23
+
+    tipo_param                     shift and go to state 116
+
+state 95
+
+    (34) function -> tipo_retorno FUNCTION ID LP func1 RP . LB func2 main1 RB
+
+    LB              shift and go to state 117
+
+
+state 96
+
+    (26) list1 -> LS CTEI COMMA CTEI RS .
+
+    COMMA           reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    COLON           reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    EQ              reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    MUL             reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    DIV             reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    PLUS            reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    MIN             reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    LT              reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    GT              reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    COMP            reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    NE              reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    LTE             reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    GTE             reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    AND             reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    OR              reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    SEMI            reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    RP              reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    UNTIL           reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+    DO              reduce using rule 26 (list1 -> LS CTEI COMMA CTEI RS .)
+
+
+state 97
+
+    (9) class -> CLASS ID class1 LB class2 class3 RB SEMI .
+
+    CLASS           reduce using rule 9 (class -> CLASS ID class1 LB class2 class3 RB SEMI .)
+    VARIABLES       reduce using rule 9 (class -> CLASS ID class1 LB class2 class3 RB SEMI .)
+    VOID            reduce using rule 9 (class -> CLASS ID class1 LB class2 class3 RB SEMI .)
+    INT             reduce using rule 9 (class -> CLASS ID class1 LB class2 class3 RB SEMI .)
+    FLOAT           reduce using rule 9 (class -> CLASS ID class1 LB class2 class3 RB SEMI .)
+    CHAR            reduce using rule 9 (class -> CLASS ID class1 LB class2 class3 RB SEMI .)
+    MAIN            reduce using rule 9 (class -> CLASS ID class1 LB class2 class3 RB SEMI .)
+
+
+state 98
+
+    (30) main -> MAIN LP RP LB main1 RB .
+
+    $end            reduce using rule 30 (main -> MAIN LP RP LB main1 RB .)
+
+
+state 99
+
+    (47) statement -> statement statement .
+    (47) statement -> statement . statement
+    (47) statement -> . statement statement
+    (48) statement -> . assignment SEMI
+    (49) statement -> . void_call SEMI
+    (50) statement -> . read SEMI
+    (51) statement -> . write SEMI
+    (52) statement -> . if_st
+    (53) statement -> . while_st
+    (54) statement -> . from_st
+    (55) statement -> . return_st SEMI
+    (56) assignment -> . var EQ expression
+    (59) void_call -> . ID call1 LP func1 RP
+    (62) read -> . READ LP var read1 RP
+    (65) write -> . WRITE LP write1 RP
+    (70) if_st -> . IF LP expression RP THEN LB statement RB if1
+    (72) while_st -> . WHILE LP expression RP DO LB main1 RB
+    (73) from_st -> . FROM ID list1 EQ expression UNTIL expression DO LB main1 RB
+    (74) return_st -> . RETURN LP expression RP
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+  ! shift/reduce conflict for ID resolved as shift
+  ! shift/reduce conflict for READ resolved as shift
+  ! shift/reduce conflict for WRITE resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+  ! shift/reduce conflict for FROM resolved as shift
+  ! shift/reduce conflict for RETURN resolved as shift
+    RB              reduce using rule 47 (statement -> statement statement .)
+    ID              shift and go to state 87
+    READ            shift and go to state 88
+    WRITE           shift and go to state 89
+    IF              shift and go to state 90
+    WHILE           shift and go to state 91
+    FROM            shift and go to state 92
+    RETURN          shift and go to state 93
+
+  ! ID              [ reduce using rule 47 (statement -> statement statement .) ]
+  ! READ            [ reduce using rule 47 (statement -> statement statement .) ]
+  ! WRITE           [ reduce using rule 47 (statement -> statement statement .) ]
+  ! IF              [ reduce using rule 47 (statement -> statement statement .) ]
+  ! WHILE           [ reduce using rule 47 (statement -> statement statement .) ]
+  ! FROM            [ reduce using rule 47 (statement -> statement statement .) ]
+  ! RETURN          [ reduce using rule 47 (statement -> statement statement .) ]
+
+    statement                      shift and go to state 99
+    assignment                     shift and go to state 78
+    void_call                      shift and go to state 79
+    read                           shift and go to state 80
+    write                          shift and go to state 81
+    if_st                          shift and go to state 82
+    while_st                       shift and go to state 83
+    from_st                        shift and go to state 84
+    return_st                      shift and go to state 85
+    var                            shift and go to state 86
+
+state 100
+
+    (48) statement -> assignment SEMI .
+
+    ID              reduce using rule 48 (statement -> assignment SEMI .)
+    READ            reduce using rule 48 (statement -> assignment SEMI .)
+    WRITE           reduce using rule 48 (statement -> assignment SEMI .)
+    IF              reduce using rule 48 (statement -> assignment SEMI .)
+    WHILE           reduce using rule 48 (statement -> assignment SEMI .)
+    FROM            reduce using rule 48 (statement -> assignment SEMI .)
+    RETURN          reduce using rule 48 (statement -> assignment SEMI .)
+    RB              reduce using rule 48 (statement -> assignment SEMI .)
+
+
+state 101
+
+    (49) statement -> void_call SEMI .
+
+    ID              reduce using rule 49 (statement -> void_call SEMI .)
+    READ            reduce using rule 49 (statement -> void_call SEMI .)
+    WRITE           reduce using rule 49 (statement -> void_call SEMI .)
+    IF              reduce using rule 49 (statement -> void_call SEMI .)
+    WHILE           reduce using rule 49 (statement -> void_call SEMI .)
+    FROM            reduce using rule 49 (statement -> void_call SEMI .)
+    RETURN          reduce using rule 49 (statement -> void_call SEMI .)
+    RB              reduce using rule 49 (statement -> void_call SEMI .)
+
+
+state 102
+
+    (50) statement -> read SEMI .
+
+    ID              reduce using rule 50 (statement -> read SEMI .)
+    READ            reduce using rule 50 (statement -> read SEMI .)
+    WRITE           reduce using rule 50 (statement -> read SEMI .)
+    IF              reduce using rule 50 (statement -> read SEMI .)
+    WHILE           reduce using rule 50 (statement -> read SEMI .)
+    FROM            reduce using rule 50 (statement -> read SEMI .)
+    RETURN          reduce using rule 50 (statement -> read SEMI .)
+    RB              reduce using rule 50 (statement -> read SEMI .)
+
+
+state 103
+
+    (51) statement -> write SEMI .
+
+    ID              reduce using rule 51 (statement -> write SEMI .)
+    READ            reduce using rule 51 (statement -> write SEMI .)
+    WRITE           reduce using rule 51 (statement -> write SEMI .)
+    IF              reduce using rule 51 (statement -> write SEMI .)
+    WHILE           reduce using rule 51 (statement -> write SEMI .)
+    FROM            reduce using rule 51 (statement -> write SEMI .)
+    RETURN          reduce using rule 51 (statement -> write SEMI .)
+    RB              reduce using rule 51 (statement -> write SEMI .)
+
+
+state 104
+
+    (55) statement -> return_st SEMI .
+
+    ID              reduce using rule 55 (statement -> return_st SEMI .)
+    READ            reduce using rule 55 (statement -> return_st SEMI .)
+    WRITE           reduce using rule 55 (statement -> return_st SEMI .)
+    IF              reduce using rule 55 (statement -> return_st SEMI .)
+    WHILE           reduce using rule 55 (statement -> return_st SEMI .)
+    FROM            reduce using rule 55 (statement -> return_st SEMI .)
+    RETURN          reduce using rule 55 (statement -> return_st SEMI .)
+    RB              reduce using rule 55 (statement -> return_st SEMI .)
+
+
+state 105
+
+    (56) assignment -> var EQ . expression
+    (75) expression -> . exp
+    (76) expression -> . exp OR exp
+    (77) exp -> . k_exp
+    (78) exp -> . k_exp AND k_exp
+    (79) k_exp -> . m_exp
+    (80) k_exp -> . m_exp LT m_exp
+    (81) k_exp -> . m_exp GT m_exp
+    (82) k_exp -> . m_exp COMP m_exp
+    (83) k_exp -> . m_exp NE m_exp
+    (84) k_exp -> . m_exp LTE m_exp
+    (85) k_exp -> . m_exp GTE m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    var                            shift and go to state 118
+    expression                     shift and go to state 119
+    exp                            shift and go to state 120
+    k_exp                          shift and go to state 121
+    m_exp                          shift and go to state 122
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+
+state 106
+
+    (59) void_call -> ID call1 . LP func1 RP
+
+    LP              shift and go to state 131
+
+
+state 107
+
+    (57) var -> ID list1 .
+
+    EQ              reduce using rule 57 (var -> ID list1 .)
+    MUL             reduce using rule 57 (var -> ID list1 .)
+    DIV             reduce using rule 57 (var -> ID list1 .)
+    PLUS            reduce using rule 57 (var -> ID list1 .)
+    MIN             reduce using rule 57 (var -> ID list1 .)
+    LT              reduce using rule 57 (var -> ID list1 .)
+    GT              reduce using rule 57 (var -> ID list1 .)
+    COMP            reduce using rule 57 (var -> ID list1 .)
+    NE              reduce using rule 57 (var -> ID list1 .)
+    LTE             reduce using rule 57 (var -> ID list1 .)
+    GTE             reduce using rule 57 (var -> ID list1 .)
+    AND             reduce using rule 57 (var -> ID list1 .)
+    OR              reduce using rule 57 (var -> ID list1 .)
+    SEMI            reduce using rule 57 (var -> ID list1 .)
+    COMMA           reduce using rule 57 (var -> ID list1 .)
+    RP              reduce using rule 57 (var -> ID list1 .)
+    UNTIL           reduce using rule 57 (var -> ID list1 .)
+    DO              reduce using rule 57 (var -> ID list1 .)
+
+
+state 108
+
+    (58) var -> ID DOT . ID
+    (60) call1 -> DOT . ID
+
+    ID              shift and go to state 132
+
+
+state 109
+
+    (61) call1 -> empty .
+    (27) list1 -> empty .
+
+    LP              reduce using rule 61 (call1 -> empty .)
+    EQ              reduce using rule 27 (list1 -> empty .)
+    MUL             reduce using rule 27 (list1 -> empty .)
+    DIV             reduce using rule 27 (list1 -> empty .)
+    PLUS            reduce using rule 27 (list1 -> empty .)
+    MIN             reduce using rule 27 (list1 -> empty .)
+    LT              reduce using rule 27 (list1 -> empty .)
+    GT              reduce using rule 27 (list1 -> empty .)
+    COMP            reduce using rule 27 (list1 -> empty .)
+    NE              reduce using rule 27 (list1 -> empty .)
+    LTE             reduce using rule 27 (list1 -> empty .)
+    GTE             reduce using rule 27 (list1 -> empty .)
+    AND             reduce using rule 27 (list1 -> empty .)
+    OR              reduce using rule 27 (list1 -> empty .)
+    SEMI            reduce using rule 27 (list1 -> empty .)
+    COMMA           reduce using rule 27 (list1 -> empty .)
+    RP              reduce using rule 27 (list1 -> empty .)
+    UNTIL           reduce using rule 27 (list1 -> empty .)
+    DO              reduce using rule 27 (list1 -> empty .)
+
+
+state 110
+
+    (62) read -> READ LP . var read1 RP
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    ID              shift and go to state 134
+
+    var                            shift and go to state 133
+
+state 111
+
+    (65) write -> WRITE LP . write1 RP
+    (66) write1 -> . expression write2
+    (67) write1 -> . CTES write2
+    (75) expression -> . exp
+    (76) expression -> . exp OR exp
+    (77) exp -> . k_exp
+    (78) exp -> . k_exp AND k_exp
+    (79) k_exp -> . m_exp
+    (80) k_exp -> . m_exp LT m_exp
+    (81) k_exp -> . m_exp GT m_exp
+    (82) k_exp -> . m_exp COMP m_exp
+    (83) k_exp -> . m_exp NE m_exp
+    (84) k_exp -> . m_exp LTE m_exp
+    (85) k_exp -> . m_exp GTE m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    CTES            shift and go to state 137
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    write1                         shift and go to state 135
+    expression                     shift and go to state 136
+    exp                            shift and go to state 120
+    k_exp                          shift and go to state 121
+    m_exp                          shift and go to state 122
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 112
+
+    (70) if_st -> IF LP . expression RP THEN LB statement RB if1
+    (75) expression -> . exp
+    (76) expression -> . exp OR exp
+    (77) exp -> . k_exp
+    (78) exp -> . k_exp AND k_exp
+    (79) k_exp -> . m_exp
+    (80) k_exp -> . m_exp LT m_exp
+    (81) k_exp -> . m_exp GT m_exp
+    (82) k_exp -> . m_exp COMP m_exp
+    (83) k_exp -> . m_exp NE m_exp
+    (84) k_exp -> . m_exp LTE m_exp
+    (85) k_exp -> . m_exp GTE m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    expression                     shift and go to state 138
+    exp                            shift and go to state 120
+    k_exp                          shift and go to state 121
+    m_exp                          shift and go to state 122
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 113
+
+    (72) while_st -> WHILE LP . expression RP DO LB main1 RB
+    (75) expression -> . exp
+    (76) expression -> . exp OR exp
+    (77) exp -> . k_exp
+    (78) exp -> . k_exp AND k_exp
+    (79) k_exp -> . m_exp
+    (80) k_exp -> . m_exp LT m_exp
+    (81) k_exp -> . m_exp GT m_exp
+    (82) k_exp -> . m_exp COMP m_exp
+    (83) k_exp -> . m_exp NE m_exp
+    (84) k_exp -> . m_exp LTE m_exp
+    (85) k_exp -> . m_exp GTE m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    expression                     shift and go to state 139
+    exp                            shift and go to state 120
+    k_exp                          shift and go to state 121
+    m_exp                          shift and go to state 122
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 114
+
+    (73) from_st -> FROM ID . list1 EQ expression UNTIL expression DO LB main1 RB
+    (25) list1 -> . LS CTEI RS
+    (26) list1 -> . LS CTEI COMMA CTEI RS
+    (27) list1 -> . empty
+    (99) empty -> .
+
+    LS              shift and go to state 36
+    EQ              reduce using rule 99 (empty -> .)
+
+    list1                          shift and go to state 140
+    empty                          shift and go to state 37
+
+state 115
+
+    (74) return_st -> RETURN LP . expression RP
+    (75) expression -> . exp
+    (76) expression -> . exp OR exp
+    (77) exp -> . k_exp
+    (78) exp -> . k_exp AND k_exp
+    (79) k_exp -> . m_exp
+    (80) k_exp -> . m_exp LT m_exp
+    (81) k_exp -> . m_exp GT m_exp
+    (82) k_exp -> . m_exp COMP m_exp
+    (83) k_exp -> . m_exp NE m_exp
+    (84) k_exp -> . m_exp LTE m_exp
+    (85) k_exp -> . m_exp GTE m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    expression                     shift and go to state 141
+    exp                            shift and go to state 120
+    k_exp                          shift and go to state 121
+    m_exp                          shift and go to state 122
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 116
+
+    (42) params -> ID COLON tipo_param . par1
+    (43) par1 -> . COMMA params
+    (44) par1 -> . empty
+    (99) empty -> .
+
+    COMMA           shift and go to state 143
+    RP              reduce using rule 99 (empty -> .)
+
+    par1                           shift and go to state 142
+    empty                          shift and go to state 144
+
+state 117
+
+    (34) function -> tipo_retorno FUNCTION ID LP func1 RP LB . func2 main1 RB
+    (37) func2 -> . vars
+    (38) func2 -> . empty
+    (21) vars -> . VARIABLES attrs1
+    (99) empty -> .
+
+    VARIABLES       shift and go to state 12
+    ID              reduce using rule 99 (empty -> .)
+    READ            reduce using rule 99 (empty -> .)
+    WRITE           reduce using rule 99 (empty -> .)
+    IF              reduce using rule 99 (empty -> .)
+    WHILE           reduce using rule 99 (empty -> .)
+    FROM            reduce using rule 99 (empty -> .)
+    RETURN          reduce using rule 99 (empty -> .)
+    RB              reduce using rule 99 (empty -> .)
+
+    func2                          shift and go to state 145
+    vars                           shift and go to state 146
+    empty                          shift and go to state 147
+
+state 118
+
+    (95) fact -> var .
+
+    MUL             reduce using rule 95 (fact -> var .)
+    DIV             reduce using rule 95 (fact -> var .)
+    PLUS            reduce using rule 95 (fact -> var .)
+    MIN             reduce using rule 95 (fact -> var .)
+    LT              reduce using rule 95 (fact -> var .)
+    GT              reduce using rule 95 (fact -> var .)
+    COMP            reduce using rule 95 (fact -> var .)
+    NE              reduce using rule 95 (fact -> var .)
+    LTE             reduce using rule 95 (fact -> var .)
+    GTE             reduce using rule 95 (fact -> var .)
+    AND             reduce using rule 95 (fact -> var .)
+    OR              reduce using rule 95 (fact -> var .)
+    SEMI            reduce using rule 95 (fact -> var .)
+    COMMA           reduce using rule 95 (fact -> var .)
+    RP              reduce using rule 95 (fact -> var .)
+    UNTIL           reduce using rule 95 (fact -> var .)
+    DO              reduce using rule 95 (fact -> var .)
+
+
+state 119
+
+    (56) assignment -> var EQ expression .
+
+    SEMI            reduce using rule 56 (assignment -> var EQ expression .)
+
+
+state 120
+
+    (75) expression -> exp .
+    (76) expression -> exp . OR exp
+
+    SEMI            reduce using rule 75 (expression -> exp .)
+    COMMA           reduce using rule 75 (expression -> exp .)
+    RP              reduce using rule 75 (expression -> exp .)
+    UNTIL           reduce using rule 75 (expression -> exp .)
+    DO              reduce using rule 75 (expression -> exp .)
+    OR              shift and go to state 148
+
+
+state 121
+
+    (77) exp -> k_exp .
+    (78) exp -> k_exp . AND k_exp
+
+    OR              reduce using rule 77 (exp -> k_exp .)
+    SEMI            reduce using rule 77 (exp -> k_exp .)
+    COMMA           reduce using rule 77 (exp -> k_exp .)
+    RP              reduce using rule 77 (exp -> k_exp .)
+    UNTIL           reduce using rule 77 (exp -> k_exp .)
+    DO              reduce using rule 77 (exp -> k_exp .)
+    AND             shift and go to state 149
+
+
+state 122
+
+    (79) k_exp -> m_exp .
+    (80) k_exp -> m_exp . LT m_exp
+    (81) k_exp -> m_exp . GT m_exp
+    (82) k_exp -> m_exp . COMP m_exp
+    (83) k_exp -> m_exp . NE m_exp
+    (84) k_exp -> m_exp . LTE m_exp
+    (85) k_exp -> m_exp . GTE m_exp
+
+    AND             reduce using rule 79 (k_exp -> m_exp .)
+    OR              reduce using rule 79 (k_exp -> m_exp .)
+    SEMI            reduce using rule 79 (k_exp -> m_exp .)
+    COMMA           reduce using rule 79 (k_exp -> m_exp .)
+    RP              reduce using rule 79 (k_exp -> m_exp .)
+    UNTIL           reduce using rule 79 (k_exp -> m_exp .)
+    DO              reduce using rule 79 (k_exp -> m_exp .)
+    LT              shift and go to state 150
+    GT              shift and go to state 151
+    COMP            shift and go to state 152
+    NE              shift and go to state 153
+    LTE             shift and go to state 154
+    GTE             shift and go to state 155
+
+
+state 123
+
+    (86) m_exp -> term .
+    (87) m_exp -> term . PLUS term
+    (88) m_exp -> term . MIN term
+
+    LT              reduce using rule 86 (m_exp -> term .)
+    GT              reduce using rule 86 (m_exp -> term .)
+    COMP            reduce using rule 86 (m_exp -> term .)
+    NE              reduce using rule 86 (m_exp -> term .)
+    LTE             reduce using rule 86 (m_exp -> term .)
+    GTE             reduce using rule 86 (m_exp -> term .)
+    AND             reduce using rule 86 (m_exp -> term .)
+    OR              reduce using rule 86 (m_exp -> term .)
+    SEMI            reduce using rule 86 (m_exp -> term .)
+    COMMA           reduce using rule 86 (m_exp -> term .)
+    RP              reduce using rule 86 (m_exp -> term .)
+    UNTIL           reduce using rule 86 (m_exp -> term .)
+    DO              reduce using rule 86 (m_exp -> term .)
+    PLUS            shift and go to state 156
+    MIN             shift and go to state 157
+
+
+state 124
+
+    (89) term -> fact .
+    (90) term -> fact . MUL fact
+    (91) term -> fact . DIV fact
+
+    PLUS            reduce using rule 89 (term -> fact .)
+    MIN             reduce using rule 89 (term -> fact .)
+    LT              reduce using rule 89 (term -> fact .)
+    GT              reduce using rule 89 (term -> fact .)
+    COMP            reduce using rule 89 (term -> fact .)
+    NE              reduce using rule 89 (term -> fact .)
+    LTE             reduce using rule 89 (term -> fact .)
+    GTE             reduce using rule 89 (term -> fact .)
+    AND             reduce using rule 89 (term -> fact .)
+    OR              reduce using rule 89 (term -> fact .)
+    SEMI            reduce using rule 89 (term -> fact .)
+    COMMA           reduce using rule 89 (term -> fact .)
+    RP              reduce using rule 89 (term -> fact .)
+    UNTIL           reduce using rule 89 (term -> fact .)
+    DO              reduce using rule 89 (term -> fact .)
+    MUL             shift and go to state 158
+    DIV             shift and go to state 159
+
+
+state 125
+
+    (92) fact -> LP . expression RP
+    (75) expression -> . exp
+    (76) expression -> . exp OR exp
+    (77) exp -> . k_exp
+    (78) exp -> . k_exp AND k_exp
+    (79) k_exp -> . m_exp
+    (80) k_exp -> . m_exp LT m_exp
+    (81) k_exp -> . m_exp GT m_exp
+    (82) k_exp -> . m_exp COMP m_exp
+    (83) k_exp -> . m_exp NE m_exp
+    (84) k_exp -> . m_exp LTE m_exp
+    (85) k_exp -> . m_exp GTE m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    expression                     shift and go to state 160
+    exp                            shift and go to state 120
+    k_exp                          shift and go to state 121
+    m_exp                          shift and go to state 122
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 126
+
+    (93) fact -> void_call .
+
+    MUL             reduce using rule 93 (fact -> void_call .)
+    DIV             reduce using rule 93 (fact -> void_call .)
+    PLUS            reduce using rule 93 (fact -> void_call .)
+    MIN             reduce using rule 93 (fact -> void_call .)
+    LT              reduce using rule 93 (fact -> void_call .)
+    GT              reduce using rule 93 (fact -> void_call .)
+    COMP            reduce using rule 93 (fact -> void_call .)
+    NE              reduce using rule 93 (fact -> void_call .)
+    LTE             reduce using rule 93 (fact -> void_call .)
+    GTE             reduce using rule 93 (fact -> void_call .)
+    AND             reduce using rule 93 (fact -> void_call .)
+    OR              reduce using rule 93 (fact -> void_call .)
+    SEMI            reduce using rule 93 (fact -> void_call .)
+    COMMA           reduce using rule 93 (fact -> void_call .)
+    RP              reduce using rule 93 (fact -> void_call .)
+    UNTIL           reduce using rule 93 (fact -> void_call .)
+    DO              reduce using rule 93 (fact -> void_call .)
+
+
+state 127
+
+    (94) fact -> var_cte .
+
+    MUL             reduce using rule 94 (fact -> var_cte .)
+    DIV             reduce using rule 94 (fact -> var_cte .)
+    PLUS            reduce using rule 94 (fact -> var_cte .)
+    MIN             reduce using rule 94 (fact -> var_cte .)
+    LT              reduce using rule 94 (fact -> var_cte .)
+    GT              reduce using rule 94 (fact -> var_cte .)
+    COMP            reduce using rule 94 (fact -> var_cte .)
+    NE              reduce using rule 94 (fact -> var_cte .)
+    LTE             reduce using rule 94 (fact -> var_cte .)
+    GTE             reduce using rule 94 (fact -> var_cte .)
+    AND             reduce using rule 94 (fact -> var_cte .)
+    OR              reduce using rule 94 (fact -> var_cte .)
+    SEMI            reduce using rule 94 (fact -> var_cte .)
+    COMMA           reduce using rule 94 (fact -> var_cte .)
+    RP              reduce using rule 94 (fact -> var_cte .)
+    UNTIL           reduce using rule 94 (fact -> var_cte .)
+    DO              reduce using rule 94 (fact -> var_cte .)
+
+
+state 128
+
+    (96) var_cte -> CTEI .
+
+    MUL             reduce using rule 96 (var_cte -> CTEI .)
+    DIV             reduce using rule 96 (var_cte -> CTEI .)
+    PLUS            reduce using rule 96 (var_cte -> CTEI .)
+    MIN             reduce using rule 96 (var_cte -> CTEI .)
+    LT              reduce using rule 96 (var_cte -> CTEI .)
+    GT              reduce using rule 96 (var_cte -> CTEI .)
+    COMP            reduce using rule 96 (var_cte -> CTEI .)
+    NE              reduce using rule 96 (var_cte -> CTEI .)
+    LTE             reduce using rule 96 (var_cte -> CTEI .)
+    GTE             reduce using rule 96 (var_cte -> CTEI .)
+    AND             reduce using rule 96 (var_cte -> CTEI .)
+    OR              reduce using rule 96 (var_cte -> CTEI .)
+    SEMI            reduce using rule 96 (var_cte -> CTEI .)
+    COMMA           reduce using rule 96 (var_cte -> CTEI .)
+    RP              reduce using rule 96 (var_cte -> CTEI .)
+    UNTIL           reduce using rule 96 (var_cte -> CTEI .)
+    DO              reduce using rule 96 (var_cte -> CTEI .)
+
+
+state 129
+
+    (97) var_cte -> CTEF .
+
+    MUL             reduce using rule 97 (var_cte -> CTEF .)
+    DIV             reduce using rule 97 (var_cte -> CTEF .)
+    PLUS            reduce using rule 97 (var_cte -> CTEF .)
+    MIN             reduce using rule 97 (var_cte -> CTEF .)
+    LT              reduce using rule 97 (var_cte -> CTEF .)
+    GT              reduce using rule 97 (var_cte -> CTEF .)
+    COMP            reduce using rule 97 (var_cte -> CTEF .)
+    NE              reduce using rule 97 (var_cte -> CTEF .)
+    LTE             reduce using rule 97 (var_cte -> CTEF .)
+    GTE             reduce using rule 97 (var_cte -> CTEF .)
+    AND             reduce using rule 97 (var_cte -> CTEF .)
+    OR              reduce using rule 97 (var_cte -> CTEF .)
+    SEMI            reduce using rule 97 (var_cte -> CTEF .)
+    COMMA           reduce using rule 97 (var_cte -> CTEF .)
+    RP              reduce using rule 97 (var_cte -> CTEF .)
+    UNTIL           reduce using rule 97 (var_cte -> CTEF .)
+    DO              reduce using rule 97 (var_cte -> CTEF .)
+
+
+state 130
+
+    (98) var_cte -> CTEC .
+
+    MUL             reduce using rule 98 (var_cte -> CTEC .)
+    DIV             reduce using rule 98 (var_cte -> CTEC .)
+    PLUS            reduce using rule 98 (var_cte -> CTEC .)
+    MIN             reduce using rule 98 (var_cte -> CTEC .)
+    LT              reduce using rule 98 (var_cte -> CTEC .)
+    GT              reduce using rule 98 (var_cte -> CTEC .)
+    COMP            reduce using rule 98 (var_cte -> CTEC .)
+    NE              reduce using rule 98 (var_cte -> CTEC .)
+    LTE             reduce using rule 98 (var_cte -> CTEC .)
+    GTE             reduce using rule 98 (var_cte -> CTEC .)
+    AND             reduce using rule 98 (var_cte -> CTEC .)
+    OR              reduce using rule 98 (var_cte -> CTEC .)
+    SEMI            reduce using rule 98 (var_cte -> CTEC .)
+    COMMA           reduce using rule 98 (var_cte -> CTEC .)
+    RP              reduce using rule 98 (var_cte -> CTEC .)
+    UNTIL           reduce using rule 98 (var_cte -> CTEC .)
+    DO              reduce using rule 98 (var_cte -> CTEC .)
+
+
+state 131
+
+    (59) void_call -> ID call1 LP . func1 RP
+    (35) func1 -> . params
+    (36) func1 -> . empty
+    (42) params -> . ID COLON tipo_param par1
+    (99) empty -> .
+
+    ID              shift and go to state 65
+    RP              reduce using rule 99 (empty -> .)
+
+    func1                          shift and go to state 161
+    params                         shift and go to state 67
+    empty                          shift and go to state 68
+
+state 132
+
+    (58) var -> ID DOT ID .
+    (60) call1 -> DOT ID .
+
+    EQ              reduce using rule 58 (var -> ID DOT ID .)
+    MUL             reduce using rule 58 (var -> ID DOT ID .)
+    DIV             reduce using rule 58 (var -> ID DOT ID .)
+    PLUS            reduce using rule 58 (var -> ID DOT ID .)
+    MIN             reduce using rule 58 (var -> ID DOT ID .)
+    LT              reduce using rule 58 (var -> ID DOT ID .)
+    GT              reduce using rule 58 (var -> ID DOT ID .)
+    COMP            reduce using rule 58 (var -> ID DOT ID .)
+    NE              reduce using rule 58 (var -> ID DOT ID .)
+    LTE             reduce using rule 58 (var -> ID DOT ID .)
+    GTE             reduce using rule 58 (var -> ID DOT ID .)
+    AND             reduce using rule 58 (var -> ID DOT ID .)
+    OR              reduce using rule 58 (var -> ID DOT ID .)
+    SEMI            reduce using rule 58 (var -> ID DOT ID .)
+    COMMA           reduce using rule 58 (var -> ID DOT ID .)
+    RP              reduce using rule 58 (var -> ID DOT ID .)
+    UNTIL           reduce using rule 58 (var -> ID DOT ID .)
+    DO              reduce using rule 58 (var -> ID DOT ID .)
+    LP              reduce using rule 60 (call1 -> DOT ID .)
+
+
+state 133
+
+    (62) read -> READ LP var . read1 RP
+    (63) read1 -> . COMMA var
+    (64) read1 -> . empty
+    (99) empty -> .
+
+    COMMA           shift and go to state 163
+    RP              reduce using rule 99 (empty -> .)
+
+    read1                          shift and go to state 162
+    empty                          shift and go to state 164
+
+state 134
+
+    (57) var -> ID . list1
+    (58) var -> ID . DOT ID
+    (25) list1 -> . LS CTEI RS
+    (26) list1 -> . LS CTEI COMMA CTEI RS
+    (27) list1 -> . empty
+    (99) empty -> .
+
+    DOT             shift and go to state 165
+    LS              shift and go to state 36
+    COMMA           reduce using rule 99 (empty -> .)
+    RP              reduce using rule 99 (empty -> .)
+
+    list1                          shift and go to state 107
+    empty                          shift and go to state 37
+
+state 135
+
+    (65) write -> WRITE LP write1 . RP
+
+    RP              shift and go to state 166
+
+
+state 136
+
+    (66) write1 -> expression . write2
+    (68) write2 -> . COMMA write1
+    (69) write2 -> . empty
+    (99) empty -> .
+
+    COMMA           shift and go to state 168
+    RP              reduce using rule 99 (empty -> .)
+
+    write2                         shift and go to state 167
+    empty                          shift and go to state 169
+
+state 137
+
+    (67) write1 -> CTES . write2
+    (68) write2 -> . COMMA write1
+    (69) write2 -> . empty
+    (99) empty -> .
+
+    COMMA           shift and go to state 168
+    RP              reduce using rule 99 (empty -> .)
+
+    write2                         shift and go to state 170
+    empty                          shift and go to state 169
+
+state 138
+
+    (70) if_st -> IF LP expression . RP THEN LB statement RB if1
+
+    RP              shift and go to state 171
+
+
+state 139
+
+    (72) while_st -> WHILE LP expression . RP DO LB main1 RB
+
+    RP              shift and go to state 172
+
+
+state 140
+
+    (73) from_st -> FROM ID list1 . EQ expression UNTIL expression DO LB main1 RB
+
+    EQ              shift and go to state 173
+
+
+state 141
+
+    (74) return_st -> RETURN LP expression . RP
+
+    RP              shift and go to state 174
+
+
+state 142
+
+    (42) params -> ID COLON tipo_param par1 .
+
+    RP              reduce using rule 42 (params -> ID COLON tipo_param par1 .)
+
+
+state 143
+
+    (43) par1 -> COMMA . params
+    (42) params -> . ID COLON tipo_param par1
+
+    ID              shift and go to state 65
+
+    params                         shift and go to state 175
+
+state 144
+
+    (44) par1 -> empty .
+
+    RP              reduce using rule 44 (par1 -> empty .)
+
+
+state 145
+
+    (34) function -> tipo_retorno FUNCTION ID LP func1 RP LB func2 . main1 RB
+    (31) main1 -> . statement
+    (32) main1 -> . empty
+    (47) statement -> . statement statement
+    (48) statement -> . assignment SEMI
+    (49) statement -> . void_call SEMI
+    (50) statement -> . read SEMI
+    (51) statement -> . write SEMI
+    (52) statement -> . if_st
+    (53) statement -> . while_st
+    (54) statement -> . from_st
+    (55) statement -> . return_st SEMI
+    (99) empty -> .
+    (56) assignment -> . var EQ expression
+    (59) void_call -> . ID call1 LP func1 RP
+    (62) read -> . READ LP var read1 RP
+    (65) write -> . WRITE LP write1 RP
+    (70) if_st -> . IF LP expression RP THEN LB statement RB if1
+    (72) while_st -> . WHILE LP expression RP DO LB main1 RB
+    (73) from_st -> . FROM ID list1 EQ expression UNTIL expression DO LB main1 RB
+    (74) return_st -> . RETURN LP expression RP
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    RB              reduce using rule 99 (empty -> .)
+    ID              shift and go to state 87
+    READ            shift and go to state 88
+    WRITE           shift and go to state 89
+    IF              shift and go to state 90
+    WHILE           shift and go to state 91
+    FROM            shift and go to state 92
+    RETURN          shift and go to state 93
+
+    main1                          shift and go to state 176
+    statement                      shift and go to state 76
+    empty                          shift and go to state 77
+    assignment                     shift and go to state 78
+    void_call                      shift and go to state 79
+    read                           shift and go to state 80
+    write                          shift and go to state 81
+    if_st                          shift and go to state 82
+    while_st                       shift and go to state 83
+    from_st                        shift and go to state 84
+    return_st                      shift and go to state 85
+    var                            shift and go to state 86
+
+state 146
+
+    (37) func2 -> vars .
+
+    ID              reduce using rule 37 (func2 -> vars .)
+    READ            reduce using rule 37 (func2 -> vars .)
+    WRITE           reduce using rule 37 (func2 -> vars .)
+    IF              reduce using rule 37 (func2 -> vars .)
+    WHILE           reduce using rule 37 (func2 -> vars .)
+    FROM            reduce using rule 37 (func2 -> vars .)
+    RETURN          reduce using rule 37 (func2 -> vars .)
+    RB              reduce using rule 37 (func2 -> vars .)
+
+
+state 147
+
+    (38) func2 -> empty .
+
+    ID              reduce using rule 38 (func2 -> empty .)
+    READ            reduce using rule 38 (func2 -> empty .)
+    WRITE           reduce using rule 38 (func2 -> empty .)
+    IF              reduce using rule 38 (func2 -> empty .)
+    WHILE           reduce using rule 38 (func2 -> empty .)
+    FROM            reduce using rule 38 (func2 -> empty .)
+    RETURN          reduce using rule 38 (func2 -> empty .)
+    RB              reduce using rule 38 (func2 -> empty .)
+
+
+state 148
+
+    (76) expression -> exp OR . exp
+    (77) exp -> . k_exp
+    (78) exp -> . k_exp AND k_exp
+    (79) k_exp -> . m_exp
+    (80) k_exp -> . m_exp LT m_exp
+    (81) k_exp -> . m_exp GT m_exp
+    (82) k_exp -> . m_exp COMP m_exp
+    (83) k_exp -> . m_exp NE m_exp
+    (84) k_exp -> . m_exp LTE m_exp
+    (85) k_exp -> . m_exp GTE m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    exp                            shift and go to state 177
+    k_exp                          shift and go to state 121
+    m_exp                          shift and go to state 122
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 149
+
+    (78) exp -> k_exp AND . k_exp
+    (79) k_exp -> . m_exp
+    (80) k_exp -> . m_exp LT m_exp
+    (81) k_exp -> . m_exp GT m_exp
+    (82) k_exp -> . m_exp COMP m_exp
+    (83) k_exp -> . m_exp NE m_exp
+    (84) k_exp -> . m_exp LTE m_exp
+    (85) k_exp -> . m_exp GTE m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    k_exp                          shift and go to state 178
+    m_exp                          shift and go to state 122
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 150
+
+    (80) k_exp -> m_exp LT . m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    m_exp                          shift and go to state 179
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 151
+
+    (81) k_exp -> m_exp GT . m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    m_exp                          shift and go to state 180
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 152
+
+    (82) k_exp -> m_exp COMP . m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    m_exp                          shift and go to state 181
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 153
+
+    (83) k_exp -> m_exp NE . m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    m_exp                          shift and go to state 182
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 154
+
+    (84) k_exp -> m_exp LTE . m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    m_exp                          shift and go to state 183
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 155
+
+    (85) k_exp -> m_exp GTE . m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    m_exp                          shift and go to state 184
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 156
+
+    (87) m_exp -> term PLUS . term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    term                           shift and go to state 185
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 157
+
+    (88) m_exp -> term MIN . term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    term                           shift and go to state 186
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 158
+
+    (90) term -> fact MUL . fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    fact                           shift and go to state 187
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 159
+
+    (91) term -> fact DIV . fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    fact                           shift and go to state 188
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 160
+
+    (92) fact -> LP expression . RP
+
+    RP              shift and go to state 189
+
+
+state 161
+
+    (59) void_call -> ID call1 LP func1 . RP
+
+    RP              shift and go to state 190
+
+
+state 162
+
+    (62) read -> READ LP var read1 . RP
+
+    RP              shift and go to state 191
+
+
+state 163
+
+    (63) read1 -> COMMA . var
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    ID              shift and go to state 134
+
+    var                            shift and go to state 192
+
+state 164
+
+    (64) read1 -> empty .
+
+    RP              reduce using rule 64 (read1 -> empty .)
+
+
+state 165
+
+    (58) var -> ID DOT . ID
+
+    ID              shift and go to state 193
+
+
+state 166
+
+    (65) write -> WRITE LP write1 RP .
+
+    SEMI            reduce using rule 65 (write -> WRITE LP write1 RP .)
+
+
+state 167
+
+    (66) write1 -> expression write2 .
+
+    RP              reduce using rule 66 (write1 -> expression write2 .)
+
+
+state 168
+
+    (68) write2 -> COMMA . write1
+    (66) write1 -> . expression write2
+    (67) write1 -> . CTES write2
+    (75) expression -> . exp
+    (76) expression -> . exp OR exp
+    (77) exp -> . k_exp
+    (78) exp -> . k_exp AND k_exp
+    (79) k_exp -> . m_exp
+    (80) k_exp -> . m_exp LT m_exp
+    (81) k_exp -> . m_exp GT m_exp
+    (82) k_exp -> . m_exp COMP m_exp
+    (83) k_exp -> . m_exp NE m_exp
+    (84) k_exp -> . m_exp LTE m_exp
+    (85) k_exp -> . m_exp GTE m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    CTES            shift and go to state 137
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    write1                         shift and go to state 194
+    expression                     shift and go to state 136
+    exp                            shift and go to state 120
+    k_exp                          shift and go to state 121
+    m_exp                          shift and go to state 122
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 169
+
+    (69) write2 -> empty .
+
+    RP              reduce using rule 69 (write2 -> empty .)
+
+
+state 170
+
+    (67) write1 -> CTES write2 .
+
+    RP              reduce using rule 67 (write1 -> CTES write2 .)
+
+
+state 171
+
+    (70) if_st -> IF LP expression RP . THEN LB statement RB if1
+
+    THEN            shift and go to state 195
+
+
+state 172
+
+    (72) while_st -> WHILE LP expression RP . DO LB main1 RB
+
+    DO              shift and go to state 196
+
+
+state 173
+
+    (73) from_st -> FROM ID list1 EQ . expression UNTIL expression DO LB main1 RB
+    (75) expression -> . exp
+    (76) expression -> . exp OR exp
+    (77) exp -> . k_exp
+    (78) exp -> . k_exp AND k_exp
+    (79) k_exp -> . m_exp
+    (80) k_exp -> . m_exp LT m_exp
+    (81) k_exp -> . m_exp GT m_exp
+    (82) k_exp -> . m_exp COMP m_exp
+    (83) k_exp -> . m_exp NE m_exp
+    (84) k_exp -> . m_exp LTE m_exp
+    (85) k_exp -> . m_exp GTE m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    expression                     shift and go to state 197
+    exp                            shift and go to state 120
+    k_exp                          shift and go to state 121
+    m_exp                          shift and go to state 122
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 174
+
+    (74) return_st -> RETURN LP expression RP .
+
+    SEMI            reduce using rule 74 (return_st -> RETURN LP expression RP .)
+
+
+state 175
+
+    (43) par1 -> COMMA params .
+
+    RP              reduce using rule 43 (par1 -> COMMA params .)
+
+
+state 176
+
+    (34) function -> tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 . RB
+
+    RB              shift and go to state 198
+
+
+state 177
+
+    (76) expression -> exp OR exp .
+
+    SEMI            reduce using rule 76 (expression -> exp OR exp .)
+    COMMA           reduce using rule 76 (expression -> exp OR exp .)
+    RP              reduce using rule 76 (expression -> exp OR exp .)
+    UNTIL           reduce using rule 76 (expression -> exp OR exp .)
+    DO              reduce using rule 76 (expression -> exp OR exp .)
+
+
+state 178
+
+    (78) exp -> k_exp AND k_exp .
+
+    OR              reduce using rule 78 (exp -> k_exp AND k_exp .)
+    SEMI            reduce using rule 78 (exp -> k_exp AND k_exp .)
+    COMMA           reduce using rule 78 (exp -> k_exp AND k_exp .)
+    RP              reduce using rule 78 (exp -> k_exp AND k_exp .)
+    UNTIL           reduce using rule 78 (exp -> k_exp AND k_exp .)
+    DO              reduce using rule 78 (exp -> k_exp AND k_exp .)
+
+
+state 179
+
+    (80) k_exp -> m_exp LT m_exp .
+
+    AND             reduce using rule 80 (k_exp -> m_exp LT m_exp .)
+    OR              reduce using rule 80 (k_exp -> m_exp LT m_exp .)
+    SEMI            reduce using rule 80 (k_exp -> m_exp LT m_exp .)
+    COMMA           reduce using rule 80 (k_exp -> m_exp LT m_exp .)
+    RP              reduce using rule 80 (k_exp -> m_exp LT m_exp .)
+    UNTIL           reduce using rule 80 (k_exp -> m_exp LT m_exp .)
+    DO              reduce using rule 80 (k_exp -> m_exp LT m_exp .)
+
+
+state 180
+
+    (81) k_exp -> m_exp GT m_exp .
+
+    AND             reduce using rule 81 (k_exp -> m_exp GT m_exp .)
+    OR              reduce using rule 81 (k_exp -> m_exp GT m_exp .)
+    SEMI            reduce using rule 81 (k_exp -> m_exp GT m_exp .)
+    COMMA           reduce using rule 81 (k_exp -> m_exp GT m_exp .)
+    RP              reduce using rule 81 (k_exp -> m_exp GT m_exp .)
+    UNTIL           reduce using rule 81 (k_exp -> m_exp GT m_exp .)
+    DO              reduce using rule 81 (k_exp -> m_exp GT m_exp .)
+
+
+state 181
+
+    (82) k_exp -> m_exp COMP m_exp .
+
+    AND             reduce using rule 82 (k_exp -> m_exp COMP m_exp .)
+    OR              reduce using rule 82 (k_exp -> m_exp COMP m_exp .)
+    SEMI            reduce using rule 82 (k_exp -> m_exp COMP m_exp .)
+    COMMA           reduce using rule 82 (k_exp -> m_exp COMP m_exp .)
+    RP              reduce using rule 82 (k_exp -> m_exp COMP m_exp .)
+    UNTIL           reduce using rule 82 (k_exp -> m_exp COMP m_exp .)
+    DO              reduce using rule 82 (k_exp -> m_exp COMP m_exp .)
+
+
+state 182
+
+    (83) k_exp -> m_exp NE m_exp .
+
+    AND             reduce using rule 83 (k_exp -> m_exp NE m_exp .)
+    OR              reduce using rule 83 (k_exp -> m_exp NE m_exp .)
+    SEMI            reduce using rule 83 (k_exp -> m_exp NE m_exp .)
+    COMMA           reduce using rule 83 (k_exp -> m_exp NE m_exp .)
+    RP              reduce using rule 83 (k_exp -> m_exp NE m_exp .)
+    UNTIL           reduce using rule 83 (k_exp -> m_exp NE m_exp .)
+    DO              reduce using rule 83 (k_exp -> m_exp NE m_exp .)
+
+
+state 183
+
+    (84) k_exp -> m_exp LTE m_exp .
+
+    AND             reduce using rule 84 (k_exp -> m_exp LTE m_exp .)
+    OR              reduce using rule 84 (k_exp -> m_exp LTE m_exp .)
+    SEMI            reduce using rule 84 (k_exp -> m_exp LTE m_exp .)
+    COMMA           reduce using rule 84 (k_exp -> m_exp LTE m_exp .)
+    RP              reduce using rule 84 (k_exp -> m_exp LTE m_exp .)
+    UNTIL           reduce using rule 84 (k_exp -> m_exp LTE m_exp .)
+    DO              reduce using rule 84 (k_exp -> m_exp LTE m_exp .)
+
+
+state 184
+
+    (85) k_exp -> m_exp GTE m_exp .
+
+    AND             reduce using rule 85 (k_exp -> m_exp GTE m_exp .)
+    OR              reduce using rule 85 (k_exp -> m_exp GTE m_exp .)
+    SEMI            reduce using rule 85 (k_exp -> m_exp GTE m_exp .)
+    COMMA           reduce using rule 85 (k_exp -> m_exp GTE m_exp .)
+    RP              reduce using rule 85 (k_exp -> m_exp GTE m_exp .)
+    UNTIL           reduce using rule 85 (k_exp -> m_exp GTE m_exp .)
+    DO              reduce using rule 85 (k_exp -> m_exp GTE m_exp .)
+
+
+state 185
+
+    (87) m_exp -> term PLUS term .
+
+    LT              reduce using rule 87 (m_exp -> term PLUS term .)
+    GT              reduce using rule 87 (m_exp -> term PLUS term .)
+    COMP            reduce using rule 87 (m_exp -> term PLUS term .)
+    NE              reduce using rule 87 (m_exp -> term PLUS term .)
+    LTE             reduce using rule 87 (m_exp -> term PLUS term .)
+    GTE             reduce using rule 87 (m_exp -> term PLUS term .)
+    AND             reduce using rule 87 (m_exp -> term PLUS term .)
+    OR              reduce using rule 87 (m_exp -> term PLUS term .)
+    SEMI            reduce using rule 87 (m_exp -> term PLUS term .)
+    COMMA           reduce using rule 87 (m_exp -> term PLUS term .)
+    RP              reduce using rule 87 (m_exp -> term PLUS term .)
+    UNTIL           reduce using rule 87 (m_exp -> term PLUS term .)
+    DO              reduce using rule 87 (m_exp -> term PLUS term .)
+
+
+state 186
+
+    (88) m_exp -> term MIN term .
+
+    LT              reduce using rule 88 (m_exp -> term MIN term .)
+    GT              reduce using rule 88 (m_exp -> term MIN term .)
+    COMP            reduce using rule 88 (m_exp -> term MIN term .)
+    NE              reduce using rule 88 (m_exp -> term MIN term .)
+    LTE             reduce using rule 88 (m_exp -> term MIN term .)
+    GTE             reduce using rule 88 (m_exp -> term MIN term .)
+    AND             reduce using rule 88 (m_exp -> term MIN term .)
+    OR              reduce using rule 88 (m_exp -> term MIN term .)
+    SEMI            reduce using rule 88 (m_exp -> term MIN term .)
+    COMMA           reduce using rule 88 (m_exp -> term MIN term .)
+    RP              reduce using rule 88 (m_exp -> term MIN term .)
+    UNTIL           reduce using rule 88 (m_exp -> term MIN term .)
+    DO              reduce using rule 88 (m_exp -> term MIN term .)
+
+
+state 187
+
+    (90) term -> fact MUL fact .
+
+    PLUS            reduce using rule 90 (term -> fact MUL fact .)
+    MIN             reduce using rule 90 (term -> fact MUL fact .)
+    LT              reduce using rule 90 (term -> fact MUL fact .)
+    GT              reduce using rule 90 (term -> fact MUL fact .)
+    COMP            reduce using rule 90 (term -> fact MUL fact .)
+    NE              reduce using rule 90 (term -> fact MUL fact .)
+    LTE             reduce using rule 90 (term -> fact MUL fact .)
+    GTE             reduce using rule 90 (term -> fact MUL fact .)
+    AND             reduce using rule 90 (term -> fact MUL fact .)
+    OR              reduce using rule 90 (term -> fact MUL fact .)
+    SEMI            reduce using rule 90 (term -> fact MUL fact .)
+    COMMA           reduce using rule 90 (term -> fact MUL fact .)
+    RP              reduce using rule 90 (term -> fact MUL fact .)
+    UNTIL           reduce using rule 90 (term -> fact MUL fact .)
+    DO              reduce using rule 90 (term -> fact MUL fact .)
+
+
+state 188
+
+    (91) term -> fact DIV fact .
+
+    PLUS            reduce using rule 91 (term -> fact DIV fact .)
+    MIN             reduce using rule 91 (term -> fact DIV fact .)
+    LT              reduce using rule 91 (term -> fact DIV fact .)
+    GT              reduce using rule 91 (term -> fact DIV fact .)
+    COMP            reduce using rule 91 (term -> fact DIV fact .)
+    NE              reduce using rule 91 (term -> fact DIV fact .)
+    LTE             reduce using rule 91 (term -> fact DIV fact .)
+    GTE             reduce using rule 91 (term -> fact DIV fact .)
+    AND             reduce using rule 91 (term -> fact DIV fact .)
+    OR              reduce using rule 91 (term -> fact DIV fact .)
+    SEMI            reduce using rule 91 (term -> fact DIV fact .)
+    COMMA           reduce using rule 91 (term -> fact DIV fact .)
+    RP              reduce using rule 91 (term -> fact DIV fact .)
+    UNTIL           reduce using rule 91 (term -> fact DIV fact .)
+    DO              reduce using rule 91 (term -> fact DIV fact .)
+
+
+state 189
+
+    (92) fact -> LP expression RP .
+
+    MUL             reduce using rule 92 (fact -> LP expression RP .)
+    DIV             reduce using rule 92 (fact -> LP expression RP .)
+    PLUS            reduce using rule 92 (fact -> LP expression RP .)
+    MIN             reduce using rule 92 (fact -> LP expression RP .)
+    LT              reduce using rule 92 (fact -> LP expression RP .)
+    GT              reduce using rule 92 (fact -> LP expression RP .)
+    COMP            reduce using rule 92 (fact -> LP expression RP .)
+    NE              reduce using rule 92 (fact -> LP expression RP .)
+    LTE             reduce using rule 92 (fact -> LP expression RP .)
+    GTE             reduce using rule 92 (fact -> LP expression RP .)
+    AND             reduce using rule 92 (fact -> LP expression RP .)
+    OR              reduce using rule 92 (fact -> LP expression RP .)
+    SEMI            reduce using rule 92 (fact -> LP expression RP .)
+    COMMA           reduce using rule 92 (fact -> LP expression RP .)
+    RP              reduce using rule 92 (fact -> LP expression RP .)
+    UNTIL           reduce using rule 92 (fact -> LP expression RP .)
+    DO              reduce using rule 92 (fact -> LP expression RP .)
+
+
+state 190
+
+    (59) void_call -> ID call1 LP func1 RP .
+
+    SEMI            reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    MUL             reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    DIV             reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    PLUS            reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    MIN             reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    LT              reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    GT              reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    COMP            reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    NE              reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    LTE             reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    GTE             reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    AND             reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    OR              reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    COMMA           reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    RP              reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    UNTIL           reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+    DO              reduce using rule 59 (void_call -> ID call1 LP func1 RP .)
+
+
+state 191
+
+    (62) read -> READ LP var read1 RP .
+
+    SEMI            reduce using rule 62 (read -> READ LP var read1 RP .)
+
+
+state 192
+
+    (63) read1 -> COMMA var .
+
+    RP              reduce using rule 63 (read1 -> COMMA var .)
+
+
+state 193
+
+    (58) var -> ID DOT ID .
+
+    COMMA           reduce using rule 58 (var -> ID DOT ID .)
+    RP              reduce using rule 58 (var -> ID DOT ID .)
+
+
+state 194
+
+    (68) write2 -> COMMA write1 .
+
+    RP              reduce using rule 68 (write2 -> COMMA write1 .)
+
+
+state 195
+
+    (70) if_st -> IF LP expression RP THEN . LB statement RB if1
+
+    LB              shift and go to state 199
+
+
+state 196
+
+    (72) while_st -> WHILE LP expression RP DO . LB main1 RB
+
+    LB              shift and go to state 200
+
+
+state 197
+
+    (73) from_st -> FROM ID list1 EQ expression . UNTIL expression DO LB main1 RB
+
+    UNTIL           shift and go to state 201
+
+
+state 198
+
+    (34) function -> tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB .
+
+    VOID            reduce using rule 34 (function -> tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB .)
+    INT             reduce using rule 34 (function -> tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB .)
+    FLOAT           reduce using rule 34 (function -> tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB .)
+    CHAR            reduce using rule 34 (function -> tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB .)
+    MAIN            reduce using rule 34 (function -> tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB .)
+    RB              reduce using rule 34 (function -> tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB .)
+
+
+state 199
+
+    (70) if_st -> IF LP expression RP THEN LB . statement RB if1
+    (47) statement -> . statement statement
+    (48) statement -> . assignment SEMI
+    (49) statement -> . void_call SEMI
+    (50) statement -> . read SEMI
+    (51) statement -> . write SEMI
+    (52) statement -> . if_st
+    (53) statement -> . while_st
+    (54) statement -> . from_st
+    (55) statement -> . return_st SEMI
+    (56) assignment -> . var EQ expression
+    (59) void_call -> . ID call1 LP func1 RP
+    (62) read -> . READ LP var read1 RP
+    (65) write -> . WRITE LP write1 RP
+    (70) if_st -> . IF LP expression RP THEN LB statement RB if1
+    (72) while_st -> . WHILE LP expression RP DO LB main1 RB
+    (73) from_st -> . FROM ID list1 EQ expression UNTIL expression DO LB main1 RB
+    (74) return_st -> . RETURN LP expression RP
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    ID              shift and go to state 87
+    READ            shift and go to state 88
+    WRITE           shift and go to state 89
+    IF              shift and go to state 90
+    WHILE           shift and go to state 91
+    FROM            shift and go to state 92
+    RETURN          shift and go to state 93
+
+    statement                      shift and go to state 202
+    assignment                     shift and go to state 78
+    void_call                      shift and go to state 79
+    read                           shift and go to state 80
+    write                          shift and go to state 81
+    if_st                          shift and go to state 82
+    while_st                       shift and go to state 83
+    from_st                        shift and go to state 84
+    return_st                      shift and go to state 85
+    var                            shift and go to state 86
+
+state 200
+
+    (72) while_st -> WHILE LP expression RP DO LB . main1 RB
+    (31) main1 -> . statement
+    (32) main1 -> . empty
+    (47) statement -> . statement statement
+    (48) statement -> . assignment SEMI
+    (49) statement -> . void_call SEMI
+    (50) statement -> . read SEMI
+    (51) statement -> . write SEMI
+    (52) statement -> . if_st
+    (53) statement -> . while_st
+    (54) statement -> . from_st
+    (55) statement -> . return_st SEMI
+    (99) empty -> .
+    (56) assignment -> . var EQ expression
+    (59) void_call -> . ID call1 LP func1 RP
+    (62) read -> . READ LP var read1 RP
+    (65) write -> . WRITE LP write1 RP
+    (70) if_st -> . IF LP expression RP THEN LB statement RB if1
+    (72) while_st -> . WHILE LP expression RP DO LB main1 RB
+    (73) from_st -> . FROM ID list1 EQ expression UNTIL expression DO LB main1 RB
+    (74) return_st -> . RETURN LP expression RP
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    RB              reduce using rule 99 (empty -> .)
+    ID              shift and go to state 87
+    READ            shift and go to state 88
+    WRITE           shift and go to state 89
+    IF              shift and go to state 90
+    WHILE           shift and go to state 91
+    FROM            shift and go to state 92
+    RETURN          shift and go to state 93
+
+    main1                          shift and go to state 203
+    statement                      shift and go to state 76
+    empty                          shift and go to state 77
+    assignment                     shift and go to state 78
+    void_call                      shift and go to state 79
+    read                           shift and go to state 80
+    write                          shift and go to state 81
+    if_st                          shift and go to state 82
+    while_st                       shift and go to state 83
+    from_st                        shift and go to state 84
+    return_st                      shift and go to state 85
+    var                            shift and go to state 86
+
+state 201
+
+    (73) from_st -> FROM ID list1 EQ expression UNTIL . expression DO LB main1 RB
+    (75) expression -> . exp
+    (76) expression -> . exp OR exp
+    (77) exp -> . k_exp
+    (78) exp -> . k_exp AND k_exp
+    (79) k_exp -> . m_exp
+    (80) k_exp -> . m_exp LT m_exp
+    (81) k_exp -> . m_exp GT m_exp
+    (82) k_exp -> . m_exp COMP m_exp
+    (83) k_exp -> . m_exp NE m_exp
+    (84) k_exp -> . m_exp LTE m_exp
+    (85) k_exp -> . m_exp GTE m_exp
+    (86) m_exp -> . term
+    (87) m_exp -> . term PLUS term
+    (88) m_exp -> . term MIN term
+    (89) term -> . fact
+    (90) term -> . fact MUL fact
+    (91) term -> . fact DIV fact
+    (92) fact -> . LP expression RP
+    (93) fact -> . void_call
+    (94) fact -> . var_cte
+    (95) fact -> . var
+    (59) void_call -> . ID call1 LP func1 RP
+    (96) var_cte -> . CTEI
+    (97) var_cte -> . CTEF
+    (98) var_cte -> . CTEC
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    LP              shift and go to state 125
+    ID              shift and go to state 87
+    CTEI            shift and go to state 128
+    CTEF            shift and go to state 129
+    CTEC            shift and go to state 130
+
+    expression                     shift and go to state 204
+    exp                            shift and go to state 120
+    k_exp                          shift and go to state 121
+    m_exp                          shift and go to state 122
+    term                           shift and go to state 123
+    fact                           shift and go to state 124
+    void_call                      shift and go to state 126
+    var_cte                        shift and go to state 127
+    var                            shift and go to state 118
+
+state 202
+
+    (70) if_st -> IF LP expression RP THEN LB statement . RB if1
+    (47) statement -> statement . statement
+    (47) statement -> . statement statement
+    (48) statement -> . assignment SEMI
+    (49) statement -> . void_call SEMI
+    (50) statement -> . read SEMI
+    (51) statement -> . write SEMI
+    (52) statement -> . if_st
+    (53) statement -> . while_st
+    (54) statement -> . from_st
+    (55) statement -> . return_st SEMI
+    (56) assignment -> . var EQ expression
+    (59) void_call -> . ID call1 LP func1 RP
+    (62) read -> . READ LP var read1 RP
+    (65) write -> . WRITE LP write1 RP
+    (70) if_st -> . IF LP expression RP THEN LB statement RB if1
+    (72) while_st -> . WHILE LP expression RP DO LB main1 RB
+    (73) from_st -> . FROM ID list1 EQ expression UNTIL expression DO LB main1 RB
+    (74) return_st -> . RETURN LP expression RP
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    RB              shift and go to state 205
+    ID              shift and go to state 87
+    READ            shift and go to state 88
+    WRITE           shift and go to state 89
+    IF              shift and go to state 90
+    WHILE           shift and go to state 91
+    FROM            shift and go to state 92
+    RETURN          shift and go to state 93
+
+    statement                      shift and go to state 99
+    assignment                     shift and go to state 78
+    void_call                      shift and go to state 79
+    read                           shift and go to state 80
+    write                          shift and go to state 81
+    if_st                          shift and go to state 82
+    while_st                       shift and go to state 83
+    from_st                        shift and go to state 84
+    return_st                      shift and go to state 85
+    var                            shift and go to state 86
+
+state 203
+
+    (72) while_st -> WHILE LP expression RP DO LB main1 . RB
+
+    RB              shift and go to state 206
+
+
+state 204
+
+    (73) from_st -> FROM ID list1 EQ expression UNTIL expression . DO LB main1 RB
+
+    DO              shift and go to state 207
+
+
+state 205
+
+    (70) if_st -> IF LP expression RP THEN LB statement RB . if1
+    (71) if1 -> . ELSE LB main1 RB
+
+    ELSE            shift and go to state 209
+
+    if1                            shift and go to state 208
+
+state 206
+
+    (72) while_st -> WHILE LP expression RP DO LB main1 RB .
+
+    ID              reduce using rule 72 (while_st -> WHILE LP expression RP DO LB main1 RB .)
+    READ            reduce using rule 72 (while_st -> WHILE LP expression RP DO LB main1 RB .)
+    WRITE           reduce using rule 72 (while_st -> WHILE LP expression RP DO LB main1 RB .)
+    IF              reduce using rule 72 (while_st -> WHILE LP expression RP DO LB main1 RB .)
+    WHILE           reduce using rule 72 (while_st -> WHILE LP expression RP DO LB main1 RB .)
+    FROM            reduce using rule 72 (while_st -> WHILE LP expression RP DO LB main1 RB .)
+    RETURN          reduce using rule 72 (while_st -> WHILE LP expression RP DO LB main1 RB .)
+    RB              reduce using rule 72 (while_st -> WHILE LP expression RP DO LB main1 RB .)
+
+
+state 207
+
+    (73) from_st -> FROM ID list1 EQ expression UNTIL expression DO . LB main1 RB
+
+    LB              shift and go to state 210
+
+
+state 208
+
+    (70) if_st -> IF LP expression RP THEN LB statement RB if1 .
+
+    ID              reduce using rule 70 (if_st -> IF LP expression RP THEN LB statement RB if1 .)
+    READ            reduce using rule 70 (if_st -> IF LP expression RP THEN LB statement RB if1 .)
+    WRITE           reduce using rule 70 (if_st -> IF LP expression RP THEN LB statement RB if1 .)
+    IF              reduce using rule 70 (if_st -> IF LP expression RP THEN LB statement RB if1 .)
+    WHILE           reduce using rule 70 (if_st -> IF LP expression RP THEN LB statement RB if1 .)
+    FROM            reduce using rule 70 (if_st -> IF LP expression RP THEN LB statement RB if1 .)
+    RETURN          reduce using rule 70 (if_st -> IF LP expression RP THEN LB statement RB if1 .)
+    RB              reduce using rule 70 (if_st -> IF LP expression RP THEN LB statement RB if1 .)
+
+
+state 209
+
+    (71) if1 -> ELSE . LB main1 RB
+
+    LB              shift and go to state 211
+
+
+state 210
+
+    (73) from_st -> FROM ID list1 EQ expression UNTIL expression DO LB . main1 RB
+    (31) main1 -> . statement
+    (32) main1 -> . empty
+    (47) statement -> . statement statement
+    (48) statement -> . assignment SEMI
+    (49) statement -> . void_call SEMI
+    (50) statement -> . read SEMI
+    (51) statement -> . write SEMI
+    (52) statement -> . if_st
+    (53) statement -> . while_st
+    (54) statement -> . from_st
+    (55) statement -> . return_st SEMI
+    (99) empty -> .
+    (56) assignment -> . var EQ expression
+    (59) void_call -> . ID call1 LP func1 RP
+    (62) read -> . READ LP var read1 RP
+    (65) write -> . WRITE LP write1 RP
+    (70) if_st -> . IF LP expression RP THEN LB statement RB if1
+    (72) while_st -> . WHILE LP expression RP DO LB main1 RB
+    (73) from_st -> . FROM ID list1 EQ expression UNTIL expression DO LB main1 RB
+    (74) return_st -> . RETURN LP expression RP
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    RB              reduce using rule 99 (empty -> .)
+    ID              shift and go to state 87
+    READ            shift and go to state 88
+    WRITE           shift and go to state 89
+    IF              shift and go to state 90
+    WHILE           shift and go to state 91
+    FROM            shift and go to state 92
+    RETURN          shift and go to state 93
+
+    main1                          shift and go to state 212
+    statement                      shift and go to state 76
+    empty                          shift and go to state 77
+    assignment                     shift and go to state 78
+    void_call                      shift and go to state 79
+    read                           shift and go to state 80
+    write                          shift and go to state 81
+    if_st                          shift and go to state 82
+    while_st                       shift and go to state 83
+    from_st                        shift and go to state 84
+    return_st                      shift and go to state 85
+    var                            shift and go to state 86
+
+state 211
+
+    (71) if1 -> ELSE LB . main1 RB
+    (31) main1 -> . statement
+    (32) main1 -> . empty
+    (47) statement -> . statement statement
+    (48) statement -> . assignment SEMI
+    (49) statement -> . void_call SEMI
+    (50) statement -> . read SEMI
+    (51) statement -> . write SEMI
+    (52) statement -> . if_st
+    (53) statement -> . while_st
+    (54) statement -> . from_st
+    (55) statement -> . return_st SEMI
+    (99) empty -> .
+    (56) assignment -> . var EQ expression
+    (59) void_call -> . ID call1 LP func1 RP
+    (62) read -> . READ LP var read1 RP
+    (65) write -> . WRITE LP write1 RP
+    (70) if_st -> . IF LP expression RP THEN LB statement RB if1
+    (72) while_st -> . WHILE LP expression RP DO LB main1 RB
+    (73) from_st -> . FROM ID list1 EQ expression UNTIL expression DO LB main1 RB
+    (74) return_st -> . RETURN LP expression RP
+    (57) var -> . ID list1
+    (58) var -> . ID DOT ID
+
+    RB              reduce using rule 99 (empty -> .)
+    ID              shift and go to state 87
+    READ            shift and go to state 88
+    WRITE           shift and go to state 89
+    IF              shift and go to state 90
+    WHILE           shift and go to state 91
+    FROM            shift and go to state 92
+    RETURN          shift and go to state 93
+
+    main1                          shift and go to state 213
+    statement                      shift and go to state 76
+    empty                          shift and go to state 77
+    assignment                     shift and go to state 78
+    void_call                      shift and go to state 79
+    read                           shift and go to state 80
+    write                          shift and go to state 81
+    if_st                          shift and go to state 82
+    while_st                       shift and go to state 83
+    from_st                        shift and go to state 84
+    return_st                      shift and go to state 85
+    var                            shift and go to state 86
+
+state 212
+
+    (73) from_st -> FROM ID list1 EQ expression UNTIL expression DO LB main1 . RB
+
+    RB              shift and go to state 214
+
+
+state 213
+
+    (71) if1 -> ELSE LB main1 . RB
+
+    RB              shift and go to state 215
+
+
+state 214
+
+    (73) from_st -> FROM ID list1 EQ expression UNTIL expression DO LB main1 RB .
+
+    ID              reduce using rule 73 (from_st -> FROM ID list1 EQ expression UNTIL expression DO LB main1 RB .)
+    READ            reduce using rule 73 (from_st -> FROM ID list1 EQ expression UNTIL expression DO LB main1 RB .)
+    WRITE           reduce using rule 73 (from_st -> FROM ID list1 EQ expression UNTIL expression DO LB main1 RB .)
+    IF              reduce using rule 73 (from_st -> FROM ID list1 EQ expression UNTIL expression DO LB main1 RB .)
+    WHILE           reduce using rule 73 (from_st -> FROM ID list1 EQ expression UNTIL expression DO LB main1 RB .)
+    FROM            reduce using rule 73 (from_st -> FROM ID list1 EQ expression UNTIL expression DO LB main1 RB .)
+    RETURN          reduce using rule 73 (from_st -> FROM ID list1 EQ expression UNTIL expression DO LB main1 RB .)
+    RB              reduce using rule 73 (from_st -> FROM ID list1 EQ expression UNTIL expression DO LB main1 RB .)
+
+
+state 215
+
+    (71) if1 -> ELSE LB main1 RB .
+
+    ID              reduce using rule 71 (if1 -> ELSE LB main1 RB .)
+    READ            reduce using rule 71 (if1 -> ELSE LB main1 RB .)
+    WRITE           reduce using rule 71 (if1 -> ELSE LB main1 RB .)
+    IF              reduce using rule 71 (if1 -> ELSE LB main1 RB .)
+    WHILE           reduce using rule 71 (if1 -> ELSE LB main1 RB .)
+    FROM            reduce using rule 71 (if1 -> ELSE LB main1 RB .)
+    RETURN          reduce using rule 71 (if1 -> ELSE LB main1 RB .)
+    RB              reduce using rule 71 (if1 -> ELSE LB main1 RB .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for CLASS in state 13 resolved as shift
+WARNING: shift/reduce conflict for VOID in state 32 resolved as shift
+WARNING: shift/reduce conflict for INT in state 32 resolved as shift
+WARNING: shift/reduce conflict for FLOAT in state 32 resolved as shift
+WARNING: shift/reduce conflict for CHAR in state 32 resolved as shift
+WARNING: shift/reduce conflict for ID in state 55 resolved as shift
+WARNING: shift/reduce conflict for ID in state 99 resolved as shift
+WARNING: shift/reduce conflict for READ in state 99 resolved as shift
+WARNING: shift/reduce conflict for WRITE in state 99 resolved as shift
+WARNING: shift/reduce conflict for IF in state 99 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 99 resolved as shift
+WARNING: shift/reduce conflict for FROM in state 99 resolved as shift
+WARNING: shift/reduce conflict for RETURN in state 99 resolved as shift

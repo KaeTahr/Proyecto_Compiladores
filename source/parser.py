@@ -2,249 +2,215 @@ import ply.yacc as yacc
 from lexer import tokens
 import sys
 
-
 # PROGRAMA
 def p_program(p):
-    '''program : PROGRAM ID SEMI p1 p2 p3 main'''
+    '''program : PROGRAM ID SEMI prog1 prog2 prog3 main'''
+    p[0] = "Input is a valid program.\n"
 
-def p_p1(p):
-    '''p1 : class
-          | empty'''
+def p_prog1(p):
+    '''prog1 : class
+             | empty'''
 
-def p_p2(p):
-    '''p2 : vars
-          | empty'''
+def p_prog2(p):
+    '''prog2 : vars
+             | empty'''
 
-def p_p3(p):
-    '''p3 : function
-          | empty'''
+def p_prog3(p):
+    '''prog3 : function
+             | empty'''
 
+# CLASS
 def p_class(p):
-    '''class : CLASS ID c1 SEMI LB c2 c3 RB SEMI c4'''
+    '''class : class class
+             | CLASS ID class1 LB class2 class3 RB SEMI'''
 
-def p_c1(p):
-    '''c1 : INHERITS ID
-          | empty'''
+def p_class1(p):
+    '''class1 : INHERITS ID
+              | empty'''
 
-def p_c2(p):
-    '''c2 : ATTRIBUTES vars
-          | empty'''
+def p_class2(p):
+    '''class2 : attrs
+              | empty'''
 
-def p_c3(p):
-    '''c3 : METHODS function
-          | empty'''
+def p_class3(p):
+    '''class3 : mthds
+              | empty'''
 
-def p_c4(p):
-    '''c4 : class
-          | empty'''
+def p_attrs(p):
+    '''attrs : ATTRIBUTES attrs1'''
 
+def p_attrs1(p):
+    '''attrs1 : lista_ids COLON tipo SEMI attrs2'''
+
+def p_attrs2(p):
+    '''attrs2 : attrs1
+              | empty'''
+
+def p_mthds(p):
+    '''mthds : METHODS function'''
+
+# VARS
 def p_vars(p):
-    '''vars : VARIABLES v1'''
-
-
-def p_v1(p):
-    '''v1 : lista_ids COLON v2 SEMI v3'''
-
-def p_v2(p):
-    '''v2 : ID
-          | tipo'''
-
-def p_v3(p):
-    '''v3 : v1
-          | empty'''
-
-def p_lista_ids(p):
-    '''lista_ids: ID l1 l3'''
-
-def p_l1(p):
-    '''l1 : LS CTEI l2 RS
-          | empty'''
-
-def p_l2(p):
-    '''l2 : COMMA CTEI
-          | empty'''
-
-def p_l3(p):
-    '''l3 : COMMA lista_ids
-          | empty'''
+    '''vars : VARIABLES attrs1'''
 
 def p_tipo(p):
-    '''tipo : INT
-            | FLOAT
-            | CHAR
+    '''tipo : tipo_param
             | ID'''
 
-def p_function(p):
-    '''function : tipo_retorno FUNCTION ID LP params RP SEMI vars LB m1 function_return RB'''
+def p_lista_ids(p):
+    '''lista_ids : ID list1 list2'''
 
-def p_tipo_retorno(p):
-    '''tipo_retorno : INT
-                    | FLOAT
-                    | CHAR
-                    | VOID'''
+def p_list1(p):
+    '''list1 : LS CTEI RS
+             | LS CTEI COMMA CTEI RS
+             | empty'''
+
+def p_list2(p):
+    '''list2 : COMMA lista_ids
+             | empty'''
+
+# MAIN
+def p_main(p):
+    '''main : MAIN LP RP LB main1 RB'''
+
+def p_main1(p):
+    '''main1 : statement
+             | empty'''
+
+# FUNCTION
+def p_function(p):
+    '''function : function function
+                | tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB'''
+
+def p_func1(p):
+    '''func1 : params
+             | empty'''
+
+def p_func2(p):
+    '''func2 : vars
+             | empty'''
+
+def p_tipo_param(p):
+    '''tipo_param : INT
+                  | FLOAT
+                  | CHAR'''
 
 def p_params(p):
-    '''params : ID COLON tipo pr1'''
+    '''params : ID COLON tipo_param par1'''
 
-def p_pr1(p):
-    '''pr1 : COMMA params
-           | empty'''
+def p_par1(p):
+    '''par1 : COMMA params
+            | empty'''
 
-def p_main(p):
-    '''main : MAIN LP RP LB m1 RB'''
+def p_tipo_retorno(p):
+    '''tipo_retorno : tipo_param
+                    | VOID'''
 
-def p_m1(p):
-    '''m1 : statement m2'''
-
-def p_m2(p):
-    '''m2 : m1
-          | empty'''
-
+# STATEMENT
 def p_statement(p):
-    '''statement : assignment
-                 | read
-                 | write
-                 | if
-                 | while
-                 | from
-                 | void_call
-                 | expression'''
+    '''statement : statement statement
+                 | assignment SEMI
+                 | void_call SEMI
+                 | read SEMI
+                 | write SEMI
+                 | if_st
+                 | while_st
+                 | from_st
+                 | return_st SEMI'''
 
+# ASSIGNMENT
 def p_assignment(p):
-    '''assignment : var_id EQ expression SEMI'''
+    '''assignment : var EQ expression'''
 
-def p_var_id(p):
-    '''var_id : simple_id var_id1'''
+def p_var(p):
+    '''var : ID list1
+           | ID DOT ID'''
 
-def p_var_id1(p):
-    '''var_id1 : LS exp RE
-               | empty'''
+# VOID CALL
+def p_void_call(p):
+    '''void_call : ID call1 LP func1 RP'''
 
-def p_attribute_call(p):
-    '''attribute_call : ID DOT ID'''
+def p_call1(p):
+    '''call1 : DOT ID
+             | empty'''
 
-def p_simple_id(p):
-    '''simple_id : ID
-                 | attribute_call'''
-
-def p_function_return(p):
-    '''function_return : LB RETURN LP EXPRESSION RP SEMI RB '''
-
-def p_void_function_call(p):
-    '''void_function_call : simple_id LP params_call RP SEMI'''
-
-def p_params_call(p):
-    '''params_call : expression params_call1'''
-
-def p_params_call1(p):
-    '''params_call1 : 
-                    | COMMA expression'''
-
+# READ
 def p_read(p):
-    '''read : READ LP read1 RP SEMI'''
+    '''read : READ LP var read1 RP'''
 
 def p_read1(p):
-    '''read1 : var_id read2'''
+    '''read1 : COMMA var
+             | empty'''
 
-def p_read2(p):
-    '''read2 :
-             | COMMA VAR_ID read2'''
-
+# WRITE
 def p_write(p):
-    '''write : WRITE LP write_params RP SEMI'''
+    '''write : WRITE LP write1 RP'''
 
-def p_write_params(p):
-    '''write_params : write_params1 write_params2'''
+def p_write1(p):
+    '''write1 : expression write2
+              | CTES write2'''
 
-def p_write_params1(p):
-    '''write_params1 : expression | CTES '''
+def p_write2(p):
+    '''write2 : COMMA write1
+              | empty'''
 
-def p_write_params2(p):
-    '''write_params2 : write_params | empty'''
+# IF
+def p_if_st(p):
+    '''if_st : IF LP expression RP THEN LB statement RB if1'''
 
-def p_if(p):
-    '''if : IF LP expression RP THEN block else'''
+def p_if1(p):
+    '''if1 : ELSE LB main1 RB'''
 
-def p_else(p):
-    '''else :
-            | ELSE block'''
-             
-def p_block(p): 
-    '''block : LB statement SEMI block1 RB '''
+# WHILE
+def p_while_st(p):
+    '''while_st : WHILE LP expression RP DO LB main1 RB'''
 
-def p_block1(p):
-    '''block1 :  
-              | statement block1'''
+# FROM
+def p_from_st(p):
+    '''from_st : FROM ID list1 EQ expression UNTIL expression DO LB main1 RB'''
 
-def p_while(p):
-    '''while : WHILE LP expression LB DO block'''
+# RETURN
+def p_return_st(p):
+    '''return_st : RETURN LP expression RP'''
 
-def p_from(p):
-    '''from : FROM ID EQ expression UNTIL expression DO block'''
-
+# EXPRESSION
 def p_expression(p):
-    '''expression : exp expression1'''
-
-def p_expression1(p):
-    '''expression1 : 
-                   | expression2 exp'''
-
-def p_expression2(p):
-    '''expression2 : GT
-                   | LT
-                   | GT EQ
-                   | LT EQ
-                   | EQ EQ
-                   | EXCLAMATION EQ'''
+    '''expression : exp
+                  | exp OR exp'''
 
 def p_exp(p):
-    '''exp : term exp2'''
+    '''exp : k_exp
+           | k_exp AND k_exp'''
 
-def p_exp2(p):
-    '''exp2 : 
-            | exp3 term'''
+def p_k_exp(p):
+    '''k_exp : m_exp
+             | m_exp LT m_exp
+             | m_exp GT m_exp
+             | m_exp COMP m_exp
+             | m_exp NE m_exp
+             | m_exp LTE m_exp
+             | m_exp GTE m_exp'''
 
-def p_exp3(p):
-    '''exp3 : PLUS
-            | MINUS'''
-             
-def p_term(p): 
-    '''term : factor term2'''
+def p_m_exp(p):
+    '''m_exp : term
+             | term PLUS term
+             | term MIN term'''
 
-def p_term2(p):
-    '''term2 : 
-             | term3 factor'''
+def p_term(p):
+    '''term : fact
+            | fact MUL fact
+            | fact DIV fact'''
 
-def p_term3(p):
-    '''term3 : MUL
-             | DIV'''
-
-def p_factor(p):
-    '''factor : LP expression RP
-              | factor2'''
-
-def p_factor1(p):
-    '''factor1 : factor2 var_cte'''
-
-def p_factor2(p):
-    '''factor2 :
-               |  PLUS
-               | MINUS'''
+def p_fact(p):
+    '''fact : LP expression RP
+            | void_call
+            | var_cte
+            | var'''
 
 def p_var_cte(p):
-    '''var_cte : var_id
-               | INT
-               | FLOAT
-               | CHAR
-               | func_call'''
-
-def p_func_call(p):
-    '''func_call : func_call1 LP params_call RP'''
-
-def p_func_call1(p):
-    ''' func_call1 : ID
-                   | ID DOT ID'''
-
+    '''var_cte : CTEI
+               | CTEF
+               | CTEC'''
 
 # Error rule for syntax errors
 def p_error(p):
@@ -262,9 +228,8 @@ def main():
     # Build the parser
     parser = yacc.yacc()
     file = open(sys.argv[1]).read()
-    yacc.parse(file)
-    print(sys.argv[1], "is a valid program.")
+    result = yacc.parse(file)
+    print(result)
 
 if __name__ == '__main__':
     main()
-

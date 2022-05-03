@@ -1,0 +1,21 @@
+program inheritsTest;
+
+class Persona {
+    attributes
+        edad : int;
+        altura : float;
+        iniN : char;
+        iniA : char;
+};
+
+class Estudiante inherits Persona {
+    attributes
+        promedio : char;
+    methods
+        void function saluda()
+            { write("Hola, ", iniN); }
+};
+
+main() {
+
+}

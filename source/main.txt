@@ -1,0 +1,5 @@
+program mainTest;
+
+main() {
+    write("Hello World!");
+}

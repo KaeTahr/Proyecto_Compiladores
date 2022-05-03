@@ -1,0 +1,11 @@
+program globalVarsTest;
+
+variables
+    a, b : int;
+    x, y : float;
+    inicial : char;
+    juan : Persona;
+
+main() {
+
+}

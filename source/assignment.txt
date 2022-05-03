@@ -1,0 +1,8 @@
+program asignacion;
+
+main() {
+    x = 1 + 2;
+    y[5] = 34 * 35;
+    z[2,9] = x;
+    a = juan.getEdad();
+}

@@ -1,0 +1,17 @@
+program classTest;
+
+class Estudiante {
+    attributes
+        edad : int;
+        altura : float;
+        promedio : char;
+    methods
+        void function calcPromedio(examenes : int)
+            { return (promedio/examenes); }
+        int function getEdad()
+            { return (edad); }
+};
+
+main() {
+
+}

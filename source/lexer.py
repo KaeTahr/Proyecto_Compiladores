@@ -28,23 +28,26 @@ reserved = {
 
 # tokens
 tokens = [
-    'PLUS', 'MIN', 'MUL', 'DIV',
-    'LT', 'GT', 'GTE', 'LTE',
-    'COMP', 'NE',
-    'EQ',
-    'OR', 'AND',
-    'LB', 'RB',
-    'LP', 'RP',
-    'LS', 'RS',
-    'COMMA',  'DOT',
-    'SEMI',
-    'COLON',
-    'ID',
-    'CTEI', 'CTEF', 'CTES', 'CTEC'
-] + list(reserved.values())
+             'PLUS', 'MIN', 'MUL', 'DIV',
+             'LT', 'GT', 'GTE', 'LTE',
+             'COMP', 'NE',
+             'EQ',
+             'OR', 'AND',
+             'LB', 'RB',
+             'LP', 'RP',
+             'LS', 'RS',
+             'COMMA', 'DOT',
+             'SEMI',
+             'COLON',
+             'ID',
+             'CTEI', 'CTEF', 'CTES', 'CTEC'
+         ] + list(reserved.values())
 
 # IGNORED CHARACTERS
 t_ignore = ' \t\n'
+
+# Comments
+t_ignore_COMMENT = r'\#.*'
 
 # OPERATORS
 t_PLUS = r'\+'
@@ -86,11 +89,13 @@ t_CTEC = r'\'([A-Za-z]|[0-9])\''
 # STRING
 t_CTES = r'\"([^\\\n]|(\\.))*?\"'
 
+
 # ID
 def t_ID(t):
     r'[A-Za-z][A-Za-z0-9]*'
     t.type = reserved.get(t.value, 'ID')
     return t
+
 
 # FLOAT
 def t_CTEF(t):
@@ -98,16 +103,19 @@ def t_CTEF(t):
     t.value = float(t.value)
     return t
 
+
 # INT
 def t_CTEI(t):
     r'\d+'
     t.value = int(t.value)
     return t
 
+
 # Error handling rule
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
+
 
 # Build the lexer
 lexer = lex.lex()

@@ -1,0 +1,24 @@
+program expTest;
+
+main() {
+    # esto es un comment
+    or = a || b;
+    and = alfa & omega;
+    lt = a < b;
+    gt = a > b;
+    compara = a == b;
+    ne = a != b;
+    gte = a >= b;
+    lte = a <= b;
+    suma = a + b;
+    resta = a - b;
+    multiplica = a * b;
+    divide = a / b;
+    paren = (a + b) * c;
+    a = factor(x);
+    iEdad = 10;
+    fAltura = 1.70;
+    cInicial = C;
+    miEdad = juan.edad;
+    nombre = persona.getNombre();
+}

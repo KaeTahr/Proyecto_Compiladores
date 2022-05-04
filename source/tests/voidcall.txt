@@ -1,4 +1,4 @@
-program funcTest;
+program voidCall;
 
 int function promedio(tExams : int) {
     variables
@@ -12,5 +12,11 @@ void function hello() {
 }
 
 main() {
+    # esto es un comment
+    x = juan.getEdad();
+    y = promedio(examenes);
+
+    hello(x[5,5], y, hello());
+
 
 }

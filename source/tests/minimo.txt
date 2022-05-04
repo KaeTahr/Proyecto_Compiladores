@@ -1,5 +1,5 @@
 program minimo;
 
 main() {
-
+    # esto es un comment
 }

@@ -1,10 +1,12 @@
-program globalVarsTest;
+program varsTest;
 
 variables
     a, b : int;
     x, y : float;
     inicial : char;
     juan : Persona;
+    mat[5,5] : int;
+    arr[5] :  int;
 
 main() {
 

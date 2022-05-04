@@ -1,0 +1,9 @@
+program testWhile;
+
+main() {
+    # esto es un comment
+    while(x <= y) do {
+        write("Entra al while");
+    }
+    write("Sali del while");
+}

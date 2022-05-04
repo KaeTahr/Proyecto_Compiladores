@@ -1,4 +1,4 @@
-program asignacion;
+program assignTest;
 
 main() {
     x = 1 + 2;

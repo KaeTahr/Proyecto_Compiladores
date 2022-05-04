@@ -1,0 +1,15 @@
+program ifTest;
+
+main() {
+    # if simple
+    if(a != b) then {
+        return(a);
+    }
+
+    # if-else
+    if(33+77 == 100) then {
+        return(T);
+    } else { # comment en medio
+        return(F);
+    }
+}

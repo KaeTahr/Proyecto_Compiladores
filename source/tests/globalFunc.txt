@@ -1,0 +1,23 @@
+program funcTest;
+
+int function promedio(tExams : int) {
+    variables
+        promedio : float;
+
+    return (promedio / tExams);
+}
+
+float function random(key : char, range : float) {
+    variables
+        result : float;
+
+    return(result[5]);
+}
+
+void function hello() {
+    write("Hello world!");
+}
+
+main() {
+
+}

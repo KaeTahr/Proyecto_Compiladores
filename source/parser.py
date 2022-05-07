@@ -69,7 +69,7 @@ def p_mthds(p):
 
 # VARS
 def p_vars(p):
-    '''vars : VARIABLES attrs1'''
+    '''vars : VARIABLES LB attrs1 RB'''
 
 
 def p_tipo(p):
@@ -231,7 +231,7 @@ def p_while_st(p):
 
 # FROM
 def p_from_st(p):
-    '''from_st : FROM ID list1 EQ expression UNTIL expression DO LB main1 RB'''
+    '''from_st : FROM ID list1 EQ expression UNTIL expression DO LB statement RB'''
 
 
 # RETURN

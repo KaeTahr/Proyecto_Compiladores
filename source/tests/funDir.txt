@@ -1,0 +1,29 @@
+program testFunDir;
+
+int function promedio(iTotal : int) {
+    variables
+        fAvg : float;
+
+    return (fAvg / iTotal);
+}
+
+float function random(key : char, range : float) {
+    variables
+        result : float;
+
+    return(result[5]);
+}
+
+char function clasifica(rating : char) {
+    rating = 'R';
+
+    return(rating);
+}
+
+void function hello() {
+    write("Hello world!");
+}
+
+main() {
+
+}

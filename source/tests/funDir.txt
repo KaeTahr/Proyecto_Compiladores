@@ -1,15 +1,17 @@
 program testFunDir;
 
 int function promedio(iTotal : int) {
-    variables
+    variables {
         fAvg : float;
+    }
 
     return (fAvg / iTotal);
 }
 
 float function random(key : char, range : float) {
-    variables
+    variables {
         result : float;
+    }
 
     return(result[5]);
 }

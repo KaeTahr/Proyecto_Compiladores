@@ -1,11 +1,11 @@
-program funcTest;
+program testFunDir;
 
-int function promedio(tExams : int) {
+int function promedio(iTotal : int) {
     variables {
-        promedio : float;
+        fAvg : float;
     }
 
-    return (promedio / tExams);
+    return (fAvg / iTotal);
 }
 
 float function random(key : char, range : float) {
@@ -14,6 +14,12 @@ float function random(key : char, range : float) {
     }
 
     return(result[5]);
+}
+
+char function clasifica(rating : char) {
+    rating = 'R';
+
+    return(rating);
 }
 
 void function hello() {

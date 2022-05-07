@@ -1,8 +1,11 @@
 program voidCall;
 
 int function promedio(tExams : int) {
-    variables
-        promedio : float;
+    variables {
+       ans : float;
+       ans2 : int;
+    }
+    ans = tExams / tExams;
 
     return (promedio / tExams);
 }

@@ -1,13 +1,18 @@
 import ply.yacc as yacc
+import dirFunciones
 from lexer import tokens
 import sys
 
+curr_fun_type = ''
 
 # PROGRAMA
 def p_program(p):
-    '''program : PROGRAM ID SEMI prog1 prog2 prog3 main'''
+    '''program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main'''
     p[0] = "Input is a valid program.\n"
 
+def p_store_program(p):
+    "store_program :"
+    dirFunciones.addFunction(p[-1], p[-2], p[-2])
 
 def p_prog1(p):
     '''prog1 : class
@@ -64,7 +69,7 @@ def p_mthds(p):
 
 # VARS
 def p_vars(p):
-    '''vars : VARIABLES attrs1'''
+    '''vars : VARIABLES LB attrs1 RB'''
 
 
 def p_tipo(p):
@@ -100,7 +105,13 @@ def p_main1(p):
 # FUNCTION
 def p_function(p):
     '''function : function function
-                | tipo_retorno FUNCTION ID LP func1 RP LB func2 main1 RB'''
+                | tipo_retorno FUNCTION ID store_function LP func1 RP LB func2 main1 RB'''
+
+
+def p_store_function(p):
+    "store_function :"
+    global curr_fun_type
+    dirFunciones.addFunction(p[-1], curr_fun_type, p[-2])
 
 
 def p_func1(p):
@@ -117,6 +128,9 @@ def p_tipo_param(p):
     '''tipo_param : INT
                   | FLOAT
                   | CHAR'''
+    global curr_fun_type
+
+    curr_fun_type = p[1]
 
 
 def p_params(p):
@@ -131,6 +145,11 @@ def p_par1(p):
 def p_tipo_retorno(p):
     '''tipo_retorno : tipo_param
                     | VOID'''
+    global curr_fun_type
+
+    if p[1] == "void":
+        curr_fun_type = "void"
+
 
 
 # STATEMENT
@@ -212,7 +231,7 @@ def p_while_st(p):
 
 # FROM
 def p_from_st(p):
-    '''from_st : FROM ID list1 EQ expression UNTIL expression DO LB main1 RB'''
+    '''from_st : FROM ID list1 EQ expression UNTIL expression DO LB statement RB'''
 
 
 # RETURN

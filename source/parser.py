@@ -1,4 +1,5 @@
 import ply.yacc as yacc
+import Quadruples
 import dirFunciones
 from lexer import tokens
 import sys
@@ -11,6 +12,8 @@ curr_vars_type = ''
 def p_program(p):
     '''program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main'''
     p[0] = "Input is a valid program.\n"
+    Quadruples.output_quadruples()
+
 
 def p_store_program(p):
     "store_program :"
@@ -197,6 +200,7 @@ def p_assignment(p):
 def p_var(p):
     '''var : ID list1
            | ID DOT ID'''
+    p[0] = p[1] # TODO Handle arrays and object attributes
 
 
 # VOID CALL
@@ -267,11 +271,19 @@ def p_return_st(p):
 def p_expression(p):
     '''expression : exp
                   | exp OR exp'''
+    try:
+        Quadruples.expression(p[2], p[1], p[3], None)
+    except IndexError:
+        p[0] = p[1]
 
 
 def p_exp(p):
     '''exp : k_exp
            | k_exp AND k_exp'''
+    try:
+        Quadruples.expression(p[2], p[1], p[3], None)
+    except IndexError:
+        p[0] = p[1]
 
 
 def p_k_exp(p):
@@ -282,18 +294,34 @@ def p_k_exp(p):
              | m_exp NE m_exp
              | m_exp LTE m_exp
              | m_exp GTE m_exp'''
+    try:
+        Quadruples.expression(p[2], p[1], p[3], None)
+    except IndexError:
+        p[0] = p[1]
 
 
 def p_m_exp(p):
     '''m_exp : term
              | term PLUS term
              | term MIN term'''
+    try:
+        Quadruples.expression(p[2], p[1], p[3], None)
+    except IndexError:
+        p[0] = p[1]
+
 
 
 def p_term(p):
     '''term : fact
             | fact MUL fact
             | fact DIV fact'''
+    try:
+        Quadruples.expression(p[2], p[1], p[3], None)
+    except IndexError:
+        p[0] = p[1]
+
+
+        
 
 
 def p_fact(p):
@@ -301,12 +329,18 @@ def p_fact(p):
             | void_call
             | var_cte
             | var'''
+    if p[1] == '(':
+        p[0] = p[2]
+    else:
+        p[0] = p[1]
+
 
 
 def p_var_cte(p):
     '''var_cte : CTEI
                | CTEF
                | CTEC'''
+    p[0] = p[1]
 
 
 # Error rule for syntax errors

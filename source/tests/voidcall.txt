@@ -3,7 +3,7 @@ program voidCall;
 int function promedio(tExams : int) {
     variables {
        ans, ans2, ans3 : float;
-       ans4, ans5[5] : int;
+       ans4, ans5[5], ans6, ans7[5,6], ans8 : int;
     }
     ans = tExams / tExams;
 

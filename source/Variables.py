@@ -14,13 +14,17 @@ class Var:
                 type - 1, 2, or 3 according to Type Enum
                 value - corresponds to type
     methods:'''
-    def __init__(self, id, value, type):
+    def __init__(self, id, type):
+        '''Initialize Variable object'''
         self.id = id
-        self.value = value
         self.type = type
-        self.validate_type()
-        var_table.append(self)
+        self.value = None
+        # self.validate_type()
+        # var_table.append(self)
     
+    def assign(self, value):
+        self.value = value
+
     def validate_type(self):
         if self.type is Types.INT:
             if type(self.value) is not int:
@@ -45,8 +49,13 @@ def str_to_enum(type_str):
     else:
         return -1
 
+def newVariableLog(id, type):
+    print("!!!Variable!!!")
+    print("new entry in current context")
+    print("ID:", id, "\ttype:", type)
+
 #--------------------TESTING----------------
-while True:
+""" while True:
     id = input("id: ")
     v = input("value: ") #string from stdin
     t = input("type: ")
@@ -55,4 +64,4 @@ while True:
 
     v = Var(id, v, t)
     print(v)
-    print(var_table)
+    print(var_table) """

@@ -4,6 +4,8 @@ from lexer import tokens
 import sys
 
 curr_fun_type = ''
+curr_vars_list = []
+curr_vars_type = ''
 
 # PROGRAMA
 def p_program(p):
@@ -55,7 +57,12 @@ def p_attrs(p):
 
 
 def p_attrs1(p):
-    '''attrs1 : lista_ids COLON tipo SEMI attrs2'''
+    '''attrs1 : lista_ids COLON tipo save_var_list SEMI attrs2'''
+
+
+def p_save_var_list(p):
+    '''save_var_list : empty'''
+    global current_vars_type
 
 
 def p_attrs2(p):
@@ -73,12 +80,22 @@ def p_vars(p):
 
 
 def p_tipo(p):
-    '''tipo : tipo_param
+    '''tipo : INT
+            | FLOAT
+            | CHAR
             | ID'''
+    global curr_vars_type
+    global curr_vars_list
+    curr_vars_type = p[1]
+    dirFunciones.addVarsToContext(curr_vars_list, curr_vars_type)
+    curr_vars_list = []
+
 
 
 def p_lista_ids(p):
     '''lista_ids : ID list1 list2'''
+    global curr_vars_list
+    curr_vars_list.append(p[1])
 
 
 def p_list1(p):

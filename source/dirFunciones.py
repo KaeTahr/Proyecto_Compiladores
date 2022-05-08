@@ -1,13 +1,26 @@
+import Variables
+
 dirFunctions = {}
+curr_id = None
 
 # agregar funcion a directorio de funciones
 def addFunction(id,type,kind):
+    global curr_id
     if id in dirFunctions: # funcion ya existe
         print("ERROR: function", id, "already exists in function directory.")
         exit()
     else:
         dirFunctions[id] = [type, kind, {}]
+        curr_id = id
         newFunctionLog(id) # log info
+
+def addVarsToContext(id_list, type):
+    for i in id_list:
+        if '[' in i:
+            continue # TODO: Skip arrays for now, we need to handle them
+        tmp_var = Variables.Var(i, type)
+        dirFunctions[curr_id][2][i] = tmp_var
+        Variables.newVariableLog(i, type)
 
 
 def newFunctionLog(id):

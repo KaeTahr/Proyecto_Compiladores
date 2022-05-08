@@ -248,7 +248,7 @@ def p_if_st(p):
 
 
 def p_if1(p):
-    '''if1 : ELSE LB main1 RB
+    '''if1 : ELSE LB statement RB
            | empty'''
 
 
@@ -259,7 +259,7 @@ def p_while_st(p):
 
 # FROM
 def p_from_st(p):
-    '''from_st : FROM ID list1 EQ expression UNTIL expression DO LB statement RB'''
+    '''from_st : FROM ID EQ expression UNTIL expression DO LB statement RB'''
 
 
 # RETURN

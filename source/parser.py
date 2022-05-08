@@ -95,19 +95,26 @@ def p_tipo(p):
 def p_lista_ids(p):
     '''lista_ids : ID list1 list2'''
     global curr_vars_list
-    curr_vars_list.append(p[1])
+    global curr_var_array
+    if p[2]:
+        # TODO: Handle array
+        print('found array/matrix\nskipping ' + p[1])
+        curr_var_array = False
+    else:
+        curr_vars_list.append(p[1])
 
 
 def p_list1(p):
     '''list1 : LS CTEI RS
              | LS CTEI COMMA CTEI RS
              | empty'''
-
+    # TODO handle last variable in the curr_var_list as an array
+    # p[0] contains the return current rule
+    p[0] = p[1] == '[' 
 
 def p_list2(p):
     '''list2 : COMMA lista_ids
              | empty'''
-
 
 # MAIN
 def p_main(p):

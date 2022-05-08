@@ -5,9 +5,9 @@ int function promedio(tExams : int) {
        ans, ans2, ans3 : float;
        ans4, ans5[5], ans6, ans7[5,6], ans8 : int;
     }
-    ans = tExams / tExams;
+    ans = (ans + ans2) * (tExams / tExams);
 
-    return (promedio / tExams);
+    return (ans / tExams);
 }
 
 void function hello() {

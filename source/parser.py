@@ -132,7 +132,7 @@ def p_main1(p):
 # FUNCTION
 def p_function(p):
     '''function : function function
-                | tipo_retorno FUNCTION ID store_function LP func1 RP LB func2 main1 RB'''
+                | tipo_retorno FUNCTION ID store_function LP func1 RP LB func2 set_context main1 RB'''
 
 
 def p_store_function(p):
@@ -140,7 +140,11 @@ def p_store_function(p):
     global curr_fun_type
     dirFunciones.addFunction(p[-1], curr_fun_type, p[-2])
 
-
+def p_set_context(p):
+    "set_context :"
+    Quadruples.set_current_context(dirFunciones.dirFunctions[dirFunciones.curr_id][-1])
+    print("set context")
+    print(Quadruples.context)
 def p_func1(p):
     '''func1 : params
              | empty'''

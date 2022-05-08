@@ -155,10 +155,12 @@ def p_tipo_param(p):
     global curr_fun_type
 
     curr_fun_type = p[1]
+    p[0] = p[1]
 
 
 def p_params(p):
     '''params : ID COLON tipo_param par1'''
+    dirFunciones.addVarToContext(p[1], p[3])
 
 
 def p_par1(p):

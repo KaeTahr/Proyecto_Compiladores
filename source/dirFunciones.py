@@ -18,9 +18,12 @@ def addVarsToContext(id_list, type):
     for i in id_list:
         if '[' in i:
             continue # TODO: Skip arrays for now, we need to handle them
-        tmp_var = Variables.Var(i, type)
-        dirFunctions[curr_id][2][i] = tmp_var
-        Variables.newVariableLog(i, type)
+        addVarToContext(i, type)
+
+def addVarToContext(id, type):
+        tmp_var = Variables.Var(id, type)
+        dirFunctions[curr_id][2][id] = tmp_var
+        Variables.newVariableLog(id, type)
 
 
 def newFunctionLog(id):

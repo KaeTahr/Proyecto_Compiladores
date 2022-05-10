@@ -1,0 +1,15 @@
+program superbug;
+
+char function clasifica() {
+    variables {
+        clasificacion : char;
+    }
+
+    clasificacion = 'R';
+
+    return(clasificacion);
+}
+
+main() {
+
+}

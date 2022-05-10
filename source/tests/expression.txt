@@ -21,4 +21,5 @@ main() {
     cInicial = C;
     miEdad = juan.edad;
     nombre = persona.getNombre();
+    ans = (ans + an2) * tExams / tExams;
 }

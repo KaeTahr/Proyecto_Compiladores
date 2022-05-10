@@ -1,23 +1,28 @@
 import ply.yacc as yacc
-import Quadruples
 import dirFunciones
+import tablaVars
 from lexer import tokens
 import sys
 
 curr_fun_type = ''
-curr_vars_list = []
-curr_vars_type = ''
+curr_var_type = ''
+curr_var_id = ''
+curr_scope = ''
+
 
 # PROGRAMA
 def p_program(p):
     '''program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main'''
-    p[0] = "Input is a valid program.\n"
-    Quadruples.output_quadruples()
+    tablaVars.print_var_table()
+    p[0] = "\nInput is a valid program.\n"
 
 
 def p_store_program(p):
     "store_program :"
-    dirFunciones.addFunction(p[-1], p[-2], p[-2])
+    dirFunciones.add_function(p[-1], p[-2], p[-2])
+    global curr_scope
+    curr_scope = p[-1]
+
 
 def p_prog1(p):
     '''prog1 : class
@@ -36,8 +41,7 @@ def p_prog3(p):
 
 # CLASS
 def p_class(p):
-    '''class : class class
-             | CLASS ID class1 LB class2 class3 RB SEMI'''
+    '''class : CLASS ID class1 LB class2 class3 RB SEMI class4'''
 
 
 def p_class1(p):
@@ -55,17 +59,17 @@ def p_class3(p):
               | empty'''
 
 
+def p_class4(p):
+    '''class4 : class
+              | empty'''
+
+
 def p_attrs(p):
     '''attrs : ATTRIBUTES attrs1'''
 
 
 def p_attrs1(p):
-    '''attrs1 : lista_ids COLON tipo save_var_list SEMI attrs2'''
-
-
-def p_save_var_list(p):
-    '''save_var_list : empty'''
-    global current_vars_type
+    '''attrs1 : tipo COLON lista_ids SEMI attrs2'''
 
 
 def p_attrs2(p):
@@ -87,37 +91,33 @@ def p_tipo(p):
             | FLOAT
             | CHAR
             | ID'''
-    global curr_vars_type
-    global curr_vars_list
-    curr_vars_type = p[1]
-    dirFunciones.addVarsToContext(curr_vars_list, curr_vars_type)
-    curr_vars_list = []
-
+    global curr_var_type
+    curr_var_type = p[1]
 
 
 def p_lista_ids(p):
     '''lista_ids : ID list1 list2'''
-    global curr_vars_list
-    global curr_var_array
-    if p[2]:
-        # TODO: Handle array
-        print('found array/matrix\nskipping ' + p[1])
-        curr_var_array = False
-    else:
-        curr_vars_list.append(p[1])
+    global curr_var_id
+    curr_var_id = p[1]
+    tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)
+
+
+# def p_store_id(p):
+#     '''store_id :'''
+#     global curr_var_id
+
 
 
 def p_list1(p):
     '''list1 : LS CTEI RS
              | LS CTEI COMMA CTEI RS
              | empty'''
-    # TODO handle last variable in the curr_var_list as an array
-    # p[0] contains the return current rule
-    p[0] = p[1] == '[' 
+
 
 def p_list2(p):
     '''list2 : COMMA lista_ids
              | empty'''
+
 
 # MAIN
 def p_main(p):
@@ -131,20 +131,16 @@ def p_main1(p):
 
 # FUNCTION
 def p_function(p):
-    '''function : function function
-                | tipo_retorno FUNCTION ID store_function LP func1 RP LB func2 set_context main1 RB'''
+    '''function : tipo_retorno FUNCTION ID store_function LP func1 RP LB func2 statement RB func3'''
 
 
 def p_store_function(p):
     "store_function :"
-    global curr_fun_type
-    dirFunciones.addFunction(p[-1], curr_fun_type, p[-2])
+    global curr_fun_type, curr_scope
+    dirFunciones.add_function(p[-1], curr_fun_type, p[-2])
+    curr_scope = p[-1]
 
-def p_set_context(p):
-    "set_context :"
-    Quadruples.set_current_context(dirFunciones.dirFunctions[dirFunciones.curr_id][-1])
-    print("set context")
-    print(Quadruples.context)
+
 def p_func1(p):
     '''func1 : params
              | empty'''
@@ -155,19 +151,19 @@ def p_func2(p):
              | empty'''
 
 
+def p_func3(p):
+    '''func3 : function
+             | empty'''
+
+
 def p_tipo_param(p):
     '''tipo_param : INT
                   | FLOAT
                   | CHAR'''
-    global curr_fun_type
-
-    curr_fun_type = p[1]
-    p[0] = p[1]
 
 
 def p_params(p):
     '''params : ID COLON tipo_param par1'''
-    dirFunciones.addVarToContext(p[1], p[3])
 
 
 def p_par1(p):
@@ -176,26 +172,29 @@ def p_par1(p):
 
 
 def p_tipo_retorno(p):
-    '''tipo_retorno : tipo_param
+    '''tipo_retorno : INT
+                    | FLOAT
+                    | CHAR
                     | VOID'''
     global curr_fun_type
-
-    if p[1] == "void":
-        curr_fun_type = "void"
-
+    curr_fun_type = p[1]
 
 
 # STATEMENT
 def p_statement(p):
-    '''statement : statement statement
-                 | assignment SEMI
-                 | void_call SEMI
-                 | read SEMI
-                 | write SEMI
-                 | if_st
-                 | while_st
-                 | from_st
-                 | return_st SEMI'''
+    '''statement : assignment SEMI stmt1
+                 | void_call SEMI stmt1
+                 | read SEMI stmt1
+                 | write SEMI stmt1
+                 | if_st stmt1
+                 | while_st stmt1
+                 | from_st stmt1
+                 | return_st SEMI stmt1'''
+
+
+def p_stmt1(p):
+    '''stmt1 : statement
+             | empty'''
 
 
 # ASSIGNMENT
@@ -206,7 +205,6 @@ def p_assignment(p):
 def p_var(p):
     '''var : ID list1
            | ID DOT ID'''
-    p[0] = p[1] # TODO Handle arrays and object attributes
 
 
 # VOID CALL
@@ -221,16 +219,17 @@ def p_call1(p):
 
 
 def p_call2(p):
-    '''call2 : expression
-             | call2 COMMA call2'''
+    '''call2 : expression call3'''
+
+
+def p_call3(p):
+    '''call3 : COMMA call2
+             | empty'''
+
+
 # READ
 def p_read(p):
-    '''read : READ LP var read1 RP'''
-
-
-def p_read1(p):
-    '''read1 : COMMA var
-             | empty'''
+    '''read : READ LP var RP'''
 
 
 # WRITE
@@ -260,7 +259,7 @@ def p_if1(p):
 
 # WHILE
 def p_while_st(p):
-    '''while_st : WHILE LP expression RP DO LB main1 RB'''
+    '''while_st : WHILE LP expression RP DO LB statement RB'''
 
 
 # FROM
@@ -275,59 +274,35 @@ def p_return_st(p):
 
 # EXPRESSION
 def p_expression(p):
-    '''expression : exp
-                  | exp OR exp'''
-    try:
-        Quadruples.expression(p[2], p[1], p[3], None)
-    except IndexError:
-        p[0] = p[1]
+    '''expression : exp OR exp
+                  | exp'''
 
 
 def p_exp(p):
-    '''exp : k_exp
-           | k_exp AND k_exp'''
-    try:
-        Quadruples.expression(p[2], p[1], p[3], None)
-    except IndexError:
-        p[0] = p[1]
+    '''exp : k_exp AND exp
+           | k_exp'''
 
 
 def p_k_exp(p):
     '''k_exp : m_exp
-             | m_exp LT m_exp
-             | m_exp GT m_exp
-             | m_exp COMP m_exp
-             | m_exp NE m_exp
-             | m_exp LTE m_exp
-             | m_exp GTE m_exp'''
-    try:
-        Quadruples.expression(p[2], p[1], p[3], None)
-    except IndexError:
-        p[0] = p[1]
+             | m_exp LT k_exp
+             | m_exp GT k_exp
+             | m_exp COMP k_exp
+             | m_exp NE k_exp
+             | m_exp GTE k_exp
+             | m_exp LTE k_exp'''
 
 
 def p_m_exp(p):
     '''m_exp : term
-             | term PLUS term
-             | term MIN term'''
-    try:
-        Quadruples.expression(p[2], p[1], p[3], None)
-    except IndexError:
-        p[0] = p[1]
-
+             | term PLUS m_exp
+             | term MIN m_exp'''
 
 
 def p_term(p):
     '''term : fact
-            | fact MUL fact
-            | fact DIV fact'''
-    try:
-        Quadruples.expression(p[2], p[1], p[3], None)
-    except IndexError:
-        p[0] = p[1]
-
-
-        
+            | fact MUL term
+            | fact DIV term'''
 
 
 def p_fact(p):
@@ -335,18 +310,12 @@ def p_fact(p):
             | void_call
             | var_cte
             | var'''
-    if p[1] == '(':
-        p[0] = p[2]
-    else:
-        p[0] = p[1]
-
 
 
 def p_var_cte(p):
     '''var_cte : CTEI
                | CTEF
                | CTEC'''
-    p[0] = p[1]
 
 
 # Error rule for syntax errors

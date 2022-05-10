@@ -1,25 +1,59 @@
 program testFunDir;
 
-int function promedio(iTotal : int) {
-    variables {
-        fAvg : float;
-    }
+#class Persona {
+#    attributes
+#        int : iAge;
+#        float : fHeight;
+#        char : cFirst, cMid, cLast;
+#};
 
-    return (fAvg / iTotal);
+variables {
+    int : iCount;
+    float : fResult;
+    char : cInitial;
+    Persona : Juan;
 }
 
-float function random(key : char, range : float) {
+int function random(cKey : char) {
     variables {
-        result : float;
+        int : iRes;
+        float : fNada;
     }
 
-    return(result[5]);
+    if (cKey == 'A') then {
+        iRes = 1;
+    } else {
+        if (cKey == 'B') then{
+            iRes = 2;
+        } else {
+            iRes = 0;
+        }
+    }
+
+    return(iRes);
 }
 
-char function clasifica(rating : char) {
-    rating = 'R';
 
-    return(rating);
+float function promedio(fSuma : float, iTotal : int) {
+    variables {
+         float : fResult;
+         char : cEmpty;
+    }
+
+    fResult = fSuma / iTotal;
+
+    return (fResult);
+}
+
+
+char function clasifica() {
+    variables {
+        char : cRating;
+    }
+
+    cRating = 'R';
+
+    return(cRating);
 }
 
 void function hello() {

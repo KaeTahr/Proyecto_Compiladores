@@ -17,10 +17,10 @@ curr_operand_type = ''
 def p_program(p):
     '''program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main'''
     # tablaVars.print_var_table()
-    #print(operand_stack)
-    #print(type_stack)
-    #print(operator_stack)
-    print(*quad_list, sep="\n")
+    print("\nOperand stack:\t", operand_stack)
+    print("Type stack:\t", type_stack)
+    print("Operator stack:\t", operator_stack)
+    print("\nQuadruples:", *quad_list, sep="\n")
     p[0] = "\nInput is a valid program.\n"
 
 

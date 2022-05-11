@@ -13,7 +13,7 @@ cuboSemantico = {
             '>=': 'int',
             '==': 'int',
             '!=': 'int',
-            '&&': 'int',
+            '&': 'int',
             '||': 'int',
             '=': 'int'
         },
@@ -28,7 +28,7 @@ cuboSemantico = {
             '>=': 'int',
             '==': 'int',
             '!=': 'int',
-            '&&': 'int',
+            '&': 'int',
             '||': 'int',
             '=': 'ERROR'
         },
@@ -43,7 +43,7 @@ cuboSemantico = {
             '>=': 'ERROR',
             '==': 'ERROR',
             '!=': 'ERROR',
-            '&&': 'ERROR',
+            '&': 'ERROR',
             '||': 'ERROR',
             '=': 'ERROR'
         }
@@ -60,7 +60,7 @@ cuboSemantico = {
             '>=': 'int',
             '==': 'int',
             '!=': 'int',
-            '&&': 'int',
+            '&': 'int',
             '||': 'int',
             '=': 'ERROR'
         },
@@ -75,7 +75,7 @@ cuboSemantico = {
             '>=': 'int',
             '==': 'int',
             '!=': 'int',
-            '&&': 'int',
+            '&': 'int',
             '||': 'int',
             '=': 'float'
         },
@@ -90,7 +90,7 @@ cuboSemantico = {
             '>=': 'ERROR',
             '==': 'ERROR',
             '!=': 'ERROR',
-            '&&': 'ERROR',
+            '&': 'ERROR',
             '||': 'ERROR',
             '=': 'ERROR'
         }
@@ -107,7 +107,7 @@ cuboSemantico = {
             '>=': 'ERROR',
             '==': 'ERROR',
             '!=': 'ERROR',
-            '&&': 'ERROR',
+            '&': 'ERROR',
             '||': 'ERROR',
             '=': 'ERROR'
         },
@@ -122,7 +122,7 @@ cuboSemantico = {
             '>=': 'ERROR',
             '==': 'ERROR',
             '!=': 'ERROR',
-            '&&': 'ERROR',
+            '&': 'ERROR',
             '||': 'ERROR',
             '=': 'ERROR'
         },
@@ -137,7 +137,7 @@ cuboSemantico = {
             '>=': 'ERROR',
             '==': 'int',
             '!=': 'int',
-            '&&': 'ERROR',
+            '&': 'ERROR',
             '||': 'ERROR',
             '=': 'char'
         }

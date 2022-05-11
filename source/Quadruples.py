@@ -1,57 +1,56 @@
-import cuboSemantico as sc
-import Variables as v
+from cuboSemantico import *
 
-quadruples = []
-registers = []
-register_counter = 0
-context = None
+operand_stack = []
+operator_stack = []
+type_stack = []
+instruction_pointer = 1
+temporal_counter = 1
+quad_list = []
 
-def expression(op, t1, t2, r):
-    '''Creates quadruples for expressions that require a left
-    and a right operand'''
-    global register_counter
-    r = 't' + str(register_counter)
 
-    if t1 is None:
-        t1 = registers[-1]
-    if t2 is None:
-        t2 = registers[-1]
+# gen_quad 1-4
+def gen_quad_exp(valid_operators):
+    global operand_stack, operator_stack, type_stack, quad_list, temporal_counter, instruction_pointer
+    if operator_stack:
+        current_operator = operator_stack[-1]
+        if current_operator in valid_operators:
+            right_operand = operand_stack.pop()
+            right_type = type_stack.pop()
+            left_operand = operand_stack.pop()
+            left_type = type_stack.pop()
+            operator = operator_stack.pop()
+            result_type = validateOperation(left_type, right_type, operator)
+            if result_type != "ERROR":
+                temp_result = "t" + str(temporal_counter)
+                new_quad = [operator, left_operand, right_operand, temp_result]
+                quad_list.append(new_quad)
+                instruction_pointer += 1
+                temporal_counter += 1
+                type_stack.append(result_type)
+                operand_stack.append(temp_result)
+            else:
+                print("ERROR: Type mismatch!")
+                exit()
 
-    t1_type = None
-    # TODO: Fow now handles
-    # if its in the context, its a variable
-    # otherwise its a constant
-    if t1 in context:
-        t1_type = context[t1].type
-    elif t1 in registers:
-        t1_type = t1[1]
-    else:
-        t1_type = type(t1).__name__
-        # TODO: ERROR if it doesn't make sense (undeclared var, etc)
 
-    t2_type = None
-    if t2 in context:
-        t2_type = context[t2].type
-    elif t1 in registers:
-        t2_type = t2[1]
-    else:
-        t2_type = type(t2).__name__
-        # TODO: ERROR if it doesn't make sense (undeclared var, etc)
-
-    r_type = sc.validateOperation(t1_type, t2_type, op)
-    r = (r, r_type)
-    registers.append(r)
-
-    register_counter += 1
-
-    quadruples.append((op, str(t1), str(t2), r))
-    
-def output_quadruples():
-    with open("intermediate.out", "w") as o:
-        for i in quadruples:
-            o.write(i[0] + '\t' + i[1] + '\t' + i[2] + '\t' + i[3][0])
-            o.write('\n')
-
-def set_current_context(c):
-    global context
-    context = c
+# gen_quad 5
+def gen_quad_assignment():
+    global operand_stack, operator_stack, type_stack, quad_list, temporal_counter, instruction_pointer
+    if operator_stack:
+        current_operator = operator_stack[-1]
+        if current_operator == '=':
+            right_operand = operand_stack.pop()
+            right_type = type_stack.pop()
+            left_operand = operand_stack.pop()
+            left_type = type_stack.pop()
+            operator = operator_stack.pop()
+            result_type = validateOperation(left_type, right_type, operator)
+            if result_type != "ERROR":
+                new_quad = [operator, right_operand, '', left_operand]
+                quad_list.append(new_quad)
+                instruction_pointer += 1
+                type_stack.append(result_type)
+                operand_stack.append(left_operand)
+            else:
+                print("ERROR: Type mismatch!")
+                exit()

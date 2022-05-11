@@ -1,19 +1,26 @@
 import ply.yacc as yacc
 import dirFunciones
 import tablaVars
+from quadruples import *
 from lexer import tokens
 import sys
+
 
 curr_fun_type = ''
 curr_var_type = ''
 curr_var_id = ''
 curr_scope = ''
+curr_operand_type = ''
 
 
 # PROGRAMA
 def p_program(p):
     '''program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main'''
-    tablaVars.print_var_table()
+    # tablaVars.print_var_table()
+    #print(operand_stack)
+    #print(type_stack)
+    #print(operator_stack)
+    print(*quad_list, sep="\n")
     p[0] = "\nInput is a valid program.\n"
 
 
@@ -99,13 +106,7 @@ def p_lista_ids(p):
     '''lista_ids : ID list1 list2'''
     global curr_var_id
     curr_var_id = p[1]
-    tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)
-
-
-# def p_store_id(p):
-#     '''store_id :'''
-#     global curr_var_id
-
+    tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)  # save local variable in current scope
 
 
 def p_list1(p):
@@ -137,8 +138,8 @@ def p_function(p):
 def p_store_function(p):
     "store_function :"
     global curr_fun_type, curr_scope
-    dirFunciones.add_function(p[-1], curr_fun_type, p[-2])
-    curr_scope = p[-1]
+    dirFunciones.add_function(p[-1], curr_fun_type, p[-2])  # add function to directory
+    curr_scope = p[-1]  # update current scope
 
 
 def p_func1(p):
@@ -160,10 +161,15 @@ def p_tipo_param(p):
     '''tipo_param : INT
                   | FLOAT
                   | CHAR'''
+    global curr_var_type
+    curr_var_type = p[1]  # save variable/parameter type
 
 
 def p_params(p):
     '''params : ID COLON tipo_param par1'''
+    global curr_var_id
+    curr_var_id = p[1]
+    tablaVars.add_variable(curr_var_id, curr_var_type, "parameter", curr_scope)  # save parameter as local variable
 
 
 def p_par1(p):
@@ -177,7 +183,7 @@ def p_tipo_retorno(p):
                     | CHAR
                     | VOID'''
     global curr_fun_type
-    curr_fun_type = p[1]
+    curr_fun_type = p[1]  # save function type
 
 
 # STATEMENT
@@ -199,12 +205,26 @@ def p_stmt1(p):
 
 # ASSIGNMENT
 def p_assignment(p):
-    '''assignment : var EQ expression'''
+    '''assignment : var EQ store_operator expression gen_quad5'''
+
+
+def p_gen_quad5(p):
+    '''gen_quad5 :'''
+    gen_quad_assignment()
+
 
 
 def p_var(p):
-    '''var : ID list1
+    '''var : ID store_operand list1
            | ID DOT ID'''
+
+
+def p_store_operand(p):
+    '''store_operand :'''
+    global curr_operand_type
+    operand_stack.append(p[-1])
+    curr_operand_type = dirFunciones.get_var_type(p[-1])
+    type_stack.append(curr_operand_type)
 
 
 # VOID CALL
@@ -274,54 +294,115 @@ def p_return_st(p):
 
 # EXPRESSION
 def p_expression(p):
-    '''expression : exp OR exp
-                  | exp'''
+    '''expression : exp gen_quad4 OR store_operator expression
+                  | exp gen_quad4'''
+
+
+def p_gen_quad4(p):
+    '''gen_quad4 :'''
+    valid_operators = ['||']
+    gen_quad_exp(valid_operators)
 
 
 def p_exp(p):
-    '''exp : k_exp AND exp
-           | k_exp'''
+    '''exp : k_exp gen_quad3 AND store_operator exp
+           | k_exp gen_quad3'''
+
+
+def p_gen_quad3(p):
+    '''gen_quad3 :'''
+    valid_operators = ['&']
+    gen_quad_exp(valid_operators)
 
 
 def p_k_exp(p):
-    '''k_exp : m_exp
-             | m_exp LT k_exp
-             | m_exp GT k_exp
-             | m_exp COMP k_exp
-             | m_exp NE k_exp
-             | m_exp GTE k_exp
-             | m_exp LTE k_exp'''
+    '''k_exp : m_exp gen_quad2
+             | m_exp gen_quad2 LT store_operator k_exp
+             | m_exp gen_quad2 GT store_operator k_exp
+             | m_exp gen_quad2 COMP store_operator k_exp
+             | m_exp gen_quad2 NE store_operator k_exp
+             | m_exp gen_quad2 GTE store_operator k_exp
+             | m_exp gen_quad2 LTE store_operator k_exp'''
+
+
+def p_gen_quad2(p):
+    '''gen_quad2 :'''
+    valid_operators = ['<', '>', '==', '!=', '>=', '<=']
+    gen_quad_exp(valid_operators)
 
 
 def p_m_exp(p):
-    '''m_exp : term
-             | term PLUS m_exp
-             | term MIN m_exp'''
+    '''m_exp : term gen_quad1
+             | term gen_quad1 PLUS store_operator m_exp
+             | term gen_quad1 MIN store_operator m_exp'''
+
+
+def p_gen_quad1(p):
+    '''gen_quad1 :'''
+    valid_operators = ['+', '-']
+    gen_quad_exp(valid_operators)
 
 
 def p_term(p):
-    '''term : fact
-            | fact MUL term
-            | fact DIV term'''
+    '''term : fact gen_quad0
+            | fact gen_quad0 MUL store_operator term
+            | fact gen_quad0 DIV store_operator term'''
+
+
+def p_gen_quad0(p):
+    '''gen_quad0 :'''
+    valid_operators = ['*', '/']
+    gen_quad_exp(valid_operators)
+
+
+def p_store_operator(p):
+    '''store_operator :'''
+    operator_stack.append(p[-1])
 
 
 def p_fact(p):
-    '''fact : LP expression RP
+    '''fact : LP store_operator expression RP paren_end
             | void_call
             | var_cte
             | var'''
 
 
+def p_paren_end(p):
+    '''paren_end :'''
+    current_operator = operator_stack[-1]
+    if current_operator == '(':
+        operator_stack.pop()
+
+
 def p_var_cte(p):
-    '''var_cte : CTEI
-               | CTEF
-               | CTEC'''
+    '''var_cte : CTEI store_int
+               | CTEF store_float
+               | CTEC store_char'''
+
+
+def p_store_int(p):
+    '''store_int :'''
+    operand_stack.append(p[-1])
+    type_stack.append('int')
+
+
+def p_store_float(p):
+    '''store_float :'''
+    operand_stack.append(p[-1])
+    type_stack.append('float')
+
+
+def p_store_char(p):
+    '''store_char :'''
+    operand_stack.append(p[-1])
+    type_stack.append('char')
 
 
 # Error rule for syntax errors
 def p_error(p):
     if p:
         print("Syntax error in input! ", p)
+        exit()
     else:
         print("Syntax error at EOF!")
 

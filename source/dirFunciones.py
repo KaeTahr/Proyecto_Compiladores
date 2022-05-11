@@ -20,3 +20,12 @@ def new_function_log(fun_id):
 
 def clear_function_directory():
     directorio_funciones.clear()
+
+
+def get_var_type(var_id):
+    for scope in directorio_funciones:
+        try:
+            return directorio_funciones[scope][2][var_id][0]
+        except:
+            print("ERROR: operand", var_id, "was not declared.")
+            exit()

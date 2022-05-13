@@ -1,6 +1,11 @@
 program ifTest;
 
+variables {
+    int: a, b, T, F; 
+}
+
 main() {
+
     # if simple
     if(a != b) then {
         return(a);

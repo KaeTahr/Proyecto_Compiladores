@@ -16,7 +16,7 @@ curr_operand_type = ''
 # PROGRAMA
 def p_program(p):
     '''program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main'''
-    # tablaVars.print_var_table()
+    tablaVars.print_var_table()
     print("\nOperand stack:\t", operand_stack)
     print("Type stack:\t", type_stack)
     print("Operator stack:\t", operator_stack)
@@ -163,6 +163,7 @@ def p_tipo_param(p):
                   | CHAR'''
     global curr_var_type
     curr_var_type = p[1]  # save variable/parameter type
+    p[0] = p[1]
 
 
 def p_params(p):
@@ -196,6 +197,13 @@ def p_statement(p):
                  | while_st stmt1
                  | from_st stmt1
                  | return_st SEMI stmt1'''
+   # TODO: void_call
+   # read
+   # write
+   # if
+   # while
+   # from
+   # return 
 
 
 def p_stmt1(p):
@@ -205,13 +213,8 @@ def p_stmt1(p):
 
 # ASSIGNMENT
 def p_assignment(p):
-    '''assignment : var EQ store_operator expression gen_quad5'''
-
-
-def p_gen_quad5(p):
-    '''gen_quad5 :'''
+    '''assignment : var EQ store_operator expression'''
     gen_quad_assignment()
-
 
 
 def p_var(p):
@@ -231,6 +234,7 @@ def p_store_operand(p):
 def p_void_call(p):
     '''void_call : ID call1 LP call2 RP
                  | ID call1 LP RP'''
+    
 
 
 def p_call1(p):
@@ -269,13 +273,24 @@ def p_write2(p):
 
 # IF
 def p_if_st(p):
-    '''if_st : IF LP expression RP THEN LB statement RB if1'''
+    '''if_st : IF LP expression RP gen_quad_6 THEN  LB statement RB if1'''
+
+
+def p_gen_quad_6(p):
+    '''gen_quad_6 : '''
+    gen_quad_if()
 
 
 def p_if1(p):
-    '''if1 : ELSE LB statement RB
-           | empty'''
+    '''if1 : ELSE LB gen_quad_else statement RB
+           | gen_quad_fi '''
 
+def p_gen_quad_fi(p):
+    '''gen_quad_fi : '''
+    gen_end_if()
+
+def p_gen_quad_else(p):
+    '''gen_quad_else : '''
 
 # WHILE
 def p_while_st(p):

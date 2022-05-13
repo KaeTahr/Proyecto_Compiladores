@@ -1,4 +1,5 @@
 from cuboSemantico import *
+import pdb
 
 operand_stack = []
 operator_stack = []
@@ -6,6 +7,7 @@ type_stack = []
 instruction_pointer = 1
 temporal_counter = 1
 quad_list = []
+jump_list = []
 
 
 # gen_quad 1-4
@@ -53,4 +55,23 @@ def gen_quad_assignment():
                 operand_stack.append(left_operand)
             else:
                 print("ERROR: Type mismatch!")
-                exit()
+                raise TypeError
+
+def gen_quad_if():
+    global type_stack, quad_list, instruction_pointer
+    exp_type = type_stack.pop()
+    if (exp_type != 'int'):
+        print("ERROR Type mismatch!")
+        raise TypeError
+    else:
+        result = operand_stack.pop() #TODO check this
+        quad_list.append(['GotoF', result, '', 'pending'])
+        jump_list.append(instruction_pointer)
+        instruction_pointer += 1
+
+        
+def gen_end_if():
+    start = jump_list.pop()
+    start -= 1
+    quad_list[start][-1] = instruction_pointer
+

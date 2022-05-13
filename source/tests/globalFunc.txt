@@ -1,23 +1,16 @@
 program funcTest;
 
-int function promedio(tExams : int) {
-    variables {
-        promedio : float;
-    }
-
-    return (promedio / tExams);
+variables {
+    int : x, y;
+    float : a, b;
 }
 
-float function random(key : char, range : float) {
+int function hello(z : int) {
     variables {
-        result : float;
+        int : z2;
+        float : c;
     }
-
-    return(result[5]);
-}
-
-void function hello() {
-    write("Hello world!");
+    return(z2/c);
 }
 
 main() {

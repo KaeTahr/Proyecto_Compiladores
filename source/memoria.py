@@ -1,41 +1,56 @@
+addr_range = 1000
+first_avail = 0
+
 virtual_memory = {
     'global': {
-        'int': 1000,
-        'float': 2000,
-        'char': 3000
+        'int': {'initial': first_avail + addr_range, 'count': 0},
+        'float': {'initial': first_avail + addr_range * 2, 'count': 0},
+        'char': {'initial': first_avail + addr_range * 3, 'count': 0}
     },
     'local': {
-        'int': 4000,
-        'float': 5000,
-        'char': 6000
+        'int': {'initial': first_avail + addr_range * 4, 'count': 0},
+        'float': {'initial': first_avail + addr_range * 5, 'count': 0},
+        'char': {'initial': first_avail + addr_range * 6, 'count': 0}
     },
     'temporal': {
-        'int': 7000,
-        'float': 8000,
-        'char': 9000,
-        'bool': 10000
+        'int': {'initial': first_avail + addr_range * 7, 'count': 0},
+        'float': {'initial': first_avail + addr_range * 8, 'count': 0},
+        'char': {'initial': first_avail + addr_range * 9, 'count': 0},
+        'bool': {'initial': first_avail + addr_range * 10, 'count': 0}
     },
     'constant': {
-        'int': 11000,
-        'float': 12000,
-        'char': 13000,
+        'int': {'initial': first_avail + addr_range * 11, 'count': 0},
+        'float': {'initial': first_avail + addr_range * 12, 'count': 0},
+        'char': {'initial': first_avail + addr_range * 13, 'count': 0}
     }
 }
 
 
 def get_avail(scope, v_type):
     global virtual_memory
-    assigned_addr = virtual_memory[scope][v_type]
-    virtual_memory[scope][v_type] += 1
-    next_addr = virtual_memory[scope][v_type]
-    print("Assigned address:", assigned_addr)
-    print("Next address:", next_addr, "\n")
-
-# TODO : Function to reset addresses
-# def reset_scope(scope):
+    assigned_addr = virtual_memory[scope][v_type]['initial'] + virtual_memory[scope][v_type]['count']  # initial + count
+    virtual_memory[scope][v_type]['count'] += 1  # update count
+    return assigned_addr
 
 
-while True:
-    t_scope = input("Enter scope: ")
-    t_type = input("Enter var type: ")
-    get_avail(t_scope, t_type)
+def get_count(scope, v_type):
+    global virtual_memory
+    current_avail = virtual_memory[scope][v_type]['count']
+    return current_avail
+
+
+def reset_local():
+    global virtual_memory
+    virtual_memory['local']['int']['count'] = 0
+    virtual_memory['local']['float']['count'] = 0
+    virtual_memory['local']['char']['count'] = 0
+
+
+def reset_temp():
+    global virtual_memory
+    virtual_memory['temporal']['int']['count'] = 0
+    virtual_memory['temporal']['float']['count'] = 0
+    virtual_memory['temporal']['char']['count'] = 0
+    virtual_memory['temporal']['bool']['count'] = 0
+
+

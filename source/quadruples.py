@@ -71,7 +71,20 @@ def gen_quad_if():
 
         
 def gen_end_if():
+    global instruction_pointer
     start = jump_list.pop()
     start -= 1
     quad_list[start][-1] = instruction_pointer
+
+def gen_quad_else():
+    global instruction_pointer, quad_list
+    start = jump_list.pop()
+    start -= 1
+    print(start)
+    quad_list[start][-1] = instruction_pointer
+    result = quad_list[start][1]
+    quad_list.append(['GoToT', result, '', 'pending'])
+    jump_list.append(instruction_pointer)
+    instruction_pointer +=1
+
 

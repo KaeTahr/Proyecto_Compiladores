@@ -20,7 +20,9 @@ def p_program(p):
     print("\nOperand stack:\t", operand_stack)
     print("Type stack:\t", type_stack)
     print("Operator stack:\t", operator_stack)
-    print("\nQuadruples:", *quad_list, sep="\n")
+    #print("\nQuadruples:", *quad_list, sep="\n")
+    for i, q in enumerate(quad_list):
+        print(i+1, q)
     p[0] = "\nInput is a valid program.\n"
 
 
@@ -282,7 +284,7 @@ def p_gen_quad_6(p):
 
 
 def p_if1(p):
-    '''if1 : ELSE LB gen_quad_else statement RB
+    '''if1 : ELSE LB gen_quad_else statement RB gen_quad_fi
            | gen_quad_fi '''
 
 def p_gen_quad_fi(p):
@@ -291,6 +293,7 @@ def p_gen_quad_fi(p):
 
 def p_gen_quad_else(p):
     '''gen_quad_else : '''
+    gen_quad_else()
 
 # WHILE
 def p_while_st(p):

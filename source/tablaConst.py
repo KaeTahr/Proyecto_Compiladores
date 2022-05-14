@@ -21,3 +21,4 @@ def new_constant_log(value):
 #     t_const = input("Valor: ")
 #     t_type = input("Type: ")
 #     add_constant(t_const, t_type)
+

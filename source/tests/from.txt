@@ -1,10 +1,14 @@
 program testFrom;
 
+variables {
+    int: x;
+}
+
 main() {
     # esto es un comment
     from x = 1 until 10 do {
         write("Entro al from");
-        x = x+1;
+        x = x + 1;
     }
     write("Salio del from");
 }

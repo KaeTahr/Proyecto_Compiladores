@@ -20,7 +20,7 @@ def gen_quad_exp(valid_operators):
             left_type = type_stack.pop()
             operator = operator_stack.pop()
             result_type = validateOperation(left_type, right_type, operator)
-            if result_type != "ERROR":
+            if result_type != 'ERROR':
                 temp_result = "t" + str(temporal_counter)
                 new_quad = [operator, left_operand, right_operand, temp_result]
                 quad_list.append(new_quad)
@@ -45,12 +45,12 @@ def gen_quad_assignment():
             left_type = type_stack.pop()
             operator = operator_stack.pop()
             result_type = validateOperation(left_type, right_type, operator)
-            if result_type != "ERROR":
+            if result_type != 'ERROR':
                 new_quad = [operator, right_operand, '', left_operand]
                 quad_list.append(new_quad)
                 instruction_pointer += 1
                 type_stack.append(result_type)
                 operand_stack.append(left_operand)
             else:
-                print("ERROR: Type mismatch!")
+                print("ERROR: Type mismatch in assignment!", operator, left_type, right_type)
                 exit()

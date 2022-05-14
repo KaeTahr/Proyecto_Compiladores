@@ -2,9 +2,9 @@ program classTest;
 
 class Estudiante {
     attributes
-        edad : int;
-        altura : float;
-        promedio : char;
+        int : edad ;
+        float : altura;
+        char : promedio;
     methods
         void function calcPromedio(examenes : int)
             { return (promedio/examenes); }

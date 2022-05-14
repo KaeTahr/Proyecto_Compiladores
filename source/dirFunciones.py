@@ -29,10 +29,10 @@ def get_var_type(var_id, scope):
         # print("Variable", id, "found within scope", scope)
         return directorio_funciones[scope][2][var_id][0]
 
-    elif id in directorio_funciones[first][2]:  # buscar en scope global
+    elif var_id in directorio_funciones[first][2]:  # buscar en scope global
         # print("Variable", id, "found within GLOBAL scope", first)
         return directorio_funciones[first][2][var_id][0]
 
     else:  # no se encontro la variable
-        print("ERROR: variable", id, "not found.")
+        print("ERROR: variable", var_id, "not found.")
         exit()

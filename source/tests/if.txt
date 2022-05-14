@@ -1,5 +1,9 @@
 program ifTest;
 
+variables {
+    int: a, b;
+}
+
 main() {
     # if simple
     if(a != b) then {
@@ -8,8 +12,8 @@ main() {
 
     # if-else
     if(33+77 == 100) then {
-        return(T);
+        return(1);
     } else { # comment en medio
-        return(F);
+        return(0);
     }
 }

@@ -1,5 +1,9 @@
 program testWhile;
 
+variables {
+    int: x,y;
+}
+
 main() {
     # esto es un comment
     while(x <= y) do {

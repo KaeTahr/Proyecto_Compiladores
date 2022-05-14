@@ -103,7 +103,7 @@ def p_tipo(p):
 
 def p_lista_ids(p):
     """lista_ids : ID list1 list2"""
-    global curr_var_id
+    global curr_var_id, curr_var_type, curr_scope
     curr_var_id = p[1]
     tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)  # save local variable in current scope
 
@@ -165,11 +165,13 @@ def p_tipo_param(p):
 
 
 def p_params(p):
-    """params : ID COLON tipo_param par1"""
-    global curr_var_id
-    curr_var_id = p[1]
-    tablaVars.add_variable(curr_var_id, curr_var_type, "parameter", curr_scope)  # save parameter as local variable
+    """params : ID COLON tipo_param store_param par1"""
 
+
+def p_store_param(p):
+    """store_param :"""
+    global curr_var_id, curr_var_type, curr_scope
+    tablaVars.add_variable(p[-3], curr_var_type, "parameter", curr_scope)  # save parameter as local variable
 
 def p_par1(p):
     """par1 : COMMA params

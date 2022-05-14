@@ -1,6 +1,7 @@
 import ply.yacc as yacc
 import dirFunciones
 import tablaVars
+import tablaConst
 from quadruples import *
 from lexer import tokens
 import sys
@@ -16,10 +17,13 @@ curr_operand_type = ''
 def p_program(p):
     """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main"""
     tablaVars.print_var_table()
+    tablaConst.print_const_table()
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
-    print("Quadruples:\n", *quad_list, sep="\n")
+    print("Quadruples:", *quad_list, sep="\n")
+    print("\n")
+    print("M_Quads:", *m_quad_list, sep="\n")
     p[0] = "\nInput is a valid program.\n"
 
 
@@ -223,6 +227,7 @@ def p_store_operand(p):
     """store_operand :"""
     global curr_operand_type
     operand_stack.append(p[-1])
+    m_operand_stack.append(dirFunciones.get_var_address(p[-1]))
     curr_operand_type = dirFunciones.get_var_type(p[-1], curr_scope)
     type_stack.append(curr_operand_type)
 
@@ -384,18 +389,26 @@ def p_store_int(p):
     """store_int :"""
     operand_stack.append(p[-1])
     type_stack.append('int')
+    tablaConst.add_constant(p[-1], 'int')
+    m_operand_stack.append(tablaConst.get_const_add(p[-1]))
+
+
 
 
 def p_store_float(p):
     """store_float :"""
     operand_stack.append(p[-1])
     type_stack.append('float')
+    tablaConst.add_constant(p[-1], 'float')
+    m_operand_stack.append(tablaConst.get_const_add(p[-1]))
 
 
 def p_store_char(p):
     """store_char :"""
     operand_stack.append(p[-1])
     type_stack.append('char')
+    tablaConst.add_constant(p[-1], 'char')
+    m_operand_stack.append(tablaConst.get_const_add(p[-1]))
 
 
 # Error rule for syntax errors

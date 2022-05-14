@@ -1,0 +1,13 @@
+program testConst;
+
+variables {
+    int: x;
+    float: a;
+}
+
+main() {
+    x = 2 + 5;
+    a = 1 * 3.14;
+    a = 1.15 / 1.17;
+    x = 2 - 1;
+}

@@ -1,5 +1,7 @@
 program testFrom;
-
+variables {
+    int: x;
+}
 main() {
     # esto es un comment
     from x = 1 until 10 do {

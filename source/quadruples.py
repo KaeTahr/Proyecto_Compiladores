@@ -1,4 +1,3 @@
-from socket import J1939_FILTER_MAX
 from cuboSemantico import *
 import pdb
 
@@ -9,6 +8,7 @@ instruction_pointer = 1
 temporal_counter = 1
 quad_list = []
 jump_list = []
+from_tmp = []
 
 
 # gen_quad 1-4
@@ -112,4 +112,45 @@ def gen_while_end():
     w_start = jump_list.pop()
     quad_list.append(['GoTo', '', '', w_start])
     instruction_pointer += 1
+
+def gen_from_start():
+    global instruction_pointer
+    exp_type = type_stack.pop()
+    if (exp_type != 'int'):
+        print('ERROR Type mismatch!')
+        raise TypeError
+    else:
+        from_tmp.append(operand_stack.pop())
+        from_tmp.append(exp_type)
+
+def gen_from_jmp():
+    global instruction_pointer, temporal_counter
+    start_type = from_tmp.pop()
+    start = from_tmp.pop()
+    target = operand_stack.pop()
+    target_type = type_stack.pop()
+
+    result_type = validateOperation(start_type, target_type, '<')
+    if result_type != 'int':
+        print('ERROR Type mismatch!')
+        raise TypeError('type was: ' + result_type)
+
+    temp_result = "t" + str(temporal_counter)
+    temporal_counter += 1
+    quad_list.append(['>', start, target, temp_result])
+    instruction_pointer += 1
+    type_stack.append(result_type)
+    operand_stack.append(temp_result)
+    jump_list.append(instruction_pointer)
+    quad_list.append(['GoToF', operand_stack.pop(), '', 'pending'])
+    instruction_pointer += 1
+
+def gen_from_end():
+    global instruction_pointer
+    start = jump_list.pop()
+    start -= 1
+    quad_list[start][-1] = instruction_pointer + 1
+    quad_list.append(['GoTo', '', '', start])
+    instruction_pointer +=1
+
 

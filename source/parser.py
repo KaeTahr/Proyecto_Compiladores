@@ -311,8 +311,19 @@ def p_while_end(p):
 
 # FROM
 def p_from_st(p):
-    '''from_st : FROM ID EQ expression UNTIL expression DO LB statement RB'''
+    '''from_st : FROM assignment gen_from_start UNTIL expression gen_from_jmp DO LB statement RB gen_from_end'''
 
+def p_gen_from_start(p):
+    '''gen_from_start : '''
+    gen_from_start()
+
+def p_gen_from_jmp(p):
+    '''gen_from_jmp : '''
+    gen_from_jmp()
+
+def p_gen_from_end(p):
+    '''gen_from_end : '''
+    gen_from_end()
 
 # RETURN
 def p_return_st(p):

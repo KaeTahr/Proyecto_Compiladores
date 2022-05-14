@@ -202,8 +202,6 @@ def p_statement(p):
    # TODO: void_call
    # read
    # write
-   # if
-   # while
    # from
    # return 
 
@@ -297,8 +295,19 @@ def p_gen_quad_else(p):
 
 # WHILE
 def p_while_st(p):
-    '''while_st : WHILE LP expression RP DO LB statement RB'''
+    '''while_st : WHILE LP gen_while_start expression gen_while_jmp RP DO LB statement RB gen_while_end'''
 
+def p_while_start(p):
+    '''gen_while_start : '''
+    gen_while_start()
+
+def p_while_jmp(p):
+    '''gen_while_jmp : '''
+    gen_while_jmp()
+
+def p_while_end(p):
+    '''gen_while_end : '''
+    gen_while_end()
 
 # FROM
 def p_from_st(p):

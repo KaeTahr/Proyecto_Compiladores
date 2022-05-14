@@ -1,3 +1,4 @@
+from socket import J1939_FILTER_MAX
 from cuboSemantico import *
 import pdb
 
@@ -80,11 +81,35 @@ def gen_quad_else():
     global instruction_pointer, quad_list
     start = jump_list.pop()
     start -= 1
-    print(start)
     quad_list[start][-1] = instruction_pointer
     result = quad_list[start][1]
     quad_list.append(['GoToT', result, '', 'pending'])
     jump_list.append(instruction_pointer)
     instruction_pointer +=1
 
+
+def gen_while_start():
+    global instruction_pointer
+    jump_list.append(instruction_pointer)
+
+def gen_while_jmp():
+    global instruction_pointer
+    exp_type = type_stack.pop()
+    if (exp_type != 'int'):
+        print("ERROR Type mismatch!")
+        raise TypeError
+    else:
+        result = operand_stack.pop() #TODO check this
+        quad_list.append(['GotoF', result, '', 'pending'])
+        jump_list.append(instruction_pointer)
+        instruction_pointer += 1
+
+def gen_while_end():
+    global instruction_pointer
+    exit_jmp = jump_list.pop()
+    exit_jmp -= 1
+    quad_list[exit_jmp][-1] = instruction_pointer + 1
+    w_start = jump_list.pop()
+    quad_list.append(['GoTo', '', '', w_start])
+    instruction_pointer += 1
 

@@ -58,6 +58,7 @@ def gen_quad_assignment():
                 print("ERROR: Type mismatch!")
                 raise TypeError
 
+
 def gen_quad_if():
     global type_stack, quad_list, instruction_pointer
     exp_type = type_stack.pop()
@@ -65,17 +66,18 @@ def gen_quad_if():
         print("ERROR Type mismatch!")
         raise TypeError
     else:
-        result = operand_stack.pop() #TODO check this
+        result = operand_stack.pop()  # TODO check this
         quad_list.append(['GotoF', result, '', 'pending'])
         jump_list.append(instruction_pointer)
         instruction_pointer += 1
 
-        
+
 def gen_end_if():
     global instruction_pointer
     start = jump_list.pop()
     start -= 1
     quad_list[start][-1] = instruction_pointer
+
 
 def gen_quad_else():
     global instruction_pointer, quad_list
@@ -85,12 +87,13 @@ def gen_quad_else():
     result = quad_list[start][1]
     quad_list.append(['GoToT', result, '', 'pending'])
     jump_list.append(instruction_pointer)
-    instruction_pointer +=1
+    instruction_pointer += 1
 
 
 def gen_while_start():
     global instruction_pointer
     jump_list.append(instruction_pointer)
+
 
 def gen_while_jmp():
     global instruction_pointer
@@ -99,10 +102,11 @@ def gen_while_jmp():
         print("ERROR Type mismatch!")
         raise TypeError
     else:
-        result = operand_stack.pop() #TODO check this
+        result = operand_stack.pop()  # TODO check this
         quad_list.append(['GotoF', result, '', 'pending'])
         jump_list.append(instruction_pointer)
         instruction_pointer += 1
+
 
 def gen_while_end():
     global instruction_pointer
@@ -113,6 +117,7 @@ def gen_while_end():
     quad_list.append(['GoTo', '', '', w_start])
     instruction_pointer += 1
 
+
 def gen_from_start():
     global instruction_pointer
     exp_type = type_stack.pop()
@@ -122,6 +127,7 @@ def gen_from_start():
     else:
         from_tmp.append(operand_stack.pop())
         from_tmp.append(exp_type)
+
 
 def gen_from_jmp():
     global instruction_pointer, temporal_counter
@@ -145,12 +151,27 @@ def gen_from_jmp():
     quad_list.append(['GoToF', operand_stack.pop(), '', 'pending'])
     instruction_pointer += 1
 
+
 def gen_from_end():
     global instruction_pointer
     start = jump_list.pop()
     start -= 1
     quad_list[start][-1] = instruction_pointer + 1
     quad_list.append(['GoTo', '', '', start])
-    instruction_pointer +=1
+    instruction_pointer += 1
 
 
+def gen_quad_read():
+    global instruction_pointer, quad_list, operand_stack, type_stack
+    read_operand = operand_stack.pop()
+    read_type = type_stack.pop()
+    quad_list.append(['READ', '', '', read_operand])
+    instruction_pointer += 1
+
+
+def gen_quad_write():
+    global instruction_pointer, quad_list, operand_stack, type_stack
+    write_operand = operand_stack.pop()
+    write_type = type_stack.pop()
+    quad_list.append(['WRITE', '', '', write_operand])
+    instruction_pointer += 1

@@ -20,7 +20,7 @@ def p_program(p):
     print("\nOperand stack:\t", operand_stack)
     print("Type stack:\t", type_stack)
     print("Operator stack:\t", operator_stack)
-    #print("\nQuadruples:", *quad_list, sep="\n")
+    print("\nQuadruples:")
     for i, q in enumerate(quad_list):
         print(i+1, q)
     p[0] = "\nInput is a valid program.\n"
@@ -200,8 +200,6 @@ def p_statement(p):
                  | from_st stmt1
                  | return_st SEMI stmt1'''
    # TODO: void_call
-   # read
-   # write
    # return 
 
 
@@ -252,7 +250,8 @@ def p_call3(p):
 
 # READ
 def p_read(p):
-    '''read : READ LP var RP'''
+    """read : READ LP var RP"""
+    gen_quad_read()
 
 
 # WRITE
@@ -261,8 +260,19 @@ def p_write(p):
 
 
 def p_write1(p):
-    '''write1 : expression write2
-              | CTES write2'''
+    """write1 : expression gen_quad_8 write2
+              | CTES store_string gen_quad_8 write2"""
+
+
+def p_store_string(p):
+    """store_string :"""
+    type_stack.append('STRING')
+    operand_stack.append(p[-1])
+
+
+def p_gen_quad_8(p):
+    """gen_quad_8 :"""
+    gen_quad_write()
 
 
 def p_write2(p):

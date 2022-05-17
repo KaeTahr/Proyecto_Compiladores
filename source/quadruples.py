@@ -69,7 +69,7 @@ def gen_quad_assignment():
                 quad_list.append(new_quad)
                 instruction_pointer += 1
                 type_stack.append(result_type)
-                # operand_stack.append(left_operand) # TODO: Se debe regresar resultado a stack de operandos?
+                #operand_stack.append(left_operand) # TODO: Se debe regresar resultado a stack de operandos?
                 # ADDRESS
                 m_op = tablaConst.get_oper_code(operator)
                 m_right = m_operand_stack.pop()
@@ -143,15 +143,14 @@ def gen_while_end():
 
 
 # FROM
-def gen_from_start():
+def gen_from_start(s):
     global instruction_pointer
     exp_type = type_stack.pop()
     if exp_type != 'int':
         print('ERROR Type mismatch!')
         raise TypeError
-    else:
-        from_tmp.append(operand_stack.pop())
-        from_tmp.append(exp_type)
+    from_tmp.append(s)
+    from_tmp.append('int')
 
 
 def gen_from_jmp():

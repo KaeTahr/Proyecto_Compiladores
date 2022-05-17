@@ -11,6 +11,7 @@ curr_var_type = ''
 curr_var_id = ''
 curr_scope = ''
 curr_operand_type = ''
+curr_from_var = ''
 
 
 # PROGRAMA
@@ -213,6 +214,7 @@ def p_stmt1(p):
 # ASSIGNMENT
 def p_assignment(p):
     """assignment : var EQ store_operator expression gen_quad5"""
+    p[0] = p[1]
 
 
 def p_gen_quad5(p):
@@ -334,11 +336,14 @@ def p_while_end(p):
 # FROM
 def p_from_st(p):
     """from_st : FROM assignment gen_from_start UNTIL expression gen_from_jmp DO LB statement RB gen_from_end"""
+    global curr_from_var
+    curr_from_var = p[2]
 
 
 def p_gen_from_start(p):
     """gen_from_start : """
-    gen_from_start()
+    global curr_from_var
+    gen_from_start(curr_from_var)
 
 
 def p_gen_from_jmp(p):

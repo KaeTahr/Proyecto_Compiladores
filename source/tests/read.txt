@@ -1,9 +1,10 @@
 program readTest;
 
+variables {
+    int: x;
+}
+
 main() {
     # esto es un comment
-    read(nombre);
-    read(arr[2]);
-    read(mat[4,4]);
-    read(juan.edad);
+    read(x);
 }

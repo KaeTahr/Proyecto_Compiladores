@@ -6,8 +6,5 @@ variables {
 }
 
 main() {
-    #x = a + y * b - z / c;
-    #x = a + y > b - z || z >= c;
-    #x = a + 2.5;
-    x = a * b + (d - e) / c;
+    x = a * b + (d - e) / 5;
 }

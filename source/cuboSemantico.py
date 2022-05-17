@@ -1,8 +1,8 @@
 # leftOp, rightOp, operator, resultType
 # bool con lógica entera (0 y 1)
 cuboSemantico = {
-    'int':{
-        'int':{
+    'int': {
+        'int': {
             '*': 'int',
             '/': 'int',
             '+': 'int',
@@ -17,7 +17,7 @@ cuboSemantico = {
             '||': 'int',
             '=': 'int'
         },
-        'float':{
+        'float': {
             '*': 'float',
             '/': 'float',
             '+': 'float',
@@ -32,7 +32,7 @@ cuboSemantico = {
             '||': 'int',
             '=': 'ERROR'
         },
-        'char':{
+        'char': {
             '*': 'ERROR',
             '/': 'ERROR',
             '+': 'ERROR',
@@ -48,8 +48,8 @@ cuboSemantico = {
             '=': 'ERROR'
         }
     },
-    'float':{
-        'int':{
+    'float': {
+        'int': {
             '*': 'float',
             '/': 'float',
             '+': 'float',
@@ -64,7 +64,7 @@ cuboSemantico = {
             '||': 'int',
             '=': 'ERROR'
         },
-        'float':{
+        'float': {
             '*': 'float',
             '/': 'float',
             '+': 'float',
@@ -79,7 +79,7 @@ cuboSemantico = {
             '||': 'int',
             '=': 'float'
         },
-        'char':{
+        'char': {
             '*': 'ERROR',
             '/': 'ERROR',
             '+': 'ERROR',
@@ -95,8 +95,8 @@ cuboSemantico = {
             '=': 'ERROR'
         }
     },
-    'char':{
-        'int':{
+    'char': {
+        'int': {
             '*': 'ERROR',
             '/': 'ERROR',
             '+': 'ERROR',
@@ -111,7 +111,7 @@ cuboSemantico = {
             '||': 'ERROR',
             '=': 'ERROR'
         },
-        'float':{
+        'float': {
             '*': 'ERROR',
             '/': 'ERROR',
             '+': 'ERROR',
@@ -126,7 +126,7 @@ cuboSemantico = {
             '||': 'ERROR',
             '=': 'ERROR'
         },
-        'char':{
+        'char': {
             '*': 'ERROR',
             '/': 'ERROR',
             '+': 'ERROR',
@@ -144,23 +144,24 @@ cuboSemantico = {
     }
 }
 
+
 def validateOperation(leftOp, rightOp, operator):
-    if leftOp in cuboSemantico: # buscar izquierdo
-        if rightOp in cuboSemantico[leftOp]: # buscar derecho
-            if operator in cuboSemantico[leftOp][rightOp]: # buscar operador
+    if leftOp in cuboSemantico:  # buscar izquierdo
+        if rightOp in cuboSemantico[leftOp]:  # buscar derecho
+            if operator in cuboSemantico[leftOp][rightOp]:  # buscar operador
                 result = cuboSemantico[leftOp][rightOp][operator]
             else:
-                print("ERROR: operator", operator, "not found.") # no se encontro operador
+                print("ERROR: operator", operator, "not found.")  # no se encontro operador
                 exit()
         else:
-            print("ERROR: right operand", rightOp, "not found.") # no se encontro derecho
+            print("ERROR: right operand", rightOp, "not found.")  # no se encontro derecho
             exit()
     else:
-        print("ERROR: left operand", leftOp, "not found.") # no se encontro izquierdo
+        print("ERROR: left operand", leftOp, "not found.")  # no se encontro izquierdo
         exit()
-    return result # OPERACION VALIDA
+    return result  # OPERACION VALIDA
 
-#------------------------------------TESTING------------------------------------
+# ------------------------------------TESTING------------------------------------
 # while True:
 #     left = input("leftOp: ")
 #     operator = input("operator: ")

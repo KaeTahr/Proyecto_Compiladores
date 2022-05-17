@@ -1,8 +1,12 @@
 program voidCall;
 
+variables {
+    int: x, y;
+}
+
 int function promedio(tExams : int) {
     variables {
-        promedio : float;
+        int: promedio;
     }
 
     return (promedio / tExams);
@@ -14,10 +18,9 @@ void function hello() {
 
 main() {
     # esto es un comment
-    x = juan.getEdad();
-    y = promedio(examenes);
+    y = promedio(x);
 
-    hello(x[5,5], y, hello());
+    hello();
 
 
 }

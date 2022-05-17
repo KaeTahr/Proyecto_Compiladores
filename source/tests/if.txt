@@ -1,7 +1,7 @@
 program ifTest;
 
 variables {
-    int: a, b, c, T, F, out, out2; 
+    int: a, b, c, T, F, out, out2;
 }
 
 main() {
@@ -11,10 +11,10 @@ main() {
     a = (b * (1 + 2) - 3) / 5;
     # if simple
     if(a != b) then {
-        return(a);
+
         if (b != a) then {
             b = a + b;
-            # return (b);
+
         } else {
             b = a + a;
             # write("lmao");
@@ -26,9 +26,9 @@ main() {
     # if-else
     if(33+77 == 100) then {
         T = a + b;
-        # return(T);
+
     } else { # comment en medio
         F = a + b;
-        # return(F);
+
     }
 }

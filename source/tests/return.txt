@@ -1,0 +1,13 @@
+program returnTest;
+
+int function getX() {
+    variables {
+        int: x;
+    }
+    return(x);
+}
+
+main() {
+    # esto es un comment
+
+}

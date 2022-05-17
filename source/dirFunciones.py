@@ -9,7 +9,7 @@ def add_function(fun_id, fun_type, kind):
 
     else:
         directorio_funciones[fun_id] = [fun_type, kind, {}]
-        #new_function_log(fun_id) # log info
+        # new_function_log(fun_id) # log info
 
 
 def new_function_log(fun_id):
@@ -22,10 +22,23 @@ def clear_function_directory():
     directorio_funciones.clear()
 
 
-def get_var_type(var_id):
+def get_var_type(var_id, scope):
+    first = list(directorio_funciones.keys())[0]  # referencia a variables globales
+
+    if var_id in directorio_funciones[scope][2]:  # buscar en scope especificado
+        # print("Variable", id, "found within scope", scope)
+        return directorio_funciones[scope][2][var_id][0]
+
+    elif var_id in directorio_funciones[first][2]:  # buscar en scope global
+        # print("Variable", id, "found within GLOBAL scope", first)
+        return directorio_funciones[first][2][var_id][0]
+
+    else:  # no se encontro la variable
+        print("ERROR: variable", var_id, "not found.")
+        exit()
+
+
+def get_var_address(var_id):
     for scope in directorio_funciones:
-        try:
-            return directorio_funciones[scope][2][var_id][0]
-        except:
-            print("ERROR: operand", var_id, "was not declared.")
-            exit()
+        if var_id in directorio_funciones[scope][2]:
+            return directorio_funciones[scope][2][var_id][2]

@@ -1,17 +1,9 @@
 program testFunDir;
 
-#class Persona {
-#    attributes
-#        int : iAge;
-#        float : fHeight;
-#        char : cFirst, cMid, cLast;
-#};
-
 variables {
     int : iCount;
     float : fResult;
     char : cInitial;
-    Persona : Juan;
 }
 
 int function random(cKey : char) {
@@ -36,8 +28,8 @@ int function random(cKey : char) {
 
 float function promedio(fSuma : float, iTotal : int) {
     variables {
-         float : fResult;
-         char : cEmpty;
+         float: fRes;
+         char: cEmpty;
     }
 
     fResult = fSuma / iTotal;

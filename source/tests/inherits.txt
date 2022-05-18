@@ -17,6 +17,18 @@ class Estudiante inherits Persona {
         float function getPromedio() { return(promedio); }
 };
 
+variables {
+    int: x, y;
+}
+
+int function hello(z : int) {
+    variables {
+        int : z2;
+        float : c;
+    }
+    return(z2);
+}
+
 main() {
 
 }

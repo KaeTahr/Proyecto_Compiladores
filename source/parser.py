@@ -30,7 +30,7 @@ def p_program(p):
     # for i, q in enumerate(quad_list):
     #     print(i + 1, q)
     # print("M_Quads:", *m_quad_list, sep="\n")
-    print_obj_table()
+    # print_obj_table()
     p[0] = "\nInput is a valid program.\n"
 
 
@@ -85,8 +85,6 @@ def p_class1(p):
 def p_search_parent(p):
     """search_parent :"""
     validate_parent(p[-1])
-
-
 
 
 def p_class2(p):
@@ -145,7 +143,7 @@ def p_store_id(p):
     """store_id :"""
     global curr_var_id, curr_var_type, curr_scope, curr_class
     curr_var_id = p[-1]
-    if in_object:
+    if in_object:  # id read is an attribute within a class
         add_attribute(curr_class, curr_var_id, curr_var_type)
         tablaVars.add_variable(curr_var_id, curr_var_type, "attribute", curr_scope)
     else:
@@ -181,8 +179,13 @@ def p_function(p):
 def p_store_function(p):
     """store_function :"""
     global curr_fun_type, curr_scope
-    dirFunciones.add_function(p[-1], curr_fun_type, p[-2])  # add function to directory
-    curr_scope = p[-1]  # update current scope
+    if in_object:  # id read is an attribute within a class
+        add_method(curr_class, p[-1], curr_fun_type)
+        dirFunciones.add_function(p[-1], curr_fun_type, "method")
+        curr_scope = p[-1]  # update current scope
+    else:
+        dirFunciones.add_function(p[-1], curr_fun_type, p[-2])  # add function to directory
+        curr_scope = p[-1]  # update current scope
 
 
 def p_func1(p):

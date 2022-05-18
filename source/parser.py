@@ -138,9 +138,13 @@ def p_tipo(p):
 
 
 def p_lista_ids(p):
-    """lista_ids : ID list1 list2"""
+    """lista_ids : ID store_id list1 list2"""
+
+
+def p_store_id(p):
+    """store_id :"""
     global curr_var_id, curr_var_type, curr_scope, curr_class
-    curr_var_id = p[1]
+    curr_var_id = p[-1]
     if in_object:
         add_attribute(curr_class, curr_var_id, curr_var_type)
         tablaVars.add_variable(curr_var_id, curr_var_type, "attribute", curr_scope)

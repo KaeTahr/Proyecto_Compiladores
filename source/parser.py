@@ -3,6 +3,7 @@ import dirFunciones
 import tablaVars
 import tablaConst
 from quadruples import *
+from tablaObjetos import *
 from lexer import tokens
 import sys
 
@@ -12,28 +13,33 @@ curr_var_id = ''
 curr_scope = ''
 curr_operand_type = ''
 curr_from_var = ''
+scope_global = ''
+in_object = False
+curr_class = ''
 
 
 # PROGRAMA
 def p_program(p):
     """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main"""
-    # tablaVars.print_var_table()
+    tablaVars.print_var_table()
     # tablaConst.print_const_table()
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
-    print("\nQuadruples:")
-    for i, q in enumerate(quad_list):
-        print(i + 1, q)
+    # print("\nQuadruples:")
+    # for i, q in enumerate(quad_list):
+    #     print(i + 1, q)
     # print("M_Quads:", *m_quad_list, sep="\n")
+    print_obj_table()
     p[0] = "\nInput is a valid program.\n"
 
 
 def p_store_program(p):
     """store_program :"""
     dirFunciones.add_function(p[-1], p[-2], p[-2])
-    global curr_scope
+    global curr_scope, scope_global
     curr_scope = p[-1]
+    scope_global = curr_scope
 
 
 def p_prog1(p):
@@ -53,12 +59,34 @@ def p_prog3(p):
 
 # CLASS
 def p_class(p):
-    """class : CLASS ID class1 LB class2 class3 RB SEMI class4"""
+    """class : CLASS ID store_object class1 LB class2 class3 RB SEMI exit_class class4"""
+
+
+def p_store_object(p):
+    """store_object :"""
+    global curr_scope, scope_global, in_object, curr_class
+    tablaVars.add_variable(p[-1], "object", "class", scope_global)  # add object as global variable
+    add_object(p[-1])
+    in_object = True
+    curr_class = p[-1]
+
+
+def p_exit_class(p):
+    """exit_class :"""
+    global in_object
+    in_object = False
 
 
 def p_class1(p):
-    """class1 : INHERITS ID
+    """class1 : INHERITS ID search_parent
               | empty"""
+
+
+def p_search_parent(p):
+    """search_parent :"""
+    validate_parent(p[-1])
+
+
 
 
 def p_class2(p):
@@ -91,6 +119,8 @@ def p_attrs2(p):
 
 def p_mthds(p):
     """mthds : METHODS function"""
+    global scope_global, curr_scope
+    curr_scope = scope_global
 
 
 # VARS
@@ -109,9 +139,13 @@ def p_tipo(p):
 
 def p_lista_ids(p):
     """lista_ids : ID list1 list2"""
-    global curr_var_id, curr_var_type, curr_scope
+    global curr_var_id, curr_var_type, curr_scope, curr_class
     curr_var_id = p[1]
-    tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)  # save local variable in current scope
+    if in_object:
+        add_attribute(curr_class, curr_var_id, curr_var_type)
+        tablaVars.add_variable(curr_var_id, curr_var_type, "attribute", curr_scope)
+    else:
+        tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)
 
 
 def p_list1(p):

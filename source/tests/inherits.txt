@@ -4,7 +4,7 @@ class Persona {
     attributes
         int: edad;
         float: altura;
-        char: iniNombre, iniApellido;
+        char: nombre, apellido;
 };
 
 class Estudiante inherits Persona {

@@ -7,20 +7,20 @@ def add_object(obj_id):
         exit()
 
     else:
-        tabla_obj[obj_id] = {}
+        tabla_obj[obj_id] = {'attributes': {}, 'methods': {}}
 
 
 def add_attribute(obj_id, attr_id, attr_type):
-    tabla_obj[obj_id][attr_id] = [attr_type]
+    if attr_id not in tabla_obj[obj_id]['attributes']:
+        tabla_obj[obj_id]['attributes'][attr_id] = attr_type
 
 
 def print_obj_table():
     for obj in tabla_obj:
-        if tabla_obj[obj] != {}:  # object has attributes
-            print("\nAttributes for OBJECT", obj)
-            for attr in tabla_obj[obj]:
-                print("ID:", attr, "\tType:", tabla_obj[obj][attr][0])
-            print("---------------------------------------------------------------")
+        print("\nAttributes for OBJECT", obj)
+        for attr in tabla_obj[obj]['attributes']:
+            print("ID:", attr, "\tType:", tabla_obj[obj]['attributes'][attr])
+        print("---------------------------------------------------------------")
 
 
 def validate_parent(obj_id):
@@ -30,6 +30,6 @@ def validate_parent(obj_id):
 
 
 def validate_attribute(obj_id, attr):
-    if attr not in tabla_obj[obj_id]:
+    if attr not in tabla_obj[obj_id]['attributes']:
         print("ERROR: Variable", attr, "is not an attribute of class", obj_id)
         exit()

@@ -1,0 +1,28 @@
+program inheritsTest2;
+
+class Persona {
+    attributes
+        int: age;
+        float: height;
+
+    methods
+        int function getAge() { return(age); }
+        float function getHeight() { return(height); }
+};
+
+class Estudiante {
+    attributes
+        float: average;
+
+    methods
+        float function getAverage() { return(average); }
+};
+
+variables {
+    Persona: john;
+    Estudiante: paul;
+    int: x;
+}
+
+main() {
+}

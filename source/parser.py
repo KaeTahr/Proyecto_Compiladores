@@ -24,15 +24,15 @@ parent_class = ''
 def p_program(p):
     """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main"""
     tablaVars.print_var_table()
-    # tablaConst.print_const_table()
-    # print("\nOperand stack:\t", operand_stack)
-    # print("Type stack:\t", type_stack)
-    # print("Operator stack:\t", operator_stack)
-    # print("\nQuadruples:")
-    # for i, q in enumerate(quad_list):
-    #     print(i + 1, q)
-    # print("M_Quads:", *m_quad_list, sep="\n")
     print_obj_table()
+    # tablaConst.print_const_table()
+    print("\nOperand stack:\t", operand_stack)
+    print("Type stack:\t", type_stack)
+    print("Operator stack:\t", operator_stack)
+    print("\nQuadruples:")
+    for i, q in enumerate(quad_list):
+        print(i + 1, q)
+    # print("M_Quads:", *m_quad_list, sep="\n")
     p[0] = "\nInput is a valid program.\n"
 
 
@@ -150,7 +150,10 @@ def p_store_id(p):
     if in_object:  # id read is an attribute within a class
         add_attribute(curr_class, curr_var_id, curr_var_type)
     else:
-        tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)
+        if curr_var_type not in ['int', 'float', 'char']:
+            tablaVars.add_variable(curr_var_id, curr_var_type, "object", scope_global)
+        else:
+            tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)
 
 
 def p_list1(p):

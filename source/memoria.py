@@ -24,10 +24,11 @@ virtual_memory = {
     }
 }
 
+valid_types = ['int', 'char', 'float', 'bool']
+
 
 def get_avail(scope, v_type):
-    global virtual_memory
-    if v_type != 'object':
+    if v_type in valid_types:
         assigned_addr = virtual_memory[scope][v_type]['initial'] + virtual_memory[scope][v_type]['count']
         if assigned_addr < virtual_memory[scope][v_type]['initial'] + addr_range - 1:
             virtual_memory[scope][v_type]['count'] += 1  # update count
@@ -38,7 +39,6 @@ def get_avail(scope, v_type):
 
 
 def get_count(scope, v_type):
-    global virtual_memory
     current_avail = virtual_memory[scope][v_type]['count']
     return current_avail
 

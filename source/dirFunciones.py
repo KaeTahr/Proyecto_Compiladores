@@ -1,9 +1,11 @@
+from tablaObjetos import *
+
 directorio_funciones = {}
 
 
-# agregar funcion a directorio de funciones
+# add function to function directory
 def add_function(fun_id, fun_type, kind):
-    if fun_id in directorio_funciones:  # funcion ya existe
+    if fun_id in directorio_funciones:  # function already exists
         print("ERROR: function", fun_id, "already exists in function directory.")
         exit()
 
@@ -22,19 +24,25 @@ def clear_function_directory():
     directorio_funciones.clear()
 
 
-def get_var_type(var_id, scope):
-    first = list(directorio_funciones.keys())[0]  # referencia a variables globales
+def get_var_type(var_id, scope, curr_class, parent_class, is_child):
+    first = list(directorio_funciones.keys())[0]  # reference to global scope
 
-    if var_id in directorio_funciones[scope][2]:  # buscar en scope especificado
+    if var_id in directorio_funciones[scope][2]:  # search in local scope
         # print("Variable", id, "found within scope", scope)
         return directorio_funciones[scope][2][var_id][0]
 
-    elif var_id in directorio_funciones[first][2]:  # buscar en scope global
+    elif var_id in directorio_funciones[first][2]:  # search in global scope
         # print("Variable", id, "found within GLOBAL scope", first)
         return directorio_funciones[first][2][var_id][0]
 
-    else:  # no se encontro la variable
-        print("ERROR: variable", var_id, "not found.")
+    elif var_id in tabla_obj[curr_class]['attributes']:  # search in object attributes
+        return tabla_obj[curr_class]['attributes'][var_id]
+
+    elif is_child and var_id in tabla_obj[parent_class]['attributes']:  # search in parent class attributes
+        return tabla_obj[parent_class]['attributes'][var_id]
+
+    else:  # variable was not found
+        print("ERROR: variable", var_id, "not found in scope", scope)
         exit()
 
 

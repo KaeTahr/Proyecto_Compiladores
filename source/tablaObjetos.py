@@ -33,7 +33,7 @@ def print_obj_table():
         print("---------------------------------------------------------------")
 
 
-def validate_parent(obj_id):
+def validate_class(obj_id):
     if obj_id not in tabla_obj:
         print("ERROR: Parent class", obj_id, "was not defined.")
         exit()

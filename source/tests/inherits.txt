@@ -19,6 +19,8 @@ class Estudiante inherits Persona {
 
 variables {
     int: x, y;
+    Estudiante: john;
+    Persona: paul;
 }
 
 int function hello(z : int) {
@@ -30,5 +32,6 @@ int function hello(z : int) {
 }
 
 main() {
-
+    x = john.edad;
+    y = paul.edad;
 }

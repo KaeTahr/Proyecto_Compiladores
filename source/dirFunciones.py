@@ -50,3 +50,5 @@ def get_var_address(var_id):
     for scope in directorio_funciones:
         if var_id in directorio_funciones[scope][2]:
             return directorio_funciones[scope][2][var_id][2]
+
+

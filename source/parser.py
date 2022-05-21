@@ -24,12 +24,12 @@ parent_class = ''
 def p_program(p):
     """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main"""
     tablaVars.print_var_table()
-    print_obj_table()
-    # tablaConst.print_const_table()
-    print("\nOperand stack:\t", operand_stack)
-    print("Type stack:\t", type_stack)
-    print("Operator stack:\t", operator_stack)
-    print("\nQuadruples:")
+    # print_obj_table()
+    # # tablaConst.print_const_table()
+    # print("\nOperand stack:\t", operand_stack)
+    # print("Type stack:\t", type_stack)
+    # print("Operator stack:\t", operator_stack)
+    # print("\nQuadruples:")
     for i, q in enumerate(quad_list):
         print(i + 1, q)
     # print("M_Quads:", *m_quad_list, sep="\n")
@@ -91,6 +91,7 @@ def p_validate_inheritance(p):
     validate_class(p[-1])  # make sure parent class is defined
     parent_class = p[-1]
     is_child = True
+    child_class(curr_class)
 
 
 def p_class2(p):
@@ -151,7 +152,8 @@ def p_store_id(p):
         add_attribute(curr_class, curr_var_id, curr_var_type)
     else:
         if curr_var_type not in ['int', 'float', 'char']:
-            tablaVars.add_variable(curr_var_id, curr_var_type, "object", scope_global)
+            tablaVars.add_variable(curr_var_id, curr_var_type, "object", curr_scope)
+            tablaVars.instantiate_obj(curr_var_id, curr_var_type, curr_scope, parent_class)
         else:
             tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)
 
@@ -269,7 +271,17 @@ def p_gen_quad5(p):
 
 def p_var(p):
     """var : ID store_operand list1
-           | ID DOT ID"""
+           | ID DOT ID store_attr"""
+
+
+def p_store_attr(p):
+    """store_attr :"""
+    global curr_operand_type
+    name = str(p[-3] + p[-2] + p[-1])
+    operand_stack.append(name)
+    m_operand_stack.append(dirFunciones.get_var_address(name))
+    curr_operand_type = dirFunciones.get_var_type(name, curr_scope, curr_class, parent_class, is_child)
+    type_stack.append(curr_operand_type)
 
 
 def p_store_operand(p):

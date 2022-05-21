@@ -10,6 +10,13 @@ class Persona {
         float function getHeight() { return(height); }
 };
 
-main() {
+variables {
+    int: x;
+    float: y;
+    Persona: asuka;
+}
 
+main() {
+    x = asuka.age;
+    y = asuka.height;
 }

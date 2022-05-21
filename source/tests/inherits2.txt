@@ -10,7 +10,7 @@ class Persona {
         float function getHeight() { return(height); }
 };
 
-class Estudiante {
+class Estudiante inherits Persona {
     attributes
         float: average;
 
@@ -19,10 +19,14 @@ class Estudiante {
 };
 
 variables {
-    Persona: john;
-    Estudiante: paul;
+
+    Estudiante: rei;
+    Persona: asuka;
     int: x;
+    float: y;
 }
 
 main() {
+    x = asuka.age;
+    y = rei.average;
 }

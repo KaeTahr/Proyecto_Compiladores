@@ -138,6 +138,9 @@ def p_main1(p):
 # FUNCTION
 def p_function(p):
     """function : tipo_retorno FUNCTION ID store_function LP func1 RP LB func2 statement RB func3"""
+    # func1 = parameters
+    # func2 = variables
+    # statement = body
 
 
 def p_store_function(p):
@@ -171,8 +174,11 @@ def p_tipo_param(p):
 
 
 def p_params(p):
-    """params : ID COLON tipo_param store_param par1"""
+    """params : ID COLON tipo_param store_param par1 sign_function"""
 
+def p_sign_function(p):
+    """sign_function : """
+    dirFunciones.sign_function(curr_scope)
 
 def p_store_param(p):
     """store_param :"""

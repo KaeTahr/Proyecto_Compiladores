@@ -53,5 +53,9 @@ void function hello() {
 }
 
 main() {
-
+    hello();
+    #write(clasifica());
+    #fResult = promedio(1.0, 2);
+    #write(fResult);
+    #fResult = promedio(fResult, 2);
 }

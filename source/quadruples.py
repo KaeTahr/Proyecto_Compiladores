@@ -7,16 +7,19 @@ operand_stack = []
 operator_stack = []
 type_stack = []
 instruction_pointer = 1
-temporal_counter = 1
+temporal_counter = 1 # total
+local_temporal_counter = 1
 quad_list = []  # quadruplos con IDs
 jump_list = []
 from_tmp = []
 m_quad_list = []  # quadruplos con direcciones
 
+def get_instruction_pointer():
+    return instruction_pointer
 
 # gen_quad 0-4
 def gen_quad_exp(valid_operators):
-    global operand_stack, operator_stack, type_stack, quad_list, temporal_counter, instruction_pointer
+    global operand_stack, operator_stack, type_stack, quad_list, temporal_counter, instruction_pointer, local_temporal_counter
     if operator_stack:
         current_operator = operator_stack[-1]
         if current_operator in valid_operators:
@@ -45,6 +48,7 @@ def gen_quad_exp(valid_operators):
 
                 instruction_pointer += 1
                 temporal_counter += 1
+                local_temporal_counter += 1
 
             else:
                 print("ERROR: Type mismatch in expression!")
@@ -154,7 +158,7 @@ def gen_from_start(s):
 
 
 def gen_from_jmp():
-    global instruction_pointer, temporal_counter
+    global instruction_pointer, temporal_counter, local_temporal_counter
     start_type = from_tmp.pop()
     start = from_tmp.pop()
     target = operand_stack.pop()
@@ -167,6 +171,7 @@ def gen_from_jmp():
 
     temp_result = "t" + str(temporal_counter)
     temporal_counter += 1
+    local_temporal_counter += 1
     quad_list.append(['>', start, target, temp_result])
     instruction_pointer += 1
     type_stack.append(result_type)
@@ -212,3 +217,13 @@ def gen_quad_return(fun_type):
     else:
         quad_list.append(['RETURN', '', '', res])
         instruction_pointer += 1
+
+def fun_start():
+    global local_temporal_counter
+    local_temporal_counter = 1
+
+def fun_end():
+    global instruction_pointer, local_temporal_counter
+    quad_list.append(['ENDFunc', '', '', ''])
+    instruction_pointer += 1
+    return  local_temporal_counter

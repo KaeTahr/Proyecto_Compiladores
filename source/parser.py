@@ -2,6 +2,7 @@ import ply.yacc as yacc
 import dirFunciones
 import tablaVars
 import tablaConst
+import quadruples as q
 from quadruples import *
 from lexer import tokens
 import sys
@@ -137,11 +138,20 @@ def p_main1(p):
 
 # FUNCTION
 def p_function(p):
-    """function : tipo_retorno FUNCTION ID store_function LP func1 RP LB func2 statement RB func3"""
+    """function : tipo_retorno FUNCTION ID store_function LP func1 RP LB func2 fun_start statement RB fun_end func3"""
     # func1 = parameters
     # func2 = variables
     # statement = body
 
+def p_fun_start(p):
+    """fun_start :"""
+    dirFunciones.fun_start(curr_scope, get_instruction_pointer())
+    fun_start()
+
+def p_fun_end(p):
+    """fun_end :"""
+    lt = fun_end()
+    dirFunciones.set_local_tmp_count(curr_scope, lt)
 
 def p_store_function(p):
     """store_function :"""

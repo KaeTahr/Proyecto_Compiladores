@@ -1,5 +1,4 @@
 from enum import IntEnum
-from webbrowser import get
 
 directorio_funciones = {}
 
@@ -9,6 +8,7 @@ directorio_funciones = {}
 # fun[2] = local variable table
 # fun[3] = parameters
 # fun[4] = amount of temporary variables
+# fun[5] = quadruple num where fun starts
 
 
 class FuncAttr(IntEnum):
@@ -17,6 +17,7 @@ class FuncAttr(IntEnum):
     VAR_TABLE = 2
     PARAMETERS = 3
     TEMP_AMOUNT = 4
+    START = 5
 
 
 # agregar funcion a directorio de funciones
@@ -26,8 +27,7 @@ def add_function(fun_id, fun_type, kind):
         exit()
 
     else:
-        directorio_funciones[fun_id] = [fun_type, kind, {}, (), 0]
-        # new_function_log(fun_id) # log info
+        directorio_funciones[fun_id] = [fun_type, kind, {}, (), 0, -1]
 
 
 def new_function_log(fun_id):
@@ -35,6 +35,7 @@ def new_function_log(fun_id):
     print('New entry in function directory:')
     print("ID:", fun_id, "\tType:",
           directorio_funciones[fun_id][FuncAttr.RETURN_TYPE], "\tKind:", directorio_funciones[fun_id][FuncAttr.IS_GLOBAL], "\n")
+    print('at quadruple: ', directorio_funciones[fun_id][FuncAttr.START])
 
 
 def clear_function_directory():
@@ -78,3 +79,11 @@ def get_fun_signature(id):
         print("ERROR: Attempted to call undefined function")
         exit()
 
+def fun_start(id, ip):
+    f = directorio_funciones[id]
+    f[FuncAttr.START] = ip
+    # new_function_log(id) # log info
+
+def set_local_tmp_count(id, tmp_count):
+    f = directorio_funciones[id]
+    f[FuncAttr.TEMP_AMOUNT] = tmp_count

@@ -11,12 +11,9 @@ class Persona {
 };
 
 variables {
-    int: x;
-    float: y;
     Persona: asuka;
 }
 
 main() {
-    x = asuka.age;
-    y = asuka.height;
+    asuka.getAge();
 }

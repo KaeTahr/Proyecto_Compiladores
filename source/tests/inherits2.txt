@@ -18,15 +18,20 @@ class Estudiante inherits Persona {
         float function getAverage() { return(average); }
 };
 
-variables {
+class Maestro inherits Estudiante {
+    attributes
+        int: salon;
 
-    Estudiante: rei;
+    methods
+        int function getSalon() { return(salon); }
+};
+
+variables {
     Persona: asuka;
-    int: x;
-    float: y;
+    Estudiante: rei;
+    Maestro: misato;
 }
 
 main() {
-    x = asuka.age;
-    y = rei.average;
+    misato.getAverage();
 }

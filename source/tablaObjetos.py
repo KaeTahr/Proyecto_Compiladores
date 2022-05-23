@@ -45,8 +45,13 @@ def validate_attribute(obj_id, attr):
         exit()
 
 
-def validate_method(obj_id, mthd):
-    if mthd not in tabla_obj[obj_id]['methods']:
+def validate_method(obj_id, mthd, parent):
+    child = tabla_obj[obj_id]['child']
+    if child:
+        if mthd not in tabla_obj[parent]['methods'] and mthd not in tabla_obj[obj_id]['methods']:
+            print("ERROR: Function", mthd, "is not a method of class", obj_id)
+            exit()
+    elif mthd not in tabla_obj[obj_id]['methods']:
         print("ERROR: Function", mthd, "is not a method of class", obj_id)
         exit()
 

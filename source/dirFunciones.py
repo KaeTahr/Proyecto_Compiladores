@@ -51,4 +51,5 @@ def get_var_address(var_id):
         if var_id in directorio_funciones[scope][2]:
             return directorio_funciones[scope][2][var_id][2]
 
-
+# TODO: create class to get attribute type
+# def get_attr_type(attr_id, class_id):

@@ -1,6 +1,8 @@
+from typing import Type
 import tablaConst
 from cuboSemantico import *
 from memoria import *
+from dirFunciones import FuncAttr
 
 m_operand_stack = []
 operand_stack = []
@@ -227,3 +229,40 @@ def fun_end():
     quad_list.append(['ENDFunc', '', '', ''])
     instruction_pointer += 1
     return  local_temporal_counter
+
+def handle_fun_call(fun_id, df, params_count):
+    global instruction_pointer
+    if fun_id not in df:
+        raise Exception('Attempted to call undeclared function', fun_id)
+    f = df[fun_id]
+    signature = (f[FuncAttr.RETURN_TYPE], fun_id,  f[FuncAttr.PARAMETERS]) 
+    # GENERATE ERA
+    quad_list.append(['ERA', '', '', fun_id]) # TODO: Is this ok?
+    instruction_pointer += 1
+    # Verifiy parameters
+    # first, verify correct amount
+    if len(signature[2]) != params_count:
+        raise Exception("Function call doesn't match function signature")
+    # now check types
+    # TODO: Are the last operations in the stack the parameters? 
+    # should be?
+    p_types = []
+    for i in range(params_count):
+        p_types.append(type_stack.pop())
+
+    p_types.reverse()
+    if tuple(p_types) != signature[2]:
+        raise TypeError('Mismatch in expected parameters type')
+    # Now, initiate parameters with expression result
+
+    #breakpoint()
+    for i in range(params_count):
+        quad_list.append(('PARAMETER', '', '', operand_stack.pop()))
+    # TODO: Remember where we were called from? Returns managed by VM?
+    # OK, try to execute
+    quad_list.append(['GoSub', '', '', f[FuncAttr.START]])
+    instruction_pointer += 1
+    type_stack.append(signature[0])
+    operand_stack.append(-1) # TODO: What is the result of the function as an expression?
+
+   

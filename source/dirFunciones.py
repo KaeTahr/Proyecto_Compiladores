@@ -19,6 +19,8 @@ class FuncAttr(IntEnum):
     TEMP_AMOUNT = 4
     START = 5
 
+def get_dir_funciones():
+    return directorio_funciones
 
 # agregar funcion a directorio de funciones
 def add_function(fun_id, fun_type, kind):

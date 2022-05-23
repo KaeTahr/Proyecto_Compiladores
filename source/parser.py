@@ -13,6 +13,7 @@ curr_var_id = ''
 curr_scope = ''
 curr_operand_type = ''
 curr_from_var = ''
+parameter_stack = []
 
 
 # PROGRAMA
@@ -254,8 +255,13 @@ def p_store_operand(p):
 
 # VOID CALL
 def p_void_call(p):
-    """void_call : ID call1 LP call2 RP
-                 | ID call1 LP RP"""
+    """void_call : ID call1 params_init LP call2 RP
+                 | ID call1 params_init LP RP"""
+    handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
+
+def p_params_init(p):
+    """params_init :"""
+    parameter_stack.append(0)
 
 
 def p_call1(p):
@@ -265,6 +271,7 @@ def p_call1(p):
 
 def p_call2(p):
     """call2 : expression call3"""
+    parameter_stack[-1] += 1
 
 
 def p_call3(p):
@@ -501,7 +508,6 @@ def p_error(p):
         exit()
     else:
         print("Syntax error at EOF!")
-
 
 def p_empty(p):
     """empty :"""

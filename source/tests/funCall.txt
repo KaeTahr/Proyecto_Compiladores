@@ -1,0 +1,61 @@
+program testFunDir;
+
+variables {
+    int : iCount;
+    float : fResult;
+    char : cInitial;
+}
+
+int function random(cKey : char) {
+    variables {
+        int : iRes;
+        float : fNada;
+    }
+
+    if (cKey == 'A') then {
+        iRes = 1;
+    } else {
+        if (cKey == 'B') then{
+            iRes = 2;
+        } else {
+            iRes = 0;
+        }
+    }
+
+    return(iRes);
+}
+
+
+float function promedio(fSuma : float, iTotal : int) {
+    variables {
+         float: fRes;
+         char: cEmpty;
+    }
+
+    fResult = fSuma / iTotal;
+
+    return (fResult);
+}
+
+
+char function clasifica() {
+    variables {
+        char : cRating;
+    }
+
+    cRating = 'R';
+
+    return(cRating);
+}
+
+void function hello() {
+    write("Hello world!");
+}
+
+main() {
+    #hello();
+    #write(clasifica());
+    fResult = promedio(5.0 + 6.0, 2);
+    #write(fResult);
+    #fResult = promedio(fResult, 2);
+}

@@ -257,7 +257,7 @@ def handle_fun_call(fun_id, df, params_count):
 
     #breakpoint()
     for i in range(params_count):
-        quad_list.append(('PARAMETER', '', '', operand_stack.pop()))
+        quad_list.append(('PARAMETER', operand_stack.pop(), '', params_count - i))
     # TODO: Remember where we were called from? Returns managed by VM?
     # OK, try to execute
     quad_list.append(['GoSub', '', '', f[FuncAttr.START]])

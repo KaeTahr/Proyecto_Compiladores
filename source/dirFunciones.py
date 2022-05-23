@@ -20,10 +20,6 @@ def new_function_log(fun_id):
     print("ID:", fun_id, "\tType:", directorio_funciones[fun_id][0], "\tKind:", directorio_funciones[fun_id][1], "\n")
 
 
-def clear_function_directory():
-    directorio_funciones.clear()
-
-
 def get_var_type(var_id, scope, curr_class):
     first = list(directorio_funciones.keys())[0]  # reference to global scope
     parent = tabla_obj[curr_class]['parent']  # check if class is child of another

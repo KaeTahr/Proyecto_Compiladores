@@ -15,23 +15,21 @@ curr_operand_type = ''
 curr_from_var = ''
 scope_global = ''
 in_object = False
-is_child = False
 curr_class = ''
-parent_class = ''
 
 
 # PROGRAMA
 def p_program(p):
     """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main"""
     tablaVars.print_var_table()
-    print_obj_table()
+    # print_obj_table()
     # tablaConst.print_const_table()
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
-    print("\nQuadruples:")
-    for i, q in enumerate(quad_list):
-        print(i + 1, q)
+    # print("\nQuadruples:")
+    # for i, q in enumerate(quad_list):
+    #     print(i + 1, q)
     # print("M_Quads:", *m_quad_list, sep="\n")
     p[0] = "\nInput is a valid program.\n"
 
@@ -74,10 +72,9 @@ def p_store_object(p):
 
 def p_exit_class(p):
     """exit_class :"""
-    global curr_scope, in_object, is_child
+    global curr_scope, in_object
     curr_scope = scope_global  # return to global scope after class definitions
     in_object = False
-    is_child = False
 
 
 def p_class1(p):
@@ -87,12 +84,10 @@ def p_class1(p):
 
 def p_validate_inheritance(p):
     """validate_inheritance :"""
-    global is_child, parent_class, curr_class
+    global curr_class
     validate_class(p[-1])  # make sure parent class is defined
     curr_class = p[-4]
-    parent_class = p[-1]
-    is_child = True
-    assign_parent(curr_class, parent_class) #TODO CHANGE ME
+    assign_parent(curr_class, p[-1])
 
 
 def p_class2(p):
@@ -154,7 +149,6 @@ def p_store_id(p):
     else:
         if curr_var_type not in ['int', 'float', 'char']:
             tablaVars.add_variable(curr_var_id, curr_var_type, "object", curr_scope)
-            # TODO: no se manda padre correcto
             tablaVars.instantiate_obj(curr_var_id, curr_var_type, curr_scope)
         else:
             tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)
@@ -282,7 +276,7 @@ def p_store_attr(p):
     name = str(p[-3] + p[-2] + p[-1])
     operand_stack.append(name)
     m_operand_stack.append(dirFunciones.get_var_address(name))
-    # TODO: Create separate function to search attribute type
+    
     curr_operand_type = dirFunciones.get_var_type(name, curr_scope, curr_class)
     type_stack.append(curr_operand_type)
 

@@ -35,6 +35,6 @@ variables {
 main() {
     asuka.getAge();
     asuka.getHeight();
-    #rei.getAverage();
-    #misato.getSalon();
+    rei.getAverage();
+    misato.getSalon();
 }

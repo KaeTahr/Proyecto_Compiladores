@@ -7,7 +7,7 @@ def add_object(obj_id):
         exit()
 
     else:
-        tabla_obj[obj_id] = {'attributes': {}, 'methods': {}, 'child': False}
+        tabla_obj[obj_id] = {'attributes': {}, 'methods': {}, 'parent': ''}
 
 
 def add_attribute(obj_id, attr_id, attr_type):
@@ -45,9 +45,9 @@ def validate_attribute(obj_id, attr):
         exit()
 
 
-def validate_method(obj_id, mthd, parent):
-    child = tabla_obj[obj_id]['child']
-    if child:
+def validate_method(obj_id, mthd):
+    parent = tabla_obj[obj_id]['parent']
+    if parent:
         if mthd not in tabla_obj[parent]['methods'] and mthd not in tabla_obj[obj_id]['methods']:
             print("ERROR: Function", mthd, "is not a method of class", obj_id)
             exit()
@@ -56,6 +56,6 @@ def validate_method(obj_id, mthd, parent):
         exit()
 
 
-def child_class(obj_id):
-    if obj_id in tabla_obj:
-        tabla_obj[obj_id]['child'] = True
+def assign_parent(child_id, parent_id):
+    if child_id in tabla_obj:
+        tabla_obj[child_id]['parent'] = parent_id

@@ -23,15 +23,15 @@ parent_class = ''
 # PROGRAMA
 def p_program(p):
     """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main"""
-    # tablaVars.print_var_table()
-    # print_obj_table()
-    # # tablaConst.print_const_table()
+    tablaVars.print_var_table()
+    print_obj_table()
+    # tablaConst.print_const_table()
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
-    # print("\nQuadruples:")
-    # for i, q in enumerate(quad_list):
-    #     print(i + 1, q)
+    print("\nQuadruples:")
+    for i, q in enumerate(quad_list):
+        print(i + 1, q)
     # print("M_Quads:", *m_quad_list, sep="\n")
     p[0] = "\nInput is a valid program.\n"
 
@@ -87,11 +87,12 @@ def p_class1(p):
 
 def p_validate_inheritance(p):
     """validate_inheritance :"""
-    global is_child, parent_class
+    global is_child, parent_class, curr_class
     validate_class(p[-1])  # make sure parent class is defined
+    curr_class = p[-4]
     parent_class = p[-1]
     is_child = True
-    child_class(curr_class)
+    assign_parent(curr_class, parent_class) #TODO CHANGE ME
 
 
 def p_class2(p):
@@ -154,7 +155,7 @@ def p_store_id(p):
         if curr_var_type not in ['int', 'float', 'char']:
             tablaVars.add_variable(curr_var_id, curr_var_type, "object", curr_scope)
             # TODO: no se manda padre correcto
-            tablaVars.instantiate_obj(curr_var_id, curr_var_type, curr_scope, parent_class)
+            tablaVars.instantiate_obj(curr_var_id, curr_var_type, curr_scope)
         else:
             tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)
 
@@ -282,7 +283,7 @@ def p_store_attr(p):
     operand_stack.append(name)
     m_operand_stack.append(dirFunciones.get_var_address(name))
     # TODO: Create separate function to search attribute type
-    curr_operand_type = dirFunciones.get_var_type(name, curr_scope, curr_class, parent_class, is_child)
+    curr_operand_type = dirFunciones.get_var_type(name, curr_scope, curr_class)
     type_stack.append(curr_operand_type)
 
 
@@ -291,7 +292,7 @@ def p_store_operand(p):
     global curr_operand_type
     operand_stack.append(p[-1])
     m_operand_stack.append(dirFunciones.get_var_address(p[-1]))
-    curr_operand_type = dirFunciones.get_var_type(p[-1], curr_scope, curr_class, parent_class, is_child)
+    curr_operand_type = dirFunciones.get_var_type(p[-1], curr_scope, curr_class)
     type_stack.append(curr_operand_type)
 
 
@@ -308,8 +309,8 @@ def p_call1(p):
 
 def p_found_method(p):
     """found_method :"""
-    obj = dirFunciones.get_var_type(p[-3], curr_scope, curr_class, parent_class, is_child)
-    validate_method(obj, p[-1], parent_class)
+    obj = dirFunciones.get_var_type(p[-3], curr_scope, curr_class)
+    validate_method(obj, p[-1])
 
 
 def p_call2(p):

@@ -49,15 +49,15 @@ def print_var_table():
             print("---------------------------------------------------------------")
 
 
-def instantiate_obj(var_id, class_id, scope, parent):
-    child = tabla_obj[class_id]['child']
+def instantiate_obj(var_id, class_id, scope):
+    parent = tabla_obj[class_id]['parent']
     if tabla_obj[class_id]['attributes']:
         for attr in tabla_obj[class_id]['attributes']:
             name = str(var_id + "." + attr)
             var_type = tabla_obj[class_id]['attributes'][attr]
             add_variable(name, var_type, 'attribute', scope)
 
-    if child:
+    if parent:
         if tabla_obj[parent]['attributes']:
             for attr in tabla_obj[parent]['attributes']:
                 name = str(var_id + "." + attr)

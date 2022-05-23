@@ -24,8 +24,9 @@ def clear_function_directory():
     directorio_funciones.clear()
 
 
-def get_var_type(var_id, scope, curr_class, parent_class, is_child):
+def get_var_type(var_id, scope, curr_class):
     first = list(directorio_funciones.keys())[0]  # reference to global scope
+    parent = tabla_obj[curr_class]['parent']  # check if class is child of another
 
     if var_id in directorio_funciones[scope][2]:  # search in local scope
         # print("Variable", id, "found within scope", scope)
@@ -38,8 +39,8 @@ def get_var_type(var_id, scope, curr_class, parent_class, is_child):
     elif var_id in tabla_obj[curr_class]['attributes']:  # search in object attributes
         return tabla_obj[curr_class]['attributes'][var_id]
 
-    elif is_child and var_id in tabla_obj[parent_class]['attributes']:  # search in parent class attributes
-        return tabla_obj[parent_class]['attributes'][var_id]
+    elif parent and var_id in tabla_obj[parent]['attributes']:  # search in parent class attributes
+        return tabla_obj[parent]['attributes'][var_id]
 
     else:  # variable was not found
         print("ERROR: variable", var_id, "not found in scope", scope)
@@ -50,6 +51,3 @@ def get_var_address(var_id):
     for scope in directorio_funciones:
         if var_id in directorio_funciones[scope][2]:
             return directorio_funciones[scope][2][var_id][2]
-
-# TODO: create class to get attribute type
-# def get_attr_type(attr_id, class_id):

@@ -1,0 +1,19 @@
+program classTest2;
+
+class Persona {
+    attributes
+        int: age;
+        float: height;
+
+    methods
+        int function getAge() { return(age); }
+        float function getHeight() { return(height); }
+};
+
+variables {
+    Persona: asuka;
+}
+
+main() {
+    asuka.getAge();
+}

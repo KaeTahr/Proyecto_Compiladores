@@ -147,7 +147,7 @@ def p_store_id(p):
     if in_object:  # id read is an attribute within a class
         add_attribute(curr_class, curr_var_id, curr_var_type)
     else:
-        if curr_var_type not in ['int', 'float', 'char']:
+        if curr_var_type not in ['int', 'float', 'char']:  # id read is an object
             tablaVars.add_variable(curr_var_id, curr_var_type, "object", curr_scope)
             tablaVars.instantiate_obj(curr_var_id, curr_var_type, curr_scope)
         else:
@@ -276,7 +276,6 @@ def p_store_attr(p):
     name = str(p[-3] + p[-2] + p[-1])
     operand_stack.append(name)
     m_operand_stack.append(dirFunciones.get_var_address(name))
-    
     curr_operand_type = dirFunciones.get_var_type(name, curr_scope, curr_class)
     type_stack.append(curr_operand_type)
 

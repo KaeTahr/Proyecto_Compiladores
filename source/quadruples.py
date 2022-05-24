@@ -260,7 +260,7 @@ def handle_fun_call(fun_id, df, params_count):
         quad_list.append(('PARAMETER', operand_stack.pop(), '', params_count - i))
     # TODO: Remember where we were called from? Returns managed by VM?
     # OK, try to execute
-    quad_list.append(['GoSub', '', '', f[FuncAttr.START]])
+    quad_list.append(['GoSub', fun_id, '', f[FuncAttr.START]])
     instruction_pointer += 1
     type_stack.append(signature[0])
     operand_stack.append(-1) # TODO: What is the result of the function as an expression?

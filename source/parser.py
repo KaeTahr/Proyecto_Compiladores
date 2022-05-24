@@ -27,10 +27,11 @@ def p_program(p):
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
-    # print("\nQuadruples:")
+    print("\nQuadruples:")
     # for i, q in enumerate(quad_list):
     #     print(i + 1, q)
-    # print("M_Quads:", *m_quad_list, sep="\n")
+    for i, q in enumerate(m_quad_list):
+        print(i + 1, q)
     p[0] = "\nInput is a valid program.\n"
 
 

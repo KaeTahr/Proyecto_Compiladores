@@ -22,7 +22,8 @@ def new_function_log(fun_id):
 
 def get_var_type(var_id, scope, curr_class):
     first = list(directorio_funciones.keys())[0]  # reference to global scope
-    parent = tabla_obj[curr_class]['parent']  # check if class is child of another
+    if curr_class:
+        parent = tabla_obj[curr_class]['parent']  # check if class is child of another
 
     if var_id in directorio_funciones[scope][2]:  # search in local scope
         # print("Variable", id, "found within scope", scope)

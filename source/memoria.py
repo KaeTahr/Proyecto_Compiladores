@@ -19,11 +19,13 @@ virtual_memory = {
     'constant': {
         'int': {'initial': 10000, 'count': 0},
         'float': {'initial': 11000, 'count': 0},
-        'char': {'initial': 12000, 'count': 0}
+        'char': {'initial': 12000, 'count': 0},
+        'string': {'initial': 13000, 'count': 0}
     }
 }
 
-valid_types = ['int', 'char', 'float']
+
+valid_types = ['int', 'char', 'float', 'bool', 'string']
 
 
 def get_avail(scope, v_type):

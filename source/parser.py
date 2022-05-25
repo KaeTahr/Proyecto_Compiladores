@@ -2,7 +2,6 @@ import ply.yacc as yacc
 import dirFunciones
 import tablaVars
 import tablaConst
-import quadruples as q
 from quadruples import *
 from tablaObjetos import *
 from lexer import tokens
@@ -18,6 +17,7 @@ scope_global = ''
 in_object = False
 curr_class = ''
 parameter_stack = []
+has_return = False
 
 
 # PROGRAMA
@@ -25,7 +25,7 @@ def p_program(p):
     """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main"""
     tablaVars.print_var_table()
     # print_obj_table()
-    # tablaConst.print_const_table()
+    tablaConst.print_const_table()
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
@@ -192,29 +192,36 @@ def p_function(p):
     # func2 = variables
     # statement = body
 
+
 def p_fun_start(p):
     """fun_start :"""
     if curr_fun_type != 'void':
-        return_address = get_avail('global', curr_fun_type) #TODO Global?
+        return_address = get_avail('global', curr_fun_type)  # TODO Global?
     else:
         return_address = -1
     dirFunciones.fun_start(curr_scope, get_instruction_pointer(), return_address)
     fun_start()
 
+
 def p_fun_end(p):
     """fun_end :"""
     lt = fun_end()
     dirFunciones.fun_end(curr_scope, lt)
+    if has_return is False and curr_fun_type != 'void':
+        print("Error: non-void function", curr_scope, "has no return statement.")
+        exit()
+
 
 def p_store_function(p):
     """store_function :"""
-    global curr_scope
+    global curr_scope, has_return
     if in_object:  # id read is a method within a class
         add_method(curr_class, p[-1], curr_fun_type)
         dirFunciones.add_function(p[-1], curr_fun_type, "method")
     else:
         dirFunciones.add_function(p[-1], curr_fun_type, p[-2])  # add function to directory
     curr_scope = p[-1]  # update current scope
+    has_return = False
 
 
 def p_func1(p):
@@ -243,9 +250,11 @@ def p_tipo_param(p):
 def p_params(p):
     """params : ID COLON tipo_param store_param par1 sign_function"""
 
+
 def p_sign_function(p):
     """sign_function : """
     dirFunciones.sign_function(curr_scope)
+
 
 def p_store_param(p):
     """store_param :"""
@@ -325,6 +334,7 @@ def p_void_call(p):
                  | ID call1 params_init LP RP"""
     handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
 
+
 def p_params_init(p):
     """params_init :"""
     parameter_stack.append(0)
@@ -369,8 +379,10 @@ def p_write1(p):
 
 def p_store_string(p):
     """store_string :"""
-    type_stack.append('STRING')
+    type_stack.append('string')
     operand_stack.append(p[-1])
+    tablaConst.add_constant(p[-1], 'string')
+    m_operand_stack.append(tablaConst.get_const_add(p[-1]))
 
 
 def p_gen_quad_8(p):
@@ -454,6 +466,8 @@ def p_gen_from_end(p):
 # RETURN
 def p_return_st(p):
     """return_st : RETURN LP expression gen_quad_9 RP"""
+    global has_return
+    has_return = True
 
 
 def p_gen_quad_9(p):
@@ -580,6 +594,7 @@ def p_error(p):
         exit()
     else:
         print("Syntax error at EOF!")
+
 
 def p_empty(p):
     """empty :"""

@@ -6,6 +6,7 @@ variables {
 
 main() {
     # esto es un comment
+    write("starting xd");
     c = a || b;
     c = a & b;
     c = a < b;

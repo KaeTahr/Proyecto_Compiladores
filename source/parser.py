@@ -30,10 +30,17 @@ def p_program(p):
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
     print("\nQuadruples:")
-    # for i, q in enumerate(quad_list):
-    #     print(i + 1, q)
+    for i, q in enumerate(quad_list):
+        print(i + 1, q)
+    print("\nQuadruples: (machine)")
+    f = open("intermediate.out", "w")
     for i, q in enumerate(m_quad_list):
         print(i + 1, q)
+        f.write(str(q[0]) + ',' +
+         str(q[1]) + ',' + 
+         str(q[2]) + ',' +
+         str(q[3]) + '\n')
+    f.close()
     p[0] = "\nInput is a valid program.\n"
 
 

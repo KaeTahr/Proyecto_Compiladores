@@ -10,7 +10,7 @@ int function hello(z : int) {
         int : z2;
         float : c;
     }
-    return(z2/c);
+    return(z2);
 }
 
 main() {

@@ -2,16 +2,29 @@ program classTest;
 
 class Estudiante {
     attributes
-        int : edad ;
-        float : altura;
-        char : promedio;
+        int: edad;
+        float: promedio;
+
     methods
-        void function calcPromedio(examenes : int)
-            { return (promedio/examenes); }
-        int function getEdad()
-            { return (edad); }
+        void function saluda(inicial: char) { write("Hello ", inicial); }
+        int function getEdad() { return(edad); }
+        float function getPromedio() { return(promedio); }
 };
 
-main() {
+variables {
+    int: x, y;
+    Estudiante: john;
+}
 
+int function hello(z : int) {
+    variables {
+        int : z2;
+        float : c;
+        Estudiante: paul;
+    }
+    return(z2);
+}
+
+main() {
+    x = john.edad;
 }

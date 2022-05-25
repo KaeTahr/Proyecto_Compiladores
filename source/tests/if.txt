@@ -1,19 +1,34 @@
 program ifTest;
 
 variables {
-    int: a, b;
+    int: a, b, c, T, F, out, out2;
 }
 
 main() {
+
+    a = a + a * (b + c);
+    b = (b * b) + (a / c);
+    a = (b * (1 + 2) - 3) / 5;
     # if simple
     if(a != b) then {
-        return(a);
+
+        if (b != a) then {
+            b = a + b;
+
+        } else {
+            b = a + a;
+            # write("lmao");
+        }
+        out = out + out;
     }
+    out2 = out2 + out2;
 
     # if-else
     if(33+77 == 100) then {
-        return(1);
+        T = a + b;
+
     } else { # comment en medio
-        return(0);
+        F = a + b;
+
     }
 }

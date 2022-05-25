@@ -1,13 +1,21 @@
 program testWhile;
 
 variables {
-    int: x,y;
+    int: x, y;
+    float: outf, outw;
 }
 
 main() {
     # esto es un comment
-    while(x <= y) do {
-        write("Entra al while");
+    y = 1000000;
+    while(x * x + 5 <= y) do {
+        x = 500 / y;
+        if( x / 2 > 3) then {
+            x = x + 1;
+        }
+        outf = outf;
     }
+    outw = outw;
+
     write("Sali del while");
 }

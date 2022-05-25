@@ -2,7 +2,9 @@ import ply.yacc as yacc
 import dirFunciones
 import tablaVars
 import tablaConst
+import quadruples as q
 from quadruples import *
+from tablaObjetos import *
 from lexer import tokens
 import sys
 
@@ -11,27 +13,36 @@ curr_var_type = ''
 curr_var_id = ''
 curr_scope = ''
 curr_operand_type = ''
+curr_from_var = ''
+scope_global = ''
+in_object = False
+curr_class = ''
+parameter_stack = []
 
 
 # PROGRAMA
 def p_program(p):
     """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main"""
     tablaVars.print_var_table()
-    tablaConst.print_const_table()
+    # print_obj_table()
+    # tablaConst.print_const_table()
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
-    print("Quadruples:", *quad_list, sep="\n")
-    print("\n")
-    print("M_Quads:", *m_quad_list, sep="\n")
+    print("\nQuadruples:")
+    # for i, q in enumerate(quad_list):
+    #     print(i + 1, q)
+    for i, q in enumerate(m_quad_list):
+        print(i + 1, q)
     p[0] = "\nInput is a valid program.\n"
 
 
 def p_store_program(p):
     """store_program :"""
     dirFunciones.add_function(p[-1], p[-2], p[-2])
-    global curr_scope
+    global curr_scope, scope_global
     curr_scope = p[-1]
+    scope_global = p[-1]
 
 
 def p_prog1(p):
@@ -51,12 +62,35 @@ def p_prog3(p):
 
 # CLASS
 def p_class(p):
-    """class : CLASS ID class1 LB class2 class3 RB SEMI class4"""
+    """class : CLASS ID store_object class1 LB class2 class3 RB SEMI exit_class class4"""
+
+
+def p_store_object(p):
+    """store_object :"""
+    global in_object, curr_class
+    curr_class = p[-1]
+    add_object(p[-1])  # add object to object table
+    in_object = True  # now inside class definition
+
+
+def p_exit_class(p):
+    """exit_class :"""
+    global curr_scope, in_object
+    curr_scope = scope_global  # return to global scope after class definitions
+    in_object = False
 
 
 def p_class1(p):
-    """class1 : INHERITS ID
+    """class1 : INHERITS ID validate_inheritance
               | empty"""
+
+
+def p_validate_inheritance(p):
+    """validate_inheritance :"""
+    global curr_class
+    validate_class(p[-1])  # make sure parent class is defined
+    curr_class = p[-4]
+    assign_parent(curr_class, p[-1])
 
 
 def p_class2(p):
@@ -106,10 +140,21 @@ def p_tipo(p):
 
 
 def p_lista_ids(p):
-    """lista_ids : ID list1 list2"""
-    global curr_var_id, curr_var_type, curr_scope
-    curr_var_id = p[1]
-    tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)  # save local variable in current scope
+    """lista_ids : ID store_id list1 list2"""
+
+
+def p_store_id(p):
+    """store_id :"""
+    global curr_var_id
+    curr_var_id = p[-1]
+    if in_object:  # id read is an attribute within a class
+        add_attribute(curr_class, curr_var_id, curr_var_type)
+    else:
+        if curr_var_type not in ['int', 'float', 'char']:  # id read is an object
+            tablaVars.add_variable(curr_var_id, curr_var_type, "object", curr_scope)
+            tablaVars.instantiate_obj(curr_var_id, curr_var_type, curr_scope)
+        else:
+            tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)
 
 
 def p_list1(p):
@@ -135,13 +180,33 @@ def p_main1(p):
 
 # FUNCTION
 def p_function(p):
-    """function : tipo_retorno FUNCTION ID store_function LP func1 RP LB func2 statement RB func3"""
+    """function : tipo_retorno FUNCTION ID store_function LP func1 RP LB func2 fun_start statement RB fun_end func3"""
+    # func1 = parameters
+    # func2 = variables
+    # statement = body
 
+def p_fun_start(p):
+    """fun_start :"""
+    if curr_fun_type != 'void':
+        return_address = get_avail('global', curr_fun_type) #TODO Global?
+    else:
+        return_address = -1
+    dirFunciones.fun_start(curr_scope, get_instruction_pointer(), return_address)
+    fun_start()
+
+def p_fun_end(p):
+    """fun_end :"""
+    lt = fun_end()
+    dirFunciones.fun_end(curr_scope, lt)
 
 def p_store_function(p):
     """store_function :"""
-    global curr_fun_type, curr_scope
-    dirFunciones.add_function(p[-1], curr_fun_type, p[-2])  # add function to directory
+    global curr_scope
+    if in_object:  # id read is a method within a class
+        add_method(curr_class, p[-1], curr_fun_type)
+        dirFunciones.add_function(p[-1], curr_fun_type, "method")
+    else:
+        dirFunciones.add_function(p[-1], curr_fun_type, p[-2])  # add function to directory
     curr_scope = p[-1]  # update current scope
 
 
@@ -169,7 +234,15 @@ def p_tipo_param(p):
 
 
 def p_params(p):
-    """params : ID COLON tipo_param store_param par1"""
+    """params : ID COLON tipo_param store_param par1 sign_function"""
+
+def p_sign_function(p):
+    """sign_function : """
+    dirFunciones.sign_function(curr_scope)
+
+def p_store_param(p):
+    """store_param :"""
+    tablaVars.add_variable(p[-3], curr_var_type, "parameter", curr_scope)  # save parameter as local variable
 
 
 def p_store_param(p):
@@ -189,6 +262,7 @@ def p_tipo_retorno(p):
                     | VOID"""
     global curr_fun_type
     curr_fun_type = p[1]  # save function type
+    p[0] = p[1]
 
 
 # STATEMENT
@@ -211,6 +285,7 @@ def p_stmt1(p):
 # ASSIGNMENT
 def p_assignment(p):
     """assignment : var EQ store_operator expression gen_quad5"""
+    p[0] = p[1]
 
 
 def p_gen_quad5(p):
@@ -220,7 +295,17 @@ def p_gen_quad5(p):
 
 def p_var(p):
     """var : ID store_operand list1
-           | ID DOT ID"""
+           | ID DOT ID store_attr"""
+
+
+def p_store_attr(p):
+    """store_attr :"""
+    global curr_operand_type
+    name = str(p[-3] + p[-2] + p[-1])
+    operand_stack.append(name)
+    m_operand_stack.append(dirFunciones.get_var_address(name))
+    curr_operand_type = dirFunciones.get_var_type(name, curr_scope, curr_class)
+    type_stack.append(curr_operand_type)
 
 
 def p_store_operand(p):
@@ -228,23 +313,35 @@ def p_store_operand(p):
     global curr_operand_type
     operand_stack.append(p[-1])
     m_operand_stack.append(dirFunciones.get_var_address(p[-1]))
-    curr_operand_type = dirFunciones.get_var_type(p[-1], curr_scope)
+    curr_operand_type = dirFunciones.get_var_type(p[-1], curr_scope, curr_class)
     type_stack.append(curr_operand_type)
 
 
 # VOID CALL
 def p_void_call(p):
-    """void_call : ID call1 LP call2 RP
-                 | ID call1 LP RP"""
+    """void_call : ID call1 params_init LP call2 RP
+                 | ID call1 params_init LP RP"""
+    handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
+
+def p_params_init(p):
+    """params_init :"""
+    parameter_stack.append(0)
 
 
 def p_call1(p):
-    """call1 : DOT ID
+    """call1 : DOT ID found_method
              | empty"""
+
+
+def p_found_method(p):
+    """found_method :"""
+    obj = dirFunciones.get_var_type(p[-3], curr_scope, curr_class)
+    validate_method(obj, p[-1])
 
 
 def p_call2(p):
     """call2 : expression call3"""
+    parameter_stack[-1] += 1
 
 
 def p_call3(p):
@@ -255,6 +352,7 @@ def p_call3(p):
 # READ
 def p_read(p):
     """read : READ LP var RP"""
+    gen_quad_read()
 
 
 # WRITE
@@ -263,8 +361,19 @@ def p_write(p):
 
 
 def p_write1(p):
-    """write1 : expression write2
-              | CTES write2"""
+    """write1 : expression gen_quad_8 write2
+              | CTES store_string gen_quad_8 write2"""
+
+
+def p_store_string(p):
+    """store_string :"""
+    type_stack.append('STRING')
+    operand_stack.append(p[-1])
+
+
+def p_gen_quad_8(p):
+    """gen_quad_8 :"""
+    gen_quad_write()
 
 
 def p_write2(p):
@@ -274,27 +383,80 @@ def p_write2(p):
 
 # IF
 def p_if_st(p):
-    """if_st : IF LP expression RP THEN LB statement RB if1"""
+    """if_st : IF LP expression RP gen_quad_6 THEN  LB statement RB if1"""
+
+
+def p_gen_quad_6(p):
+    """gen_quad_6 : """
+    gen_quad_if()
 
 
 def p_if1(p):
-    """if1 : ELSE LB statement RB
-           | empty"""
+    """if1 : ELSE LB gen_quad_else statement RB gen_quad_fi
+           | gen_quad_fi """
+
+
+def p_gen_quad_fi(p):
+    """gen_quad_fi : """
+    gen_end_if()
+
+
+def p_gen_quad_else(p):
+    """gen_quad_else : """
+    gen_quad_else()
 
 
 # WHILE
 def p_while_st(p):
-    """while_st : WHILE LP expression RP DO LB statement RB"""
+    """while_st : WHILE LP gen_while_start expression gen_while_jmp RP DO LB statement RB gen_while_end"""
+
+
+def p_while_start(p):
+    """gen_while_start : """
+    gen_while_start()
+
+
+def p_while_jmp(p):
+    """gen_while_jmp : """
+    gen_while_jmp()
+
+
+def p_while_end(p):
+    """gen_while_end : """
+    gen_while_end()
 
 
 # FROM
 def p_from_st(p):
-    """from_st : FROM ID EQ expression UNTIL expression DO LB statement RB"""
+    """from_st : FROM assignment gen_from_start UNTIL expression gen_from_jmp DO LB statement RB gen_from_end"""
+    global curr_from_var
+    curr_from_var = p[2]
+
+
+def p_gen_from_start(p):
+    """gen_from_start : """
+    global curr_from_var
+    gen_from_start(curr_from_var)
+
+
+def p_gen_from_jmp(p):
+    """gen_from_jmp : """
+    gen_from_jmp()
+
+
+def p_gen_from_end(p):
+    """gen_from_end : """
+    gen_from_end()
 
 
 # RETURN
 def p_return_st(p):
-    """return_st : RETURN LP expression RP"""
+    """return_st : RETURN LP expression gen_quad_9 RP"""
+
+
+def p_gen_quad_9(p):
+    """gen_quad_9 :"""
+    gen_quad_return(dirFunciones.directorio_funciones[curr_scope])
 
 
 # EXPRESSION
@@ -393,8 +555,6 @@ def p_store_int(p):
     m_operand_stack.append(tablaConst.get_const_add(p[-1]))
 
 
-
-
 def p_store_float(p):
     """store_float :"""
     operand_stack.append(p[-1])
@@ -418,7 +578,6 @@ def p_error(p):
         exit()
     else:
         print("Syntax error at EOF!")
-
 
 def p_empty(p):
     """empty :"""

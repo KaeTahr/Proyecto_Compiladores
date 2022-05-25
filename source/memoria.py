@@ -24,20 +24,21 @@ virtual_memory = {
     }
 }
 
+valid_types = ['int', 'char', 'float', 'bool']
+
 
 def get_avail(scope, v_type):
-    global virtual_memory
-    assigned_addr = virtual_memory[scope][v_type]['initial'] + virtual_memory[scope][v_type]['count']  # initial + count
-    if assigned_addr < virtual_memory[scope][v_type]['initial'] + addr_range - 1:
-        virtual_memory[scope][v_type]['count'] += 1  # update count
-        return assigned_addr
-    else:
-        print("ERROR: Too many", scope, " variables of type", v_type)
-        exit()
+    if v_type in valid_types:
+        assigned_addr = virtual_memory[scope][v_type]['initial'] + virtual_memory[scope][v_type]['count']
+        if assigned_addr < virtual_memory[scope][v_type]['initial'] + addr_range - 1:
+            virtual_memory[scope][v_type]['count'] += 1  # update count
+            return assigned_addr
+        else:
+            print("ERROR: Too many", scope, " variables of type", v_type)
+            exit()
 
 
 def get_count(scope, v_type):
-    global virtual_memory
     current_avail = virtual_memory[scope][v_type]['count']
     return current_avail
 
@@ -55,5 +56,3 @@ def reset_temp():
     virtual_memory['temporal']['float']['count'] = 0
     virtual_memory['temporal']['char']['count'] = 0
     virtual_memory['temporal']['bool']['count'] = 0
-
-

@@ -1,7 +1,7 @@
 program assignTest;
 
 variables {
-    int : x;
+    int : x, a;
     float : y;
     char : z;
 }

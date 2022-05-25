@@ -2,6 +2,6 @@ program writeTest;
 
 main() {
     # esto es un comment
-    write("Hello World!");
+    write("Hello World!", 5);
     write(2*5+3);
 }

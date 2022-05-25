@@ -2,20 +2,36 @@ program inheritsTest;
 
 class Persona {
     attributes
-        edad : int;
-        altura : float;
-        iniN : char;
-        iniA : char;
+        int: edad;
+        float: altura;
+        char: nombre, apellido;
 };
 
 class Estudiante inherits Persona {
     attributes
-        promedio : char;
+        float: promedio;
+
     methods
-        void function saluda()
-            { write("Hola, ", iniN); }
+        void function saluda(inicial: char) { write("Hello ", inicial); }
+        int function getEdad() { return(edad); }
+        float function getPromedio() { return(promedio); }
 };
 
-main() {
+variables {
+    int: x, y;
+    Estudiante: john;
+    Persona: paul;
+}
 
+int function hello(z : int) {
+    variables {
+        int : z2;
+        float : c;
+    }
+    return(z2);
+}
+
+main() {
+    x = john.edad;
+    y = paul.edad;
 }

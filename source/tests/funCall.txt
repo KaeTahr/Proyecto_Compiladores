@@ -49,13 +49,15 @@ char function clasifica() {
 }
 
 void function hello() {
+    variables { float : x, y; }
     write("Hello world!");
+    x = y * promedio(4.0, 5);
 }
 
 main() {
-    hello();
+    #hello();
     #write(clasifica());
-    #fResult = promedio(1.0, 2);
+    fResult = promedio(promedio(1.0, 2), 2);
     #write(fResult);
     #fResult = promedio(fResult, 2);
 }

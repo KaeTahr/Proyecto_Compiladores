@@ -1,22 +1,27 @@
+from typing import Type
 import tablaConst
 from cuboSemantico import *
 from memoria import *
+from dirFunciones import FuncAttr
 
 m_operand_stack = []
 operand_stack = []
 operator_stack = []
 type_stack = []
 instruction_pointer = 1
-temporal_counter = 1
+temporal_counter = 1 # total
+local_temporal_counter = 1
 quad_list = []  # quadruplos con IDs
 jump_list = []
 from_tmp = []
 m_quad_list = []  # quadruplos con direcciones
 
+def get_instruction_pointer():
+    return instruction_pointer
 
 # gen_quad 0-4
 def gen_quad_exp(valid_operators):
-    global operand_stack, operator_stack, type_stack, quad_list, temporal_counter, instruction_pointer
+    global operand_stack, operator_stack, type_stack, quad_list, temporal_counter, instruction_pointer, local_temporal_counter
     if operator_stack:
         current_operator = operator_stack[-1]
         if current_operator in valid_operators:
@@ -45,6 +50,7 @@ def gen_quad_exp(valid_operators):
 
                 instruction_pointer += 1
                 temporal_counter += 1
+                local_temporal_counter += 1
 
             else:
                 print("ERROR: Type mismatch in expression!")
@@ -154,7 +160,7 @@ def gen_from_start(s):
 
 
 def gen_from_jmp():
-    global instruction_pointer, temporal_counter
+    global instruction_pointer, temporal_counter, local_temporal_counter
     start_type = from_tmp.pop()
     start = from_tmp.pop()
     target = operand_stack.pop()
@@ -167,6 +173,7 @@ def gen_from_jmp():
 
     temp_result = "t" + str(temporal_counter)
     temporal_counter += 1
+    local_temporal_counter += 1
     quad_list.append(['>', start, target, temp_result])
     instruction_pointer += 1
     type_stack.append(result_type)
@@ -202,13 +209,63 @@ def gen_quad_write():
 
 
 #  gen_quad 9
-def gen_quad_return(fun_type):
+def gen_quad_return(f):
     global instruction_pointer, quad_list, operand_stack, type_stack
     curr_type = type_stack.pop()
     res = operand_stack.pop()
-    if curr_type != fun_type:
+    if curr_type != f[FuncAttr.RETURN_TYPE]:
         print("ERROR: Type mismatch in function return!")
         exit()
     else:
         quad_list.append(['RETURN', '', '', res])
         instruction_pointer += 1
+        quad_list.append(['=', res, '', f[FuncAttr.RETURN_ADDRESS]])
+
+def fun_start():
+    global local_temporal_counter
+    local_temporal_counter = 1
+
+def fun_end():
+    global instruction_pointer, local_temporal_counter
+    quad_list.append(['ENDFunc', '', '', ''])
+    instruction_pointer += 1
+    return  local_temporal_counter
+
+def handle_fun_call(fun_id, df, params_count):
+    global instruction_pointer
+    if fun_id not in df:
+        raise Exception('Attempted to call undeclared function', fun_id)
+    f = df[fun_id]
+    signature = (f[FuncAttr.RETURN_TYPE], fun_id,  f[FuncAttr.PARAMETERS]) 
+    is_void = signature[0] == 'void'
+    # GENERATE ERA
+    quad_list.append(['ERA', '', '', fun_id]) # TODO: Is this ok?
+    instruction_pointer += 1
+    # Verifiy parameters
+    # first, verify correct amount
+    if len(signature[2]) != params_count:
+        raise Exception("Function call doesn't match function signature")
+    # now check types
+    # TODO: Are the last operations in the stack the parameters? 
+    # should be?
+    p_types = []
+    for i in range(params_count):
+        p_types.append(type_stack.pop())
+
+    p_types.reverse()
+    if tuple(p_types) != signature[2]:
+        raise TypeError('Mismatch in expected parameters type')
+    # Now, initiate parameters with expression result
+
+    #breakpoint()
+    for i in range(params_count):
+        quad_list.append(('PARAMETER', operand_stack.pop(), '', params_count - i))
+    # TODO: Remember where we were called from? Returns managed by VM?
+    # OK, try to execute
+    quad_list.append(['GoSub', fun_id, '', f[FuncAttr.START]])
+    instruction_pointer += 1
+    if not is_void: # No es una expresion si es void
+        type_stack.append(signature[0])
+        operand_stack.append(f[FuncAttr.RETURN_ADDRESS]) # TODO: What is the result of the function as an expression?
+
+   

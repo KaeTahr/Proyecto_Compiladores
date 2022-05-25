@@ -2,6 +2,7 @@ import ply.yacc as yacc
 import dirFunciones
 import tablaVars
 import tablaConst
+import quadruples as q
 from quadruples import *
 from lexer import tokens
 import sys
@@ -12,6 +13,7 @@ curr_var_id = ''
 curr_scope = ''
 curr_operand_type = ''
 curr_from_var = ''
+parameter_stack = []
 
 
 # PROGRAMA
@@ -137,8 +139,24 @@ def p_main1(p):
 
 # FUNCTION
 def p_function(p):
-    """function : tipo_retorno FUNCTION ID store_function LP func1 RP LB func2 statement RB func3"""
+    """function : tipo_retorno FUNCTION ID store_function LP func1 RP LB func2 fun_start statement RB fun_end func3"""
+    # func1 = parameters
+    # func2 = variables
+    # statement = body
 
+def p_fun_start(p):
+    """fun_start :"""
+    if curr_fun_type != 'void':
+        return_address = get_avail('global', curr_fun_type) #TODO Global?
+    else:
+        return_address = -1
+    dirFunciones.fun_start(curr_scope, get_instruction_pointer(), return_address)
+    fun_start()
+
+def p_fun_end(p):
+    """fun_end :"""
+    lt = fun_end()
+    dirFunciones.fun_end(curr_scope, lt)
 
 def p_store_function(p):
     """store_function :"""
@@ -171,8 +189,11 @@ def p_tipo_param(p):
 
 
 def p_params(p):
-    """params : ID COLON tipo_param store_param par1"""
+    """params : ID COLON tipo_param store_param par1 sign_function"""
 
+def p_sign_function(p):
+    """sign_function : """
+    dirFunciones.sign_function(curr_scope)
 
 def p_store_param(p):
     """store_param :"""
@@ -192,6 +213,7 @@ def p_tipo_retorno(p):
                     | VOID"""
     global curr_fun_type
     curr_fun_type = p[1]  # save function type
+    p[0] = p[1]
 
 
 # STATEMENT
@@ -238,8 +260,13 @@ def p_store_operand(p):
 
 # VOID CALL
 def p_void_call(p):
-    """void_call : ID call1 LP call2 RP
-                 | ID call1 LP RP"""
+    """void_call : ID call1 params_init LP call2 RP
+                 | ID call1 params_init LP RP"""
+    handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
+
+def p_params_init(p):
+    """params_init :"""
+    parameter_stack.append(0)
 
 
 def p_call1(p):
@@ -249,6 +276,7 @@ def p_call1(p):
 
 def p_call2(p):
     """call2 : expression call3"""
+    parameter_stack[-1] += 1
 
 
 def p_call3(p):
@@ -363,7 +391,7 @@ def p_return_st(p):
 
 def p_gen_quad_9(p):
     """gen_quad_9 :"""
-    gen_quad_return(curr_fun_type)
+    gen_quad_return(dirFunciones.directorio_funciones[curr_scope])
 
 
 # EXPRESSION
@@ -485,7 +513,6 @@ def p_error(p):
         exit()
     else:
         print("Syntax error at EOF!")
-
 
 def p_empty(p):
     """empty :"""

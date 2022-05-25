@@ -19,7 +19,8 @@ tabla_oper = {
     '=': 13,
     'RETURN': 14,
     'READ': 15,
-    'WRITE': 16
+    'WRITE': 16,
+    'GOTO': 17
 }
 
 

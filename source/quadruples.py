@@ -144,7 +144,7 @@ def gen_while_end():
     exit_jmp -= 1
     quad_list[exit_jmp][-1] = instruction_pointer + 1
     w_start = jump_list.pop()
-    quad_list.append(['GoTo', '', '', w_start])
+    quad_list.append(['GOTO', '', '', w_start])
     instruction_pointer += 1
 
 
@@ -188,7 +188,7 @@ def gen_from_end():
     start = jump_list.pop()
     start -= 1
     quad_list[start][-1] = instruction_pointer + 1
-    quad_list.append(['GoTo', '', '', start])
+    quad_list.append(['GOTO', '', '', start])
     instruction_pointer += 1
 
 

@@ -7,6 +7,8 @@ variables {
 main() {
     # esto es un comment
     write("starting xd");
+    a = 1;
+    write(a);
     c = a || b;
     c = a & b;
     c = a < b;

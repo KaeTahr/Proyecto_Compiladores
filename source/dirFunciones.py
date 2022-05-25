@@ -84,7 +84,7 @@ def sign_function(id):
 def get_fun_signature(id):
     if id in directorio_funciones:
         f = directorio_funciones[id]
-        return (f[FuncAttr.RETURN_TYPE], id, f[FuncAttr.PARAMETERS])
+        return f[FuncAttr.RETURN_TYPE], id, f[FuncAttr.PARAMETERS]
     else:
         print("ERROR: Attempted to call undefined function")
         exit()

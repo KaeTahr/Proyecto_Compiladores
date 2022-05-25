@@ -11,6 +11,20 @@ class Estudiante {
         float function getPromedio() { return(promedio); }
 };
 
-main() {
+variables {
+    int: x, y;
+    Estudiante: john;
+}
 
+int function hello(z : int) {
+    variables {
+        int : z2;
+        float : c;
+        Estudiante: paul;
+    }
+    return(z2);
+}
+
+main() {
+    x = john.edad;
 }

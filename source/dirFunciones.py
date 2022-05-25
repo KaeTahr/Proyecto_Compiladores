@@ -1,4 +1,7 @@
+
+from tablaObjetos import *
 from enum import IntEnum
+
 
 directorio_funciones = {}
 
@@ -23,9 +26,9 @@ class FuncAttr(IntEnum):
 def get_dir_funciones():
     return directorio_funciones
 
-# agregar funcion a directorio de funciones
+# add function to function directory
 def add_function(fun_id, fun_type, kind):
-    if fun_id in directorio_funciones:  # funcion ya existe
+    if fun_id in directorio_funciones:  # function already exists
         print("ERROR: function", fun_id, "already exists in function directory.")
         exit()
 
@@ -41,25 +44,27 @@ def new_function_log(fun_id):
     print('at quadruple: ', directorio_funciones[fun_id][FuncAttr.START])
 
 
-def clear_function_directory():
-    directorio_funciones.clear()
 
-
-def get_var_type(var_id, scope):
-    first = list(directorio_funciones.keys())[
-        0]  # referencia a variables globales
-
+def get_var_type(var_id, scope, curr_class):
+    first = list(directorio_funciones.keys())[0]  # reference to global scope
+    if curr_class:
+        parent = tabla_obj[curr_class]['parent']  # check if class is child of another
     # buscar en scope especificado
     if var_id in directorio_funciones[scope][FuncAttr.VAR_TABLE]:
         # print("Variable", id, "found within scope", scope)
         return directorio_funciones[scope][FuncAttr.VAR_TABLE][var_id][0]
-
     elif var_id in directorio_funciones[first][FuncAttr.VAR_TABLE]:  # buscar en scope global
         # print("Variable", id, "found within GLOBAL scope", first)
         return directorio_funciones[first][FuncAttr.VAR_TABLE][var_id][0]
 
-    else:  # no se encontro la variable
-        print("ERROR: variable", var_id, "not found.")
+    elif var_id in tabla_obj[curr_class]['attributes']:  # search in object attributes
+        return tabla_obj[curr_class]['attributes'][var_id]
+
+    elif parent and var_id in tabla_obj[parent]['attributes']:  # search in parent class attributes
+        return tabla_obj[parent]['attributes'][var_id]
+
+    else:  # variable was not found
+        print("ERROR: variable", var_id, "not found in scope", scope)
         exit()
 
 

@@ -75,14 +75,14 @@ def gen_quad_assignment():
                 quad_list.append(new_quad)
                 instruction_pointer += 1
                 type_stack.append(result_type)
-                #operand_stack.append(left_operand) # TODO: Se debe regresar resultado a stack de operandos?
+                # operand_stack.append(left_operand)
                 # ADDRESS
                 m_op = tablaConst.get_oper_code(operator)
                 m_right = m_operand_stack.pop()
                 m_left = m_operand_stack.pop()
                 m_quad = [m_op, m_right, '', m_left]
                 m_quad_list.append(m_quad)
-                # .append(m_left)
+
             else:
                 print("ERROR: Type mismatch in assignment!", operator, left_type, right_type)
                 exit()

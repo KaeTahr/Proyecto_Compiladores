@@ -1,7 +1,7 @@
 program expTest;
 
 variables {
-    int : a, b, c, d;
+    int : a, b, c, d; # all the same type to avoid type mismatch
 }
 
 main() {

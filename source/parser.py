@@ -4,6 +4,7 @@ import tablaVars
 import tablaConst
 import quadruples as q
 from quadruples import *
+from tablaObjetos import *
 from lexer import tokens
 import sys
 
@@ -13,29 +14,35 @@ curr_var_id = ''
 curr_scope = ''
 curr_operand_type = ''
 curr_from_var = ''
+scope_global = ''
+in_object = False
+curr_class = ''
 parameter_stack = []
 
 
 # PROGRAMA
 def p_program(p):
     """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main"""
-    # tablaVars.print_var_table()
+    tablaVars.print_var_table()
+    # print_obj_table()
     # tablaConst.print_const_table()
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
     print("\nQuadruples:")
-    for i, q in enumerate(quad_list):
+    # for i, q in enumerate(quad_list):
+    #     print(i + 1, q)
+    for i, q in enumerate(m_quad_list):
         print(i + 1, q)
-    # print("M_Quads:", *m_quad_list, sep="\n")
     p[0] = "\nInput is a valid program.\n"
 
 
 def p_store_program(p):
     """store_program :"""
     dirFunciones.add_function(p[-1], p[-2], p[-2])
-    global curr_scope
+    global curr_scope, scope_global
     curr_scope = p[-1]
+    scope_global = p[-1]
 
 
 def p_prog1(p):
@@ -55,12 +62,35 @@ def p_prog3(p):
 
 # CLASS
 def p_class(p):
-    """class : CLASS ID class1 LB class2 class3 RB SEMI class4"""
+    """class : CLASS ID store_object class1 LB class2 class3 RB SEMI exit_class class4"""
+
+
+def p_store_object(p):
+    """store_object :"""
+    global in_object, curr_class
+    curr_class = p[-1]
+    add_object(p[-1])  # add object to object table
+    in_object = True  # now inside class definition
+
+
+def p_exit_class(p):
+    """exit_class :"""
+    global curr_scope, in_object
+    curr_scope = scope_global  # return to global scope after class definitions
+    in_object = False
 
 
 def p_class1(p):
-    """class1 : INHERITS ID
+    """class1 : INHERITS ID validate_inheritance
               | empty"""
+
+
+def p_validate_inheritance(p):
+    """validate_inheritance :"""
+    global curr_class
+    validate_class(p[-1])  # make sure parent class is defined
+    curr_class = p[-4]
+    assign_parent(curr_class, p[-1])
 
 
 def p_class2(p):
@@ -110,10 +140,21 @@ def p_tipo(p):
 
 
 def p_lista_ids(p):
-    """lista_ids : ID list1 list2"""
-    global curr_var_id, curr_var_type, curr_scope
-    curr_var_id = p[1]
-    tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)  # save local variable in current scope
+    """lista_ids : ID store_id list1 list2"""
+
+
+def p_store_id(p):
+    """store_id :"""
+    global curr_var_id
+    curr_var_id = p[-1]
+    if in_object:  # id read is an attribute within a class
+        add_attribute(curr_class, curr_var_id, curr_var_type)
+    else:
+        if curr_var_type not in ['int', 'float', 'char']:  # id read is an object
+            tablaVars.add_variable(curr_var_id, curr_var_type, "object", curr_scope)
+            tablaVars.instantiate_obj(curr_var_id, curr_var_type, curr_scope)
+        else:
+            tablaVars.add_variable(curr_var_id, curr_var_type, "variable", curr_scope)
 
 
 def p_list1(p):
@@ -160,8 +201,12 @@ def p_fun_end(p):
 
 def p_store_function(p):
     """store_function :"""
-    global curr_fun_type, curr_scope
-    dirFunciones.add_function(p[-1], curr_fun_type, p[-2])  # add function to directory
+    global curr_scope
+    if in_object:  # id read is a method within a class
+        add_method(curr_class, p[-1], curr_fun_type)
+        dirFunciones.add_function(p[-1], curr_fun_type, "method")
+    else:
+        dirFunciones.add_function(p[-1], curr_fun_type, p[-2])  # add function to directory
     curr_scope = p[-1]  # update current scope
 
 
@@ -197,7 +242,6 @@ def p_sign_function(p):
 
 def p_store_param(p):
     """store_param :"""
-    global curr_var_id, curr_var_type, curr_scope
     tablaVars.add_variable(p[-3], curr_var_type, "parameter", curr_scope)  # save parameter as local variable
 
 
@@ -246,7 +290,17 @@ def p_gen_quad5(p):
 
 def p_var(p):
     """var : ID store_operand list1
-           | ID DOT ID"""
+           | ID DOT ID store_attr"""
+
+
+def p_store_attr(p):
+    """store_attr :"""
+    global curr_operand_type
+    name = str(p[-3] + p[-2] + p[-1])
+    operand_stack.append(name)
+    m_operand_stack.append(dirFunciones.get_var_address(name))
+    curr_operand_type = dirFunciones.get_var_type(name, curr_scope, curr_class)
+    type_stack.append(curr_operand_type)
 
 
 def p_store_operand(p):
@@ -254,7 +308,7 @@ def p_store_operand(p):
     global curr_operand_type
     operand_stack.append(p[-1])
     m_operand_stack.append(dirFunciones.get_var_address(p[-1]))
-    curr_operand_type = dirFunciones.get_var_type(p[-1], curr_scope)
+    curr_operand_type = dirFunciones.get_var_type(p[-1], curr_scope, curr_class)
     type_stack.append(curr_operand_type)
 
 
@@ -270,8 +324,14 @@ def p_params_init(p):
 
 
 def p_call1(p):
-    """call1 : DOT ID
+    """call1 : DOT ID found_method
              | empty"""
+
+
+def p_found_method(p):
+    """found_method :"""
+    obj = dirFunciones.get_var_type(p[-3], curr_scope, curr_class)
+    validate_method(obj, p[-1])
 
 
 def p_call2(p):

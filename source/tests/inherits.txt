@@ -4,7 +4,7 @@ class Persona {
     attributes
         int: edad;
         float: altura;
-        char: iniNombre, iniApellido;
+        char: nombre, apellido;
 };
 
 class Estudiante inherits Persona {
@@ -17,6 +17,21 @@ class Estudiante inherits Persona {
         float function getPromedio() { return(promedio); }
 };
 
-main() {
+variables {
+    int: x, y;
+    Estudiante: john;
+    Persona: paul;
+}
 
+int function hello(z : int) {
+    variables {
+        int : z2;
+        float : c;
+    }
+    return(z2);
+}
+
+main() {
+    x = john.edad;
+    y = paul.edad;
 }

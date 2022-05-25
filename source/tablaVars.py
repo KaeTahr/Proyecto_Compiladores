@@ -1,8 +1,11 @@
 from dirFunciones import FuncAttr, directorio_funciones, FuncAttr
 from memoria import *
+from tablaObjetos import tabla_obj
 
 
 # AGREGAR VARIABLE A TABLA DE VARIABLES
+
+
 def add_variable(var_id, var_type, var_kind, scope):
     if scope in directorio_funciones:  # buscar scope en directorio de funciones
 
@@ -44,3 +47,19 @@ def print_var_table():
                 print("ID:", var, "\tType:", directorio_funciones[scope][FuncAttr.VAR_TABLE][var][0], "\tKind:",
                       directorio_funciones[scope][2][var][1], "\tAddress:", directorio_funciones[scope][FuncAttr.VAR_TABLE][var][2])
             print("---------------------------------------------------------------")
+
+
+def instantiate_obj(var_id, class_id, scope):
+    parent = tabla_obj[class_id]['parent']
+    if tabla_obj[class_id]['attributes']:
+        for attr in tabla_obj[class_id]['attributes']:
+            name = str(var_id + "." + attr)
+            var_type = tabla_obj[class_id]['attributes'][attr]
+            add_variable(name, var_type, 'attribute', scope)
+
+    if parent:
+        if tabla_obj[parent]['attributes']:
+            for attr in tabla_obj[parent]['attributes']:
+                name = str(var_id + "." + attr)
+                var_type = tabla_obj[parent]['attributes'][attr]
+                add_variable(name, var_type, 'attribute', scope)

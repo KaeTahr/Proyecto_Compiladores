@@ -9,15 +9,17 @@ operand_stack = []
 operator_stack = []
 type_stack = []
 instruction_pointer = 1
-temporal_counter = 1 # total
+temporal_counter = 1  # total
 local_temporal_counter = 1
 quad_list = []  # quadruplos con IDs
 jump_list = []
 from_tmp = []
 m_quad_list = []  # quadruplos con direcciones
 
+
 def get_instruction_pointer():
     return instruction_pointer
+
 
 # gen_quad 0-4
 def gen_quad_exp(valid_operators):
@@ -84,7 +86,7 @@ def gen_quad_assignment():
                 m_quad_list.append(m_quad)
 
             else:
-                print("ERROR: Type mismatch in assignment!", operator, left_type, right_type)
+                print("ERROR: Type mismatch in assignment:", left_operand, operator, right_operand)
                 exit()
 
 
@@ -213,7 +215,7 @@ def gen_quad_return(f):
     global instruction_pointer, quad_list, operand_stack, type_stack
     curr_type = type_stack.pop()
     res = operand_stack.pop()
-    if curr_type != f[FuncAttr.RETURN_TYPE]: # catches void function with return
+    if curr_type != f[FuncAttr.RETURN_TYPE]:  # catches void function with return
         print("ERROR: Type mismatch in function return!", f[FuncAttr.RETURN_TYPE], "returns", curr_type)
         exit()
     else:
@@ -221,25 +223,28 @@ def gen_quad_return(f):
         instruction_pointer += 1
         quad_list.append(['=', res, '', f[FuncAttr.RETURN_ADDRESS]])
 
+
 def fun_start():
     global local_temporal_counter
     local_temporal_counter = 1
+
 
 def fun_end():
     global instruction_pointer, local_temporal_counter
     quad_list.append(['ENDFunc', '', '', ''])
     instruction_pointer += 1
-    return  local_temporal_counter
+    return local_temporal_counter
+
 
 def handle_fun_call(fun_id, df, params_count):
     global instruction_pointer
     if fun_id not in df:
         raise Exception('Attempted to call undeclared function', fun_id)
     f = df[fun_id]
-    signature = (f[FuncAttr.RETURN_TYPE], fun_id,  f[FuncAttr.PARAMETERS])
+    signature = (f[FuncAttr.RETURN_TYPE], fun_id, f[FuncAttr.PARAMETERS])
     is_void = signature[0] == 'void'
     # GENERATE ERA
-    quad_list.append(['ERA', '', '', fun_id]) # TODO: Is this ok?
+    quad_list.append(['ERA', '', '', fun_id])  # TODO: Is this ok?
     instruction_pointer += 1
     # Verifiy parameters
     # first, verify correct amount
@@ -257,15 +262,13 @@ def handle_fun_call(fun_id, df, params_count):
         raise TypeError('Mismatch in expected parameters type')
     # Now, initiate parameters with expression result
 
-    #breakpoint()
+    # breakpoint()
     for i in range(params_count):
         quad_list.append(('PARAMETER', operand_stack.pop(), '', params_count - i))
     # TODO: Remember where we were called from? Returns managed by VM?
     # OK, try to execute
     quad_list.append(['GoSub', fun_id, '', f[FuncAttr.START]])
     instruction_pointer += 1
-    if not is_void: # No es una expresion si es void
+    if not is_void:  # No es una expresion si es void
         type_stack.append(signature[0])
-        operand_stack.append(f[FuncAttr.RETURN_ADDRESS]) # TODO: What is the result of the function as an expression?
-
-
+        operand_stack.append(f[FuncAttr.RETURN_ADDRESS])  # TODO: What is the result of the function as an expression?

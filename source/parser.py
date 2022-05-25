@@ -2,7 +2,6 @@ import ply.yacc as yacc
 import dirFunciones
 import tablaVars
 import tablaConst
-import quadruples as q
 from quadruples import *
 from tablaObjetos import *
 from lexer import tokens
@@ -26,7 +25,7 @@ def p_program(p):
     """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main"""
     tablaVars.print_var_table()
     # print_obj_table()
-    # tablaConst.print_const_table()
+    tablaConst.print_const_table()
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
@@ -186,14 +185,16 @@ def p_function(p):
     # func2 = variables
     # statement = body
 
+
 def p_fun_start(p):
     """fun_start :"""
     if curr_fun_type != 'void':
-        return_address = get_avail('global', curr_fun_type) #TODO Global?
+        return_address = get_avail('global', curr_fun_type)  # TODO Global?
     else:
         return_address = -1
     dirFunciones.fun_start(curr_scope, get_instruction_pointer(), return_address)
     fun_start()
+
 
 def p_fun_end(p):
     """fun_end :"""
@@ -242,19 +243,16 @@ def p_tipo_param(p):
 def p_params(p):
     """params : ID COLON tipo_param store_param par1 sign_function"""
 
+
 def p_sign_function(p):
     """sign_function : """
     dirFunciones.sign_function(curr_scope)
 
+
 def p_store_param(p):
     """store_param :"""
     tablaVars.add_variable(p[-3], curr_var_type, "parameter", curr_scope)  # save parameter as local variable
 
-
-def p_store_param(p):
-    """store_param :"""
-    global curr_var_id, curr_var_type, curr_scope
-    tablaVars.add_variable(p[-3], curr_var_type, "parameter", curr_scope)  # save parameter as local variable
 
 def p_par1(p):
     """par1 : COMMA params
@@ -328,6 +326,7 @@ def p_void_call(p):
     """void_call : ID call1 params_init LP call2 RP
                  | ID call1 params_init LP RP"""
     handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
+
 
 def p_params_init(p):
     """params_init :"""
@@ -586,6 +585,7 @@ def p_error(p):
         exit()
     else:
         print("Syntax error at EOF!")
+
 
 def p_empty(p):
     """empty :"""

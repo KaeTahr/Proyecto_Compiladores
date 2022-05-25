@@ -1,9 +1,8 @@
-
 from tablaObjetos import *
 from enum import IntEnum
 
-
 directorio_funciones = {}
+
 
 # functions are stored as a list:
 # fun[0] = return type
@@ -23,8 +22,10 @@ class FuncAttr(IntEnum):
     START = 5
     RETURN_ADDRESS = 6
 
+
 def get_dir_funciones():
     return directorio_funciones
+
 
 # add function to function directory
 def add_function(fun_id, fun_type, kind):
@@ -40,9 +41,9 @@ def new_function_log(fun_id):
     print("\n-------------------------FUNCTION----------------------------------")
     print('New entry in function directory:')
     print("ID:", fun_id, "\tType:",
-          directorio_funciones[fun_id][FuncAttr.RETURN_TYPE], "\tKind:", directorio_funciones[fun_id][FuncAttr.IS_GLOBAL], "\n")
+          directorio_funciones[fun_id][FuncAttr.RETURN_TYPE], "\tKind:",
+          directorio_funciones[fun_id][FuncAttr.IS_GLOBAL], "\n")
     print('at quadruple: ', directorio_funciones[fun_id][FuncAttr.START])
-
 
 
 def get_var_type(var_id, scope, curr_class):
@@ -75,23 +76,26 @@ def get_var_address(var_id):
 
 
 def sign_function(id):
-    parameters =  directorio_funciones[id][FuncAttr.VAR_TABLE]
+    parameters = directorio_funciones[id][FuncAttr.VAR_TABLE]
     parameters = tuple(i[0] for i in list(parameters.values()))
     directorio_funciones[id][FuncAttr.PARAMETERS] = parameters
+
 
 def get_fun_signature(id):
     if id in directorio_funciones:
         f = directorio_funciones[id]
-        return (f[FuncAttr.RETURN_TYPE], id,  f[FuncAttr.PARAMETERS])
+        return (f[FuncAttr.RETURN_TYPE], id, f[FuncAttr.PARAMETERS])
     else:
         print("ERROR: Attempted to call undefined function")
         exit()
+
 
 def fun_start(id, ip, return_address):
     f = directorio_funciones[id]
     f[FuncAttr.START] = ip
     f[FuncAttr.RETURN_ADDRESS] = return_address
     # new_function_log(id) # log info
+
 
 def fun_end(id, tmp_count):
     f = directorio_funciones[id]

@@ -18,6 +18,7 @@ scope_global = ''
 in_object = False
 curr_class = ''
 parameter_stack = []
+has_return = False
 
 
 # PROGRAMA
@@ -198,16 +199,21 @@ def p_fun_end(p):
     """fun_end :"""
     lt = fun_end()
     dirFunciones.fun_end(curr_scope, lt)
+    if has_return is False and curr_fun_type != 'void':
+        print("Error: non-void function", curr_scope, "has no return statement.")
+        exit()
+
 
 def p_store_function(p):
     """store_function :"""
-    global curr_scope
+    global curr_scope, has_return
     if in_object:  # id read is a method within a class
         add_method(curr_class, p[-1], curr_fun_type)
         dirFunciones.add_function(p[-1], curr_fun_type, "method")
     else:
         dirFunciones.add_function(p[-1], curr_fun_type, p[-2])  # add function to directory
     curr_scope = p[-1]  # update current scope
+    has_return = False
 
 
 def p_func1(p):
@@ -452,6 +458,8 @@ def p_gen_from_end(p):
 # RETURN
 def p_return_st(p):
     """return_st : RETURN LP expression gen_quad_9 RP"""
+    global has_return
+    has_return = True
 
 
 def p_gen_quad_9(p):

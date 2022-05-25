@@ -213,8 +213,8 @@ def gen_quad_return(f):
     global instruction_pointer, quad_list, operand_stack, type_stack
     curr_type = type_stack.pop()
     res = operand_stack.pop()
-    if curr_type != f[FuncAttr.RETURN_TYPE]:
-        print("ERROR: Type mismatch in function return!")
+    if curr_type != f[FuncAttr.RETURN_TYPE]: # catches void function with return
+        print("ERROR: Type mismatch in function return!", f[FuncAttr.RETURN_TYPE], "returns", curr_type)
         exit()
     else:
         quad_list.append(['RETURN', '', '', res])
@@ -236,7 +236,7 @@ def handle_fun_call(fun_id, df, params_count):
     if fun_id not in df:
         raise Exception('Attempted to call undeclared function', fun_id)
     f = df[fun_id]
-    signature = (f[FuncAttr.RETURN_TYPE], fun_id,  f[FuncAttr.PARAMETERS]) 
+    signature = (f[FuncAttr.RETURN_TYPE], fun_id,  f[FuncAttr.PARAMETERS])
     is_void = signature[0] == 'void'
     # GENERATE ERA
     quad_list.append(['ERA', '', '', fun_id]) # TODO: Is this ok?
@@ -246,7 +246,7 @@ def handle_fun_call(fun_id, df, params_count):
     if len(signature[2]) != params_count:
         raise Exception("Function call doesn't match function signature")
     # now check types
-    # TODO: Are the last operations in the stack the parameters? 
+    # TODO: Are the last operations in the stack the parameters?
     # should be?
     p_types = []
     for i in range(params_count):
@@ -268,4 +268,4 @@ def handle_fun_call(fun_id, df, params_count):
         type_stack.append(signature[0])
         operand_stack.append(f[FuncAttr.RETURN_ADDRESS]) # TODO: What is the result of the function as an expression?
 
-   
+

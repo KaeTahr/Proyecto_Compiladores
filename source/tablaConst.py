@@ -59,7 +59,7 @@ def new_constant_log(value):
 
 def print_const_table():
     if tabla_const:
+        print("Constants table")
         for key in tabla_const:
-            print("Constants table")
             print("Value:", key, "\tType:", tabla_const[key][0], "\tAddress:", tabla_const[key][1])
         print("---------------------------------------------------------------")

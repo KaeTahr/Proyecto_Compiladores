@@ -196,17 +196,29 @@ def gen_from_end():
 
 def gen_quad_read():
     global instruction_pointer, quad_list, operand_stack, type_stack
+    # ID
     read_operand = operand_stack.pop()
     read_type = type_stack.pop()
     quad_list.append(['READ', '', '', read_operand])
+    # Memory
+    m_op = tablaConst.get_oper_code('READ')
+    m_operand = m_operand_stack.pop()
+    m_quad = [m_op, '', '', m_operand]
+    m_quad_list.append(m_quad)
     instruction_pointer += 1
 
 
 def gen_quad_write():
     global instruction_pointer, quad_list, operand_stack, type_stack
+    # ID
     write_operand = operand_stack.pop()
     write_type = type_stack.pop()
     quad_list.append(['WRITE', '', '', write_operand])
+    # Memory
+    m_op = tablaConst.get_oper_code('WRITE')
+    m_operand = m_operand_stack.pop()
+    m_quad = [m_op, '', '', m_operand]
+    m_quad_list.append(m_quad)
     instruction_pointer += 1
 
 

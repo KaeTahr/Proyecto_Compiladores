@@ -372,8 +372,10 @@ def p_write1(p):
 
 def p_store_string(p):
     """store_string :"""
-    type_stack.append('STRING')
+    type_stack.append('string')
     operand_stack.append(p[-1])
+    tablaConst.add_constant(p[-1], 'string')
+    m_operand_stack.append(tablaConst.get_const_add(p[-1]))
 
 
 def p_gen_quad_8(p):

@@ -146,13 +146,17 @@ def p_function(p):
 
 def p_fun_start(p):
     """fun_start :"""
-    dirFunciones.fun_start(curr_scope, get_instruction_pointer())
+    if curr_fun_type != 'void':
+        return_address = get_avail('global', curr_fun_type) #TODO Global?
+    else:
+        return_address = -1
+    dirFunciones.fun_start(curr_scope, get_instruction_pointer(), return_address)
     fun_start()
 
 def p_fun_end(p):
     """fun_end :"""
     lt = fun_end()
-    dirFunciones.set_local_tmp_count(curr_scope, lt)
+    dirFunciones.fun_end(curr_scope, lt)
 
 def p_store_function(p):
     """store_function :"""
@@ -209,6 +213,7 @@ def p_tipo_retorno(p):
                     | VOID"""
     global curr_fun_type
     curr_fun_type = p[1]  # save function type
+    p[0] = p[1]
 
 
 # STATEMENT
@@ -386,7 +391,7 @@ def p_return_st(p):
 
 def p_gen_quad_9(p):
     """gen_quad_9 :"""
-    gen_quad_return(curr_fun_type)
+    gen_quad_return(dirFunciones.directorio_funciones[curr_scope])
 
 
 # EXPRESSION

@@ -209,16 +209,17 @@ def gen_quad_write():
 
 
 #  gen_quad 9
-def gen_quad_return(fun_type):
+def gen_quad_return(f):
     global instruction_pointer, quad_list, operand_stack, type_stack
     curr_type = type_stack.pop()
     res = operand_stack.pop()
-    if curr_type != fun_type:
+    if curr_type != f[FuncAttr.RETURN_TYPE]:
         print("ERROR: Type mismatch in function return!")
         exit()
     else:
         quad_list.append(['RETURN', '', '', res])
         instruction_pointer += 1
+        quad_list.append(['=', res, '', f[FuncAttr.RETURN_ADDRESS]])
 
 def fun_start():
     global local_temporal_counter
@@ -236,6 +237,7 @@ def handle_fun_call(fun_id, df, params_count):
         raise Exception('Attempted to call undeclared function', fun_id)
     f = df[fun_id]
     signature = (f[FuncAttr.RETURN_TYPE], fun_id,  f[FuncAttr.PARAMETERS]) 
+    is_void = signature[0] == 'void'
     # GENERATE ERA
     quad_list.append(['ERA', '', '', fun_id]) # TODO: Is this ok?
     instruction_pointer += 1
@@ -262,7 +264,8 @@ def handle_fun_call(fun_id, df, params_count):
     # OK, try to execute
     quad_list.append(['GoSub', fun_id, '', f[FuncAttr.START]])
     instruction_pointer += 1
-    type_stack.append(signature[0])
-    operand_stack.append(-1) # TODO: What is the result of the function as an expression?
+    if not is_void: # No es una expresion si es void
+        type_stack.append(signature[0])
+        operand_stack.append(f[FuncAttr.RETURN_ADDRESS]) # TODO: What is the result of the function as an expression?
 
    

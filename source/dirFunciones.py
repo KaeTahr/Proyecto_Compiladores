@@ -18,6 +18,7 @@ class FuncAttr(IntEnum):
     PARAMETERS = 3
     TEMP_AMOUNT = 4
     START = 5
+    RETURN_ADDRESS = 6
 
 def get_dir_funciones():
     return directorio_funciones
@@ -29,7 +30,7 @@ def add_function(fun_id, fun_type, kind):
         exit()
 
     else:
-        directorio_funciones[fun_id] = [fun_type, kind, {}, (), 0, -1]
+        directorio_funciones[fun_id] = [fun_type, kind, {}, (), 0, -1, 0]
 
 
 def new_function_log(fun_id):
@@ -81,11 +82,12 @@ def get_fun_signature(id):
         print("ERROR: Attempted to call undefined function")
         exit()
 
-def fun_start(id, ip):
+def fun_start(id, ip, return_address):
     f = directorio_funciones[id]
     f[FuncAttr.START] = ip
+    f[FuncAttr.RETURN_ADDRESS] = return_address
     # new_function_log(id) # log info
 
-def set_local_tmp_count(id, tmp_count):
+def fun_end(id, tmp_count):
     f = directorio_funciones[id]
     f[FuncAttr.TEMP_AMOUNT] = tmp_count

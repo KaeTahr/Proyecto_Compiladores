@@ -14,6 +14,7 @@ local_temporal_counter = 1
 quad_list = []  # quadruplos con IDs
 jump_list = []
 from_tmp = []
+m_from_tmp = []
 m_quad_list = []  # quadruplos con direcciones
 
 
@@ -174,7 +175,7 @@ def gen_while_end():
 
 
 # FROM
-def gen_from_start(s):
+def gen_from_start(s, m):
     global instruction_pointer
     exp_type = type_stack.pop()
     if exp_type != 'int':
@@ -182,14 +183,17 @@ def gen_from_start(s):
         raise TypeError
     from_tmp.append(s)
     from_tmp.append('int')
+    m_from_tmp.append(m)  # Memory
 
 
 def gen_from_jmp():
     global instruction_pointer, temporal_counter, local_temporal_counter
     start_type = from_tmp.pop()
     start = from_tmp.pop()
+    m_start = m_from_tmp.pop()  # Memory
     target = operand_stack.pop()
     target_type = type_stack.pop()
+    m_target = m_operand_stack.pop()  # Memory
 
     result_type = validateOperation(start_type, target_type, '<')
 
@@ -203,7 +207,7 @@ def gen_from_jmp():
     local_temporal_counter += 1
     quad_list.append(['>', start, target, temp_result])
     m_op = tablaConst.get_oper_code('>')
-    m_quad_list.append([m_op, start, target, m_temp]) # TODO: get addresses of start and target
+    m_quad_list.append([m_op, m_start, m_target, m_temp])  # TODO: get addresses of start and target
     instruction_pointer += 1
     type_stack.append(result_type)
     operand_stack.append(temp_result)

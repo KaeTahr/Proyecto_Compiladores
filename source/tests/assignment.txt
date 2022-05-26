@@ -14,6 +14,6 @@ int function testInt() {
 
 main() {
 
-    x = a + testInt() + testInt();
+    x = testInt() + testInt();
 
 }

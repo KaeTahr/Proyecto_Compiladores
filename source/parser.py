@@ -314,8 +314,15 @@ def p_gen_quad5(p):
 
 
 def p_var(p):
-    """var : ID store_operand list1
+    """var : ID store_operand var_dim
            | ID DOT ID store_attr"""
+
+
+# TODO: quads for array and matrix
+def p_var_dim(p):
+    """var_dim : LS expression RS
+               | LS expression COMMA expression RS
+               | empty"""
 
 
 def p_store_attr(p):

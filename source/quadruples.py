@@ -201,7 +201,7 @@ def gen_from_jmp():
     m_temp = get_avail('temporal', result_type)
     temporal_counter += 1
     local_temporal_counter += 1
-    quad_list.append(['>', start, target, temp_result]) # TODO start is empty
+    quad_list.append(['>', start, target, temp_result])
     m_op = tablaConst.get_oper_code('>')
     m_quad_list.append([m_op, start, target, m_temp]) # TODO: get addresses of start and target
     instruction_pointer += 1

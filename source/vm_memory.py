@@ -3,8 +3,8 @@ from enum import IntEnum
 class memoryContext(IntEnum):
     GLOBAL = 0,
     LOCAL = 1,
-    TEMPORAL = 1,
-    CONSTANT = 2
+    TEMPORAL = 2,
+    CONSTANT = 3
 
 class contextRanges(IntEnum):
     INT = 0,
@@ -60,7 +60,7 @@ def memory_lookup(address):
         t_address = address - 10000
     elif address >= 13000 and address < 14000: # special string constant
         context = memoryContext.CONSTANT
-        return context, contextRanges.STRING, address - 3000, 
+        return context, contextRanges.STRING, address - 13000, 
     else:
         raise MemoryError("overflow")
 
@@ -80,9 +80,16 @@ def memory_lookup(address):
 
 def memory_read(address):
     c, r, off = memory_lookup(address)
+    breakpoint()
     return memory[c][r][off]
 
 def memory_write(value, address):
     c, r, off = memory_lookup(address)
     memory[c][r][off] = value
 
+def initiate_constants(constant_list):
+    while constant_list:
+        v = constant_list.pop(0)
+        a = constant_list.pop(0)
+        c, r, off = memory_lookup(int(a))
+        memory[c][r].append(v)

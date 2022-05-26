@@ -29,11 +29,24 @@ def p_program(p):
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
+    print(dirFunciones.directorio_funciones)
     print("\nQuadruples:")
     for i, q in enumerate(quad_list):
         print(i + 1, q)
     print("\nQuadruples: (machine)")
     f = open("intermediate.out", "w")
+
+    # write constant table to output file
+    constant_string = 'c'
+    for key in tablaConst.tabla_const:
+        constant_string += ',' + str(key) + ',' + str(tablaConst.tabla_const[key][1])
+    constant_string += '\n'
+
+    dir_fun_string = 'f'
+    #for key in dirFunciones.directorio_funciones:
+
+#        dir_fun_string += ','  + str(key) +
+    f.write(constant_string)
     for i, q in enumerate(m_quad_list):
         print(i + 1, q)
         f.write(str(q[0]) + ',' +

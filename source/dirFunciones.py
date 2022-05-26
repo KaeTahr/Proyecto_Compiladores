@@ -18,7 +18,7 @@ class FuncAttr(IntEnum):
     IS_GLOBAL = 1
     VAR_TABLE = 2
     PARAMETERS = 3
-    TEMP_AMOUNT = 4
+    TEMP_AMOUNT = 4  # TODO: change to amount by type
     START = 5
     RETURN_ADDRESS = 6
 

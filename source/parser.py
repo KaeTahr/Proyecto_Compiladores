@@ -22,19 +22,32 @@ has_return = False
 
 # PROGRAMA
 def p_program(p):
-    """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main"""
+    """program : PROGRAM ini_quads ID store_program SEMI prog1 prog2 prog3 fill_goto_main main"""
     tablaVars.print_var_table()
     # print_obj_table()
     tablaConst.print_const_table()
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
-    print("\nQuadruples:")
-    # for i, q in enumerate(quad_list):
-    #     print(i + 1, q)
+    print("\nID Quadruples:")
+    for i, q in enumerate(quad_list):
+        print(i + 1, q)
+    print("\nADDR Quadruples:")
     for i, q in enumerate(m_quad_list):
         print(i + 1, q)
     p[0] = "\nInput is a valid program.\n"
+
+
+def p_ini_quads(p):
+    """ini_quads :"""
+    quad_list.append(['GOTO', '', '', 'main'])
+    m_op = tablaConst.get_oper_code('GOTO')
+    m_quad_list.append([m_op, '', '', 'main'])
+
+
+def p_fill_goto_main(p):
+    """fill_goto_main :"""
+    gen_goto_main()
 
 
 def p_store_program(p):
@@ -189,7 +202,7 @@ def p_function(p):
 def p_fun_start(p):
     """fun_start :"""
     if curr_fun_type != 'void':
-        return_address = get_avail('global', curr_fun_type)  # TODO Global?
+        return_address = get_avail('global', curr_fun_type)
     else:
         return_address = -1
     dirFunciones.fun_start(curr_scope, get_instruction_pointer(), return_address)
@@ -203,6 +216,9 @@ def p_fun_end(p):
     if has_return is False and curr_fun_type != 'void':
         print("Error: non-void function", curr_scope, "has no return statement.")
         exit()
+    # at end of function, reset temporal and local addresses
+    reset_temp()
+    reset_local()
 
 
 def p_store_function(p):

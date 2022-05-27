@@ -1,6 +1,8 @@
 import sys
 import vm_memory as m
 
+TRUE = 1
+FALSE = 0
 ip = 0
 
 def get_ip():
@@ -16,65 +18,134 @@ def ip_continue():
     ip += 1
 
 def mult(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    ro = m.memory_read(int(ro))
+    res = lo * ro
+    m.memory_write(res, t)
     ip_continue()
-    pass
 
 def div(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    ro = m.memory_read(int(ro))
+    res = lo / ro
+    m.memory_write(res, t)
     ip_continue()
-    pass
 
 def add(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    ro = m.memory_read(int(ro))
+    res = lo + ro
+    m.memory_write(res, t)
     ip_continue()
-    pass
 
 def subtract(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    ro = m.memory_read(int(ro))
+    res = lo - ro
+    m.memory_write(res, t)
     ip_continue()
-    pass
 
 def lt(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    ro = m.memory_read(int(ro))
+    res = lo < ro
+    if res:
+        res = TRUE
+    else:
+        res = FALSE
+    m.memory_write(res, t)
     ip_continue()
-    pass
 
 def gt(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    ro = m.memory_read(int(ro))
+    res = lo > ro
+    if res:
+        res = TRUE
+    else:
+        res = FALSE
+    m.memory_write(res, t)
     ip_continue()
-    pass
 
 def equal(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    ro = m.memory_read(int(ro))
+    res = lo == ro
+    if res:
+        res = TRUE
+    else:
+        res = FALSE
+    m.memory_write(res, t)
     ip_continue()
-    pass
 
 def not_equal(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    ro = m.memory_read(int(ro))
+    res = lo != ro
+    if res:
+        res = TRUE
+    else:
+        res = FALSE
+    m.memory_write(res, t)
     ip_continue()
-    pass
 
 def gte(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    ro = m.memory_read(int(ro))
+    res = lo >= ro
+    if res:
+        res = TRUE
+    else:
+        res = FALSE
+    m.memory_write(res, t)
     ip_continue()
-    pass
 
 def lte(lo, ro, t):
-    pass
+    lo = m.memory_read(int(lo))
+    ro = m.memory_read(int(ro))
+    res = lo <= ro
+    if res:
+        res = TRUE
+    else:
+        res = FALSE
+    m.memory_write(res, t)
+    ip_continue()
 
 def and_et(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    ro = m.memory_read(int(ro))
+    res = (lo == 0) and (ro == 0)
+    if res:
+        res = TRUE
+    else:
+        res = FALSE
+    m.memory_write(res, t)
     ip_continue()
-    pass
 
 def or_vel(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    ro = m.memory_read(int(ro))
+    res = (lo == 0) or (ro == 0)
+    if res:
+        res = TRUE
+    else:
+        res = FALSE
+    m.memory_write(res, t)
     ip_continue()
-    pass
 
 def assign(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    m.memory_write(lo, t)
     ip_continue()
 
 def ret(lo, ro, t):
     ip_continue()
-    pass
 
 def read(lo, ro, t):
     ip_continue()
-    pass
 
 def write(lo, ro, t):
-    o = m.memory_read(int(t))
+    o = m.memory_read(t)
     print(o)
     ip_continue()
 
@@ -104,20 +175,24 @@ def eval(quad):
     left_operand = quad[0]
     right_operand = quad[1]
     target = quad[2]
-    op_codes[op](left_operand, right_operand, target)
+    op_codes[op](left_operand, right_operand, int(target))
 
 
 def main(ovejota):
     lines = open(ovejota, "r").readlines()
+    constants = lines.pop(0)
+    quad = constants.strip().split(',')
+    quad.pop(0)
+    m.initiate_constants(quad)
+    functions = lines.pop(0)
+    quad = functions.strip().split(',')
+    quad.pop(0)
+    m.initiate_functions(quad)
+
+
     while (ip < len(lines)): 
-        quad = l.strip().split(',')
-        if ip == 0:
-            quad.pop(0)
-            m.initiate_constants(quad)
-        elif ip == 1:
-            quad.pop(0)
-            m.inititate_var_table(quad)
         l = lines[ip]
+        quad = l.strip().split(',')
         eval(quad)
 
 if __name__ == '__main__':

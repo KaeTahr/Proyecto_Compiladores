@@ -12,6 +12,7 @@ class contextRanges(IntEnum):
     CHAR = 2
     STRING = 3 # !! ONLY CONSTANTS CONTAIN THIS
 
+dir_fun = {}
 
 memory = [
     [ # global
@@ -80,16 +81,52 @@ def memory_lookup(address):
 
 def memory_read(address):
     c, r, off = memory_lookup(address)
-    breakpoint()
     return memory[c][r][off]
 
 def memory_write(value, address):
     c, r, off = memory_lookup(address)
+    if r == contextRanges.INT:
+        value = int(value)
+    elif r == contextRanges.FLOAT:
+        value = float(value)
     memory[c][r][off] = value
 
 def initiate_constants(constant_list):
     while constant_list:
         v = constant_list.pop(0)
-        a = constant_list.pop(0)
+        a = int(constant_list.pop(0))
         c, r, off = memory_lookup(int(a))
+        print(v)
+        if r == contextRanges.INT:
+            v = int(v)
+        elif r == contextRanges.FLOAT:
+            v = float(v)
         memory[c][r].append(v)
+
+def initiate_temporary_variables(t):
+    c = memoryContext.TEMPORAL
+    memory[c][contextRanges.INT] = [None] * t[0]
+    memory[c][contextRanges.FLOAT] = [None] * t[0]
+    memory[c][contextRanges.CHAR] = [None] * t[0]
+
+def initiate_global_variables(t):
+    c = memoryContext.GLOBAL
+    memory[c][contextRanges.INT] = [None] * t[0]
+    memory[c][contextRanges.FLOAT] = [None] * t[0]
+    memory[c][contextRanges.CHAR] = [None] * t[0]
+
+def initiate_functions(func_list):
+    for i in range(0, len(func_list), 7):
+        id = func_list[i]
+        ints = int(func_list[i+1])
+        floats = int(func_list[i+2])
+        chars = int(func_list[i+3])
+        t_ints = int(func_list[i+4])
+        t_floats = int(func_list[i+5])
+        t_chars = int(func_list[i+6])
+        dir_fun[id] = [(ints, floats, chars), (t_ints, t_floats, t_chars)]
+    
+    initiate_global_variables(dir_fun[func_list[0]][0])
+    initiate_temporary_variables(dir_fun[func_list[0]][1])
+
+    

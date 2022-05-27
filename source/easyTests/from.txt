@@ -1,0 +1,18 @@
+program fromTest;
+
+variables {
+    int: A, B, C, D, E, F, J, H, K;
+}
+
+main() {
+    A = B + C * (D - E);
+    B = E - F;
+    from J = 1 until A + B * C do {
+        H = J * K + B;
+        if (B < H) then {
+            B = H + J;
+            write(A+B*C, J);
+        }
+    }
+    F = A + B;
+}

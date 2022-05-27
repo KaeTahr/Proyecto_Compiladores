@@ -351,7 +351,10 @@ def p_store_operand(p):
 def p_void_call(p):
     """void_call : ID call1 params_init LP call2 RP
                  | ID call1 params_init LP RP"""
-    handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
+    if p[2] == None:
+        handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
+    else:
+        handle_fun_call(p[2], dirFunciones.get_dir_funciones(), parameter_stack.pop())
 
 
 def p_params_init(p):
@@ -362,6 +365,10 @@ def p_params_init(p):
 def p_call1(p):
     """call1 : DOT ID found_method
              | empty"""
+    try:
+        p[0] = p[2]
+    except IndexError:
+        p[0] = None
 
 
 def p_found_method(p):

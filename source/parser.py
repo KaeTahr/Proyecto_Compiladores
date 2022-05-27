@@ -1,3 +1,4 @@
+from distutils import dir_util
 import ply.yacc as yacc
 import dirFunciones
 import tablaVars
@@ -22,7 +23,7 @@ has_return = False
 
 # PROGRAMA
 def p_program(p):
-    """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main"""
+    """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main count_temps"""
     tablaVars.print_var_table()
     # print_obj_table()
     tablaConst.print_const_table()
@@ -43,10 +44,29 @@ def p_program(p):
     constant_string += '\n'
 
     dir_fun_string = 'f'
-    #for key in dirFunciones.directorio_funciones:
+    for key in dirFunciones.directorio_funciones:
+        fun = dirFunciones.directorio_funciones[key]
+        vt = fun[dirFunciones.FuncAttr.VAR_TABLE]
+        int_count = 0
+        float_count = 0
+        char_count = 0
+        for v in vt:
+            v = vt[v]
+            t = v[0]
+            if t == 'int':
+                int_count += 1
+            elif t == 'float':
+                float_count += 1
+            elif t == 'char':
+                char_count += 1
+        tmps = fun[dirFunciones.FuncAttr.TEMP_AMOUNT]
+        dir_fun_string += ',' + key + ',' + str(int_count) + ',' + str(float_count) + ',' + str(char_count)
+        dir_fun_string += ',' + str(tmps[0]) + ',' + str(tmps[1]) + ',' + str(tmps[2])
 
-#        dir_fun_string += ','  + str(key) +
+    dir_fun_string += '\n'
+
     f.write(constant_string)
+    f.write(dir_fun_string)
     for i, q in enumerate(m_quad_list):
         print(i + 1, q)
         f.write(str(q[0]) + ',' +
@@ -56,6 +76,10 @@ def p_program(p):
     f.close()
     p[0] = "\nInput is a valid program.\n"
 
+def p_count_temps(p):
+    """count_temps :"""
+    f = dirFunciones.directorio_funciones[scope_global]
+    f[dirFunciones.FuncAttr.TEMP_AMOUNT] = get_total_tmps()
 
 def p_store_program(p):
     """store_program :"""
@@ -209,7 +233,7 @@ def p_function(p):
 def p_fun_start(p):
     """fun_start :"""
     if curr_fun_type != 'void':
-        return_address = get_avail('global', curr_fun_type)  # TODO Global?
+        return_address = tablaVars.add_variable('_' + curr_scope, curr_fun_type, 'variable', scope_global)
     else:
         return_address = -1
     dirFunciones.fun_start(curr_scope, get_instruction_pointer(), return_address)

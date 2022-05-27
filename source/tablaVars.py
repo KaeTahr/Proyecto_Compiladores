@@ -19,6 +19,7 @@ def add_variable(var_id, var_type, var_kind, scope):
             else:
                 address = get_avail("local", var_type)
             directorio_funciones[scope][2][var_id] = [var_type, var_kind, address]
+            return address
             # new_variable_log(var_id, scope)  # log info
 
     else:

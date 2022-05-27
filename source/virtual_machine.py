@@ -5,7 +5,7 @@ ip = 0
 
 def get_ip():
     global ip
-    return ip
+    return ip - 1
 
 def set_ip(target):
     global ip
@@ -64,7 +64,6 @@ def or_vel(lo, ro, t):
 
 def assign(lo, ro, t):
     ip_continue()
-    pass
 
 def ret(lo, ro, t):
     ip_continue()
@@ -100,24 +99,25 @@ op_codes = [
 ]
 
 def eval(quad):
-    global ip
     op = quad.pop(0)
-    if op == 'c':
-        m.initiate_constants(quad)
-        ip_continue()
-    else:
-        op = int(op)
-        left_operand = quad[0]
-        right_operand = quad[1]
-        target = quad[2]
-        op_codes[op](left_operand, right_operand, target)
+    op = int(op)
+    left_operand = quad[0]
+    right_operand = quad[1]
+    target = quad[2]
+    op_codes[op](left_operand, right_operand, target)
 
 
 def main(ovejota):
     lines = open(ovejota, "r").readlines()
-    while (get_ip() < len(lines)): 
-        l = lines[get_ip()]
+    while (ip < len(lines)): 
         quad = l.strip().split(',')
+        if ip == 0:
+            quad.pop(0)
+            m.initiate_constants(quad)
+        elif ip == 1:
+            quad.pop(0)
+            m.inititate_var_table(quad)
+        l = lines[ip]
         eval(quad)
 
 if __name__ == '__main__':

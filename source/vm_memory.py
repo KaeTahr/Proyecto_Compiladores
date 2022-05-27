@@ -96,7 +96,6 @@ def initiate_constants(constant_list):
         v = constant_list.pop(0)
         a = int(constant_list.pop(0))
         c, r, off = memory_lookup(int(a))
-        print(v)
         if r == contextRanges.INT:
             v = int(v)
         elif r == contextRanges.FLOAT:

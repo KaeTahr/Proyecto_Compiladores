@@ -22,13 +22,12 @@ def get_instruction_pointer():
     return instruction_pointer
 
 
-# def gen_goto_main():
-#     if instruction_pointer > 2:
-#         quad_list[0][-1] = instruction_pointer + 1
-#         m_quad_list[0][-1] = instruction_pointer + 1
-#     else:
-#         quad_list[0][-1] = instruction_pointer
-#         m_quad_list[0][-1] = instruction_pointer
+def gen_goto_main():
+    global instruction_pointer
+    quad_list.insert(0, ['GoTo', '', '', instruction_pointer+1])
+    m_op = tablaConst.get_oper_code('GOTO')
+    m_quad_list.insert(0, [m_op, '', '', instruction_pointer+1])
+    instruction_pointer += 1
 
 
 # EXPRESSIONS

@@ -5,7 +5,7 @@ variables {
 }
 
 main() {
-    while(A > B *  C) do {
+    while(A > B * C) do {
         A = A - D;
         write(A);
     }

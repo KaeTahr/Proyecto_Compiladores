@@ -5,7 +5,6 @@ variables {
 }
 
 main() {
-
     if(A + B > C * D) then {
         A = B + D;
     } else {

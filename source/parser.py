@@ -319,7 +319,7 @@ def p_gen_quad5(p):
 def p_var(p):
     """var : ID store_operand var_dim
            | ID DOT ID store_attr"""
-
+    p[0] = p[1]
 
 # TODO: quads for array and matrix
 def p_var_dim(p):
@@ -461,14 +461,14 @@ def p_while_end(p):
 
 # FROM
 def p_from_st(p):
-    """from_st : FROM var EQ expression gen_from_start UNTIL expression gen_from_jmp DO LB statement RB gen_from_end"""
+    """from_st : FROM assignment gen_from_start UNTIL expression gen_from_jmp DO LB statement RB gen_from_end"""
 
 
 def p_gen_from_start(p):
     """gen_from_start : """
     global curr_from_var
-    curr_from_var = operand_stack[-1]
-    curr_from_m = m_operand_stack[-1]
+    curr_from_var = p[-1]
+    curr_from_m = dirFunciones.get_var_address(curr_from_var)
     gen_from_start(curr_from_var, curr_from_m)
 
 

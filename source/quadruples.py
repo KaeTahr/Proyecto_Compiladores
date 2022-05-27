@@ -8,7 +8,7 @@ m_operand_stack = []
 operand_stack = []
 operator_stack = []
 type_stack = []
-instruction_pointer = 2
+instruction_pointer = 1
 temporal_counter = 1  # total
 local_temporal_counter = 1
 quad_list = []  # quadruplos con IDs
@@ -22,9 +22,13 @@ def get_instruction_pointer():
     return instruction_pointer
 
 
-def gen_goto_main():
-    quad_list[0][-1] = instruction_pointer + 1
-    m_quad_list[0][-1] = instruction_pointer + 1
+# def gen_goto_main():
+#     if instruction_pointer > 2:
+#         quad_list[0][-1] = instruction_pointer + 1
+#         m_quad_list[0][-1] = instruction_pointer + 1
+#     else:
+#         quad_list[0][-1] = instruction_pointer
+#         m_quad_list[0][-1] = instruction_pointer
 
 
 # EXPRESSIONS
@@ -126,14 +130,14 @@ def gen_quad_else():
     start = jump_list.pop()
     start -= 1
     # ID
-    quad_list[start][-1] = instruction_pointer
+    quad_list[start][-1] = instruction_pointer + 1
     result = quad_list[start][1]
-    quad_list.append(['GoToT', result, '', 'pending'])
+    quad_list.append(['GoTo', '', '', 'pending'])
     # Memory
-    m_quad_list[start][-1] = instruction_pointer
+    m_quad_list[start][-1] = instruction_pointer + 1
     m_res = m_quad_list[start][1]
-    m_op = tablaConst.get_oper_code('GOTOT')
-    m_quad_list.append([m_op, m_res, '', 'pending'])
+    m_op = tablaConst.get_oper_code('GOTO')
+    m_quad_list.append([m_op, '', '', 'pending'])
 
     jump_list.append(instruction_pointer)
     instruction_pointer += 1

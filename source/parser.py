@@ -29,25 +29,28 @@ def p_program(p):
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
-    print("\nID Quadruples:")
-    for i, q in enumerate(quad_list):
-        print(i + 1, q)
-    print("\nADDR Quadruples:")
-    for i, q in enumerate(m_quad_list):
-        print(i + 1, q)
+    # print("\nID Quadruples:")
+    # for i, q in enumerate(quad_list):
+    #     print(i + 1, q)
+    # print("\nADDR Quadruples:")
+    # for i, q in enumerate(m_quad_list):
+    #     print(i + 1, q)
+    for i in range(len(quad_list)):
+        print(i+1, str(quad_list[i]) + "\t " + str(m_quad_list[i]))
+    print("\nInstruction Pointer:", get_instruction_pointer())
     p[0] = "\nInput is a valid program.\n"
 
 
 def p_ini_quads(p):
     """ini_quads :"""
-    quad_list.append(['GOTO', '', '', 'main'])
-    m_op = tablaConst.get_oper_code('GOTO')
-    m_quad_list.append([m_op, '', '', 'main'])
+    # quad_list.append(['GOTO', '', '', 'main'])
+    # m_op = tablaConst.get_oper_code('GOTO')
+    # m_quad_list.append([m_op, '', '', 'main'])
 
 
 def p_fill_goto_main(p):
     """fill_goto_main :"""
-    gen_goto_main()
+    #gen_goto_main()
 
 
 def p_store_program(p):

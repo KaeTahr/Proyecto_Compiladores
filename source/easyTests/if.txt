@@ -1,0 +1,12 @@
+program ifTest;
+
+variables {
+    int: A, B, C, D;
+}
+
+main() {
+    if(A + B > C * D) then {
+        A = B + D;
+    }
+    B = A * C;
+}

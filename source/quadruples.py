@@ -24,9 +24,8 @@ def get_instruction_pointer():
 
 def gen_goto_main():
     global instruction_pointer
-    quad_list.insert(0, ['GoTo', '', '', instruction_pointer+1])
-    m_op = tablaConst.get_oper_code('GOTO')
-    m_quad_list.insert(0, [m_op, '', '', instruction_pointer+1])
+    quad_list[0][-1] = instruction_pointer + 1
+    m_quad_list[0][-1] = instruction_pointer + 1
     instruction_pointer += 1
 
 
@@ -282,6 +281,7 @@ def gen_quad_return(f):
         m_op = tablaConst.get_oper_code('=')
         m_quad_list.append([m_op, m_res, '', f[FuncAttr.RETURN_ADDRESS]])
 
+        instruction_pointer += 1
         instruction_pointer += 1
 
 

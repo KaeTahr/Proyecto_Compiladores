@@ -43,9 +43,9 @@ def p_program(p):
 
 def p_ini_quads(p):
     """ini_quads :"""
-    # quad_list.append(['GOTO', '', '', 'main'])
-    # m_op = tablaConst.get_oper_code('GOTO')
-    # m_quad_list.append([m_op, '', '', 'main'])
+    quad_list.append(['GOTO', '', '', 'main'])
+    m_op = tablaConst.get_oper_code('GOTO')
+    m_quad_list.append([m_op, '', '', 'main'])
 
 
 def p_fill_goto_main(p):

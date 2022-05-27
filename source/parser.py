@@ -208,7 +208,7 @@ def p_fun_start(p):
         return_address = get_avail('global', curr_fun_type)
     else:
         return_address = -1
-    dirFunciones.fun_start(curr_scope, get_instruction_pointer(), return_address)
+    dirFunciones.fun_start(curr_scope, get_instruction_pointer() + 1, return_address)
     fun_start()
 
 

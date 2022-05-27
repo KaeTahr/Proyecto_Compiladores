@@ -13,6 +13,7 @@ main() {
             B = H + J;
             write(A+B*C, J);
         }
+        J = J + 1;
     }
     F = A + B;
 }

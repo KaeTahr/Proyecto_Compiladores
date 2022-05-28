@@ -354,6 +354,7 @@ def p_void_call(p):
         handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
     else:
         handle_fun_call(p[2], dirFunciones.get_dir_funciones(), parameter_stack.pop())
+        prefix = p[1] + "."  # TODO: send instance of object to function call
 
 
 def p_params_init(p):

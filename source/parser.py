@@ -26,12 +26,7 @@ def p_program(p):
     tablaVars.print_var_table()
     # print_obj_table()
     # tablaConst.print_const_table()
-    # print("\nOperand stack:\t", operand_stack)
-    # print("Type stack:\t", type_stack)
-    # print("Operator stack:\t", operator_stack)
-    # print("\nQuadruples:")
-    # for i in range(len(quad_list)):
-    #     print(i + 1, str(quad_list[i]) + "\t " + str(m_quad_list[i]))
+    print_id_q()
     # print("\nInstruction Pointer:", get_instruction_pointer())
     p[0] = "\nInput is a valid program.\n"
 
@@ -51,7 +46,6 @@ def p_fill_goto_main(p):
 def p_store_program(p):
     """store_program :"""
     dirFunciones.add_function(p[-1], p[-3], p[-3])
-    breakpoint()
     global curr_scope, scope_global
     curr_scope = p[-1]
     scope_global = p[-1]

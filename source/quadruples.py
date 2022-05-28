@@ -351,3 +351,21 @@ def handle_fun_call(fun_id, df, params_count):
         type_stack.append(signature[0])
         operand_stack.append(temp_result)
         m_operand_stack.append(m_temp)
+
+
+def print_id_q():
+    print("\nQuadruples:")
+    for i, q in enumerate(quad_list):
+        print(i + 1, q)
+
+
+def print_mem_q():
+    print("\nQuadruples:")
+    for i, q in enumerate(m_quad_list):
+        print(i + 1, q)
+
+
+def print_all_q():
+    print("\nQuadruples:")
+    for i in range(len(quad_list)):
+        print(i + 1, str(quad_list[i]) + "\t " + str(m_quad_list[i]))

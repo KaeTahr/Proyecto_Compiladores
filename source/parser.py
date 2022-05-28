@@ -23,21 +23,16 @@ has_return = False
 # PROGRAMA
 def p_program(p):
     """program : PROGRAM ini_quads ID store_program SEMI prog1 prog2 prog3 fill_goto_main main"""
-    tablaVars.print_var_table()
+    # tablaVars.print_var_table()
     # print_obj_table()
-    tablaConst.print_const_table()
+    # tablaConst.print_const_table()
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
-    # print("\nID Quadruples:")
-    # for i, q in enumerate(quad_list):
-    #     print(i + 1, q)
-    # print("\nADDR Quadruples:")
-    # for i, q in enumerate(m_quad_list):
-    #     print(i + 1, q)
-    for i in range(len(quad_list)):
-        print(i+1, str(quad_list[i]) + "\t " + str(m_quad_list[i]))
-    print("\nInstruction Pointer:", get_instruction_pointer())
+    # print("\nQuadruples:")
+    # for i in range(len(quad_list)):
+    #     print(i + 1, str(quad_list[i]) + "\t " + str(m_quad_list[i]))
+    # print("\nInstruction Pointer:", get_instruction_pointer())
     p[0] = "\nInput is a valid program.\n"
 
 
@@ -321,6 +316,7 @@ def p_var(p):
            | ID DOT ID store_attr"""
     p[0] = p[1]
 
+
 # TODO: quads for array and matrix
 def p_var_dim(p):
     """var_dim : LS expression RS
@@ -351,7 +347,10 @@ def p_store_operand(p):
 def p_void_call(p):
     """void_call : ID call1 params_init LP call2 RP
                  | ID call1 params_init LP RP"""
-    if p[2] == None:
+    if p[2] is None:
+        if dirFunciones.directorio_funciones[p[1]][FuncAttr.IS_GLOBAL] == 'method':
+            print("ERROR: cannot call class method", p[1], "as standalone function.")
+            exit()
         handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
     else:
         handle_fun_call(p[2], dirFunciones.get_dir_funciones(), parameter_stack.pop())
@@ -375,6 +374,7 @@ def p_found_method(p):
     """found_method :"""
     obj = dirFunciones.get_var_type(p[-3], curr_scope, curr_class)
     validate_method(obj, p[-1])
+
 
 
 def p_call2(p):

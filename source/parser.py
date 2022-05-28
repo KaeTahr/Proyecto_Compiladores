@@ -23,7 +23,7 @@ has_return = False
 # PROGRAMA
 def p_program(p):
     """program : PROGRAM ini_quads ID store_program SEMI prog1 prog2 prog3 fill_goto_main main"""
-    # tablaVars.print_var_table()
+    tablaVars.print_var_table()
     # print_obj_table()
     # tablaConst.print_const_table()
     # print("\nOperand stack:\t", operand_stack)
@@ -50,7 +50,8 @@ def p_fill_goto_main(p):
 
 def p_store_program(p):
     """store_program :"""
-    dirFunciones.add_function(p[-1], p[-2], p[-2])
+    dirFunciones.add_function(p[-1], p[-3], p[-3])
+    breakpoint()
     global curr_scope, scope_global
     curr_scope = p[-1]
     scope_global = p[-1]

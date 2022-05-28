@@ -3,8 +3,6 @@ from enum import IntEnum
 
 directorio_funciones = {}
 
-directorio_funciones.clear()
-
 # functions are stored as a list:
 # fun[0] = return type
 # fun[1] = kind (global) or not

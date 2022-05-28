@@ -16,6 +16,7 @@ jump_list = []
 from_tmp = []
 m_from_tmp = []
 m_quad_list = []  # quadruplos con direcciones
+m_prefix = ''
 
 
 def get_instruction_pointer():
@@ -265,10 +266,14 @@ def gen_quad_write():
 
 # RETURN
 def gen_quad_return(f):
-    global instruction_pointer, quad_list, operand_stack, type_stack
+    global instruction_pointer
     curr_type = type_stack.pop()
     res = operand_stack.pop()
+
     m_res = m_operand_stack.pop()  # Memory
+    if f[FuncAttr.IS_GLOBAL] == 'method':
+        m_res = res
+
     if curr_type != f[FuncAttr.RETURN_TYPE]:  # catches void function with return
         print("ERROR: Type mismatch in function return!", f[FuncAttr.RETURN_TYPE], "returns", curr_type)
         exit()
@@ -369,3 +374,8 @@ def print_all_q():
     print("\nQuadruples:")
     for i in range(len(quad_list)):
         print(i + 1, str(quad_list[i]) + "\t " + str(m_quad_list[i]))
+
+
+def set_prefix(p):
+    global m_prefix
+    m_prefix = p

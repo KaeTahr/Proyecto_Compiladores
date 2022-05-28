@@ -26,7 +26,7 @@ def p_program(p):
     tablaVars.print_var_table()
     # print_obj_table()
     # tablaConst.print_const_table()
-    print_id_q()
+    print_all_q()
     # print("\nInstruction Pointer:", get_instruction_pointer())
     p[0] = "\nInput is a valid program.\n"
 
@@ -348,8 +348,8 @@ def p_void_call(p):
             exit()
         handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
     else:
+        set_prefix(p[1] + ".")  # TODO: use instance of object in function call
         handle_fun_call(p[2], dirFunciones.get_dir_funciones(), parameter_stack.pop())
-        prefix = p[1] + "."  # TODO: send instance of object to function call
 
 
 def p_params_init(p):

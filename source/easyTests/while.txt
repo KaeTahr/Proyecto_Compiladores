@@ -1,0 +1,13 @@
+program whileTest;
+
+variables {
+    int: A, B, C, D;
+}
+
+main() {
+    while(A > B * C) do {
+        A = A - D;
+        write(A);
+    }
+    B = C + A;
+}

@@ -6,20 +6,27 @@ tabla_const = {}
 tabla_oper = {
     '*': 0,
     '/': 1,
-    '+': 3,
-    '-': 4,
-    '<': 5,
-    '>': 6,
-    '==': 7,
-    '!=': 8,
-    '>=': 9,
-    '<=': 10,
-    '&': 11,
-    '||': 12,
-    '=': 13,
-    'RETURN': 14,
-    'READ': 15,
-    'WRITE': 16
+    '+': 2,
+    '-': 3,
+    '<': 4,
+    '>': 5,
+    '==': 6,
+    '!=': 7,
+    '>=': 8,
+    '<=': 9,
+    '&': 10,
+    '||': 11,
+    '=': 12,
+    'RETURN': 13,
+    'READ': 14,
+    'WRITE': 15,
+    'GOTO': 16,
+    'GOTOF': 17,
+    'GOTOT': 18,
+    'ERA': 19,
+    'ENDFUNC': 20,
+    'PARAMETER': 21,
+    'GOSUB': 22
 }
 
 
@@ -58,7 +65,7 @@ def new_constant_log(value):
 
 def print_const_table():
     if tabla_const:
+        print("Constants table")
         for key in tabla_const:
-            print("Constants table")
             print("Value:", key, "\tType:", tabla_const[key][0], "\tAddress:", tabla_const[key][1])
         print("---------------------------------------------------------------")

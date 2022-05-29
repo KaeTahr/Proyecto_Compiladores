@@ -1,16 +1,26 @@
 program funcTest;
 
-variables {
-    int : x, y;
-    float : a, b;
+int function testInt(z : int) {
+    variables { int: z2; }
+    z2 = 115;
+    return(z2);
 }
 
-int function hello(z : int) {
-    variables {
-        int : z2;
-        float : c;
-    }
-    return(z2);
+float function testFloat() {
+    variables { float: x; int: a;}
+    x = 1.21;
+    return(x);
+}
+
+char function testChar() {
+    variables { char: y; }
+    y = 'R';
+    return(y);
+}
+
+void function testVoid(n : char) {
+    write("Hello ", n);
+    #return(n);
 }
 
 main() {

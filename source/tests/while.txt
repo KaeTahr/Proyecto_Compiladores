@@ -7,7 +7,6 @@ variables {
 
 main() {
     # esto es un comment
-    y = 1000000;
     while(x * x + 5 <= y) do {
         x = 500 / y;
         if( x / 2 > 3) then {

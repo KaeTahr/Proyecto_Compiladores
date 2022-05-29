@@ -332,7 +332,7 @@ def handle_fun_call(fun_id, df, params_count):
     signature = (f[FuncAttr.RETURN_TYPE], fun_id, f[FuncAttr.PARAMETERS])
     is_void = signature[0] == 'void'
     # GENERATE ERA
-    quad_list.append(['ERA', '', '', fun_id])  # TODO: Is this ok?
+    quad_list.append(['ERA', '', '', fun_id])  # TODO: Is this ok? methods?
     # Memory
     m_op = tablaConst.get_oper_code('ERA')
     m_quad_list.append([m_op, '', '', fun_id])
@@ -358,7 +358,7 @@ def handle_fun_call(fun_id, df, params_count):
         instruction_pointer += 1
 
     # OK, try to execute
-    quad_list.append(['GoSub', fun_id, '', f[FuncAttr.START]])  # TODO: is fun_id used in run time
+    quad_list.append(['GoSub', fun_id, '', f[FuncAttr.START]])
     # Memory
     m_op = tablaConst.get_oper_code('GOSUB')
     m_quad_list.append([m_op, fun_id, '', f[FuncAttr.START]])

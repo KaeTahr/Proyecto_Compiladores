@@ -23,7 +23,7 @@ has_return = False
 
 # PROGRAMA
 def p_program(p):
-   """program : PROGRAM ini_quads ID store_program SEMI prog1 prog2 prog3 fill_goto_main main count_temps"""
+    """program : PROGRAM ini_quads ID store_program SEMI prog1 prog2 prog3 fill_goto_main main count_temps"""
     tablaVars.print_var_table()
     # print_obj_table()
     tablaConst.print_const_table()
@@ -70,9 +70,9 @@ def p_program(p):
     for i, q in enumerate(m_quad_list):
         print(i + 1, q)
         f.write(str(q[0]) + ',' +
-         str(q[1]) + ',' + 
-         str(q[2]) + ',' +
-         str(q[3]) + '\n')
+            str(q[1]) + ',' + 
+            str(q[2]) + ',' +
+            str(q[3]) + '\n')
     f.close()
     # print("\nInstruction Pointer:", get_instruction_pointer())
     p[0] = "\nInput is a valid program.\n"

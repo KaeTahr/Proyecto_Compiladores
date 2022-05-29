@@ -149,6 +149,9 @@ def write(lo, ro, t):
     print(o)
     ip_continue()
 
+def goto(lo, ro, t):
+    ip_continue()
+
 op_codes = [
     mult, # 0
     div, # 1
@@ -166,6 +169,7 @@ op_codes = [
     ret,
     read,
     write,
+    goto,
     # TODO: Complete this list
 ]
 

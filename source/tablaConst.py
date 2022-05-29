@@ -27,6 +27,7 @@ tabla_oper = {
     'ENDFUNC': 20,
     'PARAMETER': 21,
     'GOSUB': 22
+
 }
 
 

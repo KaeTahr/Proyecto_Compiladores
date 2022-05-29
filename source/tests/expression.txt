@@ -6,17 +6,43 @@ variables {
 
 main() {
     # esto es un comment
+    write("starting xd");
+    a = 1;
+    b = 0;
+    write(a);
     c = a || b;
+    write("result of b or c is:");
+    write(c);
     c = a & b;
+    write("result of a and b is:");
+    write(c);
     c = a < b;
+    write("result of a < b is:");
+    write(c);
     c = a > b;
+    write(c);
     c = a == b;
+    write(c);
     c = a != b;
+    write(c);
     c = a >= b;
+    write(c);
     c = a <= b;
+    write(c);
     c = a + b;
+    write(c);
     c = a - b;
+    write(c);
     c = a * b;
+    write(c);
+    b = 5;
+    write(c);
     c = a / b;
+    write(c);
+    d = (a + b) * c;
+    write(d);
+    c = 10;
     a = (a + b) * c / c;
+    write(a);
+    write(546.0 / 2.0 / 2.0 / 2.0);
 }

@@ -10,7 +10,12 @@ operator_stack = []
 type_stack = []
 instruction_pointer = 1
 temporal_counter = 1  # total
-local_temporal_counter = 1
+local_temporal_int = 0
+local_temporal_float = 0
+local_temporal_char = 0
+total_temporal_int = 0
+total_temporal_float = 0
+total_temporal_char = 0
 quad_list = []  # quadruplos con IDs
 jump_list = []
 from_tmp = []
@@ -23,16 +28,31 @@ def get_instruction_pointer():
     return instruction_pointer
 
 
+def add_local_temp(t):
+    global local_temporal_int, local_temporal_char, local_temporal_float, total_temporal_char, total_temporal_float, total_temporal_int
+    if t == 'int':
+        local_temporal_int += 1
+        total_temporal_int += 1
+    if t == 'float':
+        local_temporal_float += 1
+        total_temporal_float += 1
+    if t == 'char':
+        local_temporal_char += 1
+        total_temporal_char += 1
+
+def get_total_tmps():
+    return (total_temporal_int, total_temporal_float, total_temporal_char)
+# gen_quad 0-4
+
 def gen_goto_main():
     global instruction_pointer
     quad_list[0][-1] = instruction_pointer + 1
     m_quad_list[0][-1] = instruction_pointer + 1
     instruction_pointer += 1
 
-
 # EXPRESSIONS
 def gen_quad_exp(valid_operators):
-    global operand_stack, operator_stack, type_stack, quad_list, temporal_counter, instruction_pointer, local_temporal_counter
+    global operand_stack, operator_stack, type_stack, quad_list, temporal_counter, instruction_pointer
     if operator_stack:
         current_operator = operator_stack[-1]
         if current_operator in valid_operators:
@@ -60,7 +80,7 @@ def gen_quad_exp(valid_operators):
 
                 instruction_pointer += 1
                 temporal_counter += 1
-                local_temporal_counter += 1
+                add_local_temp(result_type)
 
             else:
                 print("ERROR: Type mismatch in expression!")
@@ -190,7 +210,7 @@ def gen_from_start(s, m):
 
 
 def gen_from_jmp():
-    global instruction_pointer, temporal_counter, local_temporal_counter
+    global instruction_pointer, temporal_counter
     start_type = from_tmp.pop()
     start = from_tmp.pop()
     m_start = m_from_tmp.pop()  # Memory
@@ -207,6 +227,8 @@ def gen_from_jmp():
     temp_result = "t" + str(temporal_counter)
     m_temp = get_avail('temporal', result_type)
     temporal_counter += 1
+
+    add_local_temp(temp_result)
     local_temporal_counter += 1
     quad_list.append(['<', start, target, temp_result])
     m_op = tablaConst.get_oper_code('<')
@@ -292,18 +314,20 @@ def gen_quad_return(f):
 
 # FUNCTIONS
 def fun_start():
-    global local_temporal_counter
-    local_temporal_counter = 1
+    global local_temporal_char, local_temporal_float, local_temporal_int
+    local_temporal_int = 0
+    local_temporal_float = 0
+    local_temporal_char = 0
 
 
 def fun_end():
-    global instruction_pointer, local_temporal_counter
+    global instruction_pointer
     quad_list.append(['ENDFunc', '', '', ''])
     # Memory
     m_op = tablaConst.get_oper_code('ENDFUNC')
     m_quad_list.append([m_op, '', '', ''])
     instruction_pointer += 1
-    return local_temporal_counter
+    return (local_temporal_int, local_temporal_float, local_temporal_char)
 
 
 def handle_fun_call(fun_id, df, params_count):

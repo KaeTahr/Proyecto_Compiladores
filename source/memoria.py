@@ -15,6 +15,7 @@ virtual_memory = {
         'int': {'initial': 7000, 'count': 0},
         'float': {'initial': 8000, 'count': 0},
         'char': {'initial': 9000, 'count': 0}
+
     },
     'constant': {
         'int': {'initial': 10000, 'count': 0},

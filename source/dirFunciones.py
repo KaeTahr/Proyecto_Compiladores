@@ -33,7 +33,7 @@ def add_function(fun_id, fun_type, kind):
         exit()
 
     else:
-        directorio_funciones[fun_id] = [fun_type, kind, {}, (), 0, -1, 0]
+        directorio_funciones[fun_id] = [fun_type, kind, {}, (), (0, 0, 0), -1, 0]
 
 
 def new_function_log(fun_id):

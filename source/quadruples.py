@@ -8,7 +8,7 @@ m_operand_stack = []
 operand_stack = []
 operator_stack = []
 type_stack = []
-instruction_pointer = 1
+instruction_pointer = 2
 temporal_counter = 1  # total
 local_temporal_int = 0
 local_temporal_float = 0
@@ -46,9 +46,8 @@ def get_total_tmps():
 
 def gen_goto_main():
     global instruction_pointer
-    quad_list[0][-1] = instruction_pointer + 1
-    m_quad_list[0][-1] = instruction_pointer + 1
-    instruction_pointer += 1
+    quad_list[0][-1] = instruction_pointer
+    m_quad_list[0][-1] = instruction_pointer
 
 # EXPRESSIONS
 def gen_quad_exp(valid_operators):
@@ -140,7 +139,7 @@ def gen_end_if():
     global instruction_pointer
     start = jump_list.pop()
     start -= 1
-    quad_list[start][-1] = instruction_pointer
+    quad_list[start][-1] = instruction_pointer 
     m_quad_list[start][-1] = instruction_pointer
 
 
@@ -229,7 +228,6 @@ def gen_from_jmp():
     temporal_counter += 1
 
     add_local_temp(temp_result)
-    local_temporal_counter += 1
     quad_list.append(['<', start, target, temp_result])
     m_op = tablaConst.get_oper_code('<')
     m_quad_list.append([m_op, m_start, m_target, m_temp])
@@ -301,14 +299,10 @@ def gen_quad_return(f):
         exit()
     else:
         quad_list.append(['RETURN', '', '', res])
-        quad_list.append(['=', res, '', f[FuncAttr.RETURN_ADDRESS]])
         # Memory
         m_op = tablaConst.get_oper_code('RETURN')
         m_quad_list.append([m_op, '', '', m_res])  # Memory
-        m_op = tablaConst.get_oper_code('=')
-        m_quad_list.append([m_op, m_res, '', f[FuncAttr.RETURN_ADDRESS]])
 
-        instruction_pointer += 1
         instruction_pointer += 1
 
 

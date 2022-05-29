@@ -74,7 +74,7 @@ def p_program(p):
             str(q[2]) + ',' +
             str(q[3]) + '\n')
     f.close()
-    # print("\nInstruction Pointer:", get_instruction_pointer())
+    print("\nInstruction Pointer:", get_instruction_pointer())
     p[0] = "\nInput is a valid program.\n"
 
 def p_count_temps(p):

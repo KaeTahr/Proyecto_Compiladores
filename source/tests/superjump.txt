@@ -1,0 +1,26 @@
+program ifTest;
+
+variables {
+    int: a, b, c, T, F, out, out2;
+}
+
+main() {
+    a = 1;
+    b = 5;
+    if (a) then {
+        write("inside of if");
+        while(a > b) do {
+            write("while");
+            a = a + 1;
+            from c = 1 until b do {
+                write("inside from");
+                c = c + 1;
+            }
+        }
+    }
+    else {
+        write("else");
+    }
+    write("done");
+
+}

@@ -26,5 +26,6 @@ int function hello(z : int) {
 }
 
 main() {
-    x = john.edad;
+    x = john.getEdad();
+    write("John's age is: ", x);
 }

@@ -20,7 +20,14 @@ tabla_oper = {
     'RETURN': 13,
     'READ': 14,
     'WRITE': 15,
-    'GOTO': 16
+    'GOTO': 16,
+    'GOTOF': 17,
+    'GOTOT': 18,
+    'ERA': 19,
+    'ENDFUNC': 20,
+    'PARAMETER': 21,
+    'GOSUB': 22
+
 }
 
 

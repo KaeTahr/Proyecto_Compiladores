@@ -6,9 +6,14 @@ variables {
     char : z;
 }
 
+int function testInt() {
+    variables { int: z2; }
+    z2 = 115;
+    return(z2);
+}
+
 main() {
-    a = 5;
-    x = a + 2;
-    y = 3.14 - 2.5;
-    z = 'R';
+
+    x = testInt() + testInt();
+
 }

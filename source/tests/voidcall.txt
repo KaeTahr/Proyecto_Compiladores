@@ -1,26 +1,10 @@
 program voidCall;
 
-variables {
-    int: x, y;
-}
-
-int function promedio(tExams : int) {
-    variables {
-        int: promedio;
-    }
-
-    return (promedio / tExams);
-}
-
 void function hello() {
     write("Hello world!");
 }
 
 main() {
     # esto es un comment
-    y = promedio(x);
-
     hello();
-
-
 }

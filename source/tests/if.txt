@@ -5,10 +5,6 @@ variables {
 }
 
 main() {
-
-    a = a + a * (b + c);
-    b = (b * b) + (a / c);
-    a = (b * (1 + 2) - 3) / 5;
     # if simple
     if(a != b) then {
 
@@ -29,6 +25,5 @@ main() {
 
     } else { # comment en medio
         F = a + b;
-
     }
 }

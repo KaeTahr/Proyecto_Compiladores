@@ -23,7 +23,7 @@ has_return = False
 
 # PROGRAMA
 def p_program(p):
-    """program : PROGRAM ID store_program SEMI prog1 prog2 prog3 main count_temps"""
+   """program : PROGRAM ini_quads ID store_program SEMI prog1 prog2 prog3 fill_goto_main main count_temps"""
     tablaVars.print_var_table()
     # print_obj_table()
     tablaConst.print_const_table()
@@ -74,6 +74,7 @@ def p_program(p):
          str(q[2]) + ',' +
          str(q[3]) + '\n')
     f.close()
+    # print("\nInstruction Pointer:", get_instruction_pointer())
     p[0] = "\nInput is a valid program.\n"
 
 def p_count_temps(p):
@@ -81,9 +82,21 @@ def p_count_temps(p):
     f = dirFunciones.directorio_funciones[scope_global]
     f[dirFunciones.FuncAttr.TEMP_AMOUNT] = get_total_tmps()
 
+def p_ini_quads(p):
+    """ini_quads :"""
+    quad_list.append(['GOTO', '', '', 'main'])
+    m_op = tablaConst.get_oper_code('GOTO')
+    m_quad_list.append([m_op, '', '', 'main'])
+
+
+def p_fill_goto_main(p):
+    """fill_goto_main :"""
+    gen_goto_main()
+
+
 def p_store_program(p):
     """store_program :"""
-    dirFunciones.add_function(p[-1], p[-2], p[-2])
+    dirFunciones.add_function(p[-1], p[-3], p[-3])
     global curr_scope, scope_global
     curr_scope = p[-1]
     scope_global = p[-1]
@@ -236,7 +249,7 @@ def p_fun_start(p):
         return_address = tablaVars.add_variable('_' + curr_scope, curr_fun_type, 'variable', scope_global)
     else:
         return_address = -1
-    dirFunciones.fun_start(curr_scope, get_instruction_pointer(), return_address)
+    dirFunciones.fun_start(curr_scope, get_instruction_pointer() + 1, return_address)
     fun_start()
 
 
@@ -247,6 +260,9 @@ def p_fun_end(p):
     if has_return is False and curr_fun_type != 'void':
         print("Error: non-void function", curr_scope, "has no return statement.")
         exit()
+    # at end of function, reset temporal and local addresses
+    reset_temp()
+    reset_local()
 
 
 def p_store_function(p):
@@ -342,8 +358,16 @@ def p_gen_quad5(p):
 
 
 def p_var(p):
-    """var : ID store_operand list1
+    """var : ID store_operand var_dim
            | ID DOT ID store_attr"""
+    p[0] = p[1]
+
+
+# TODO: quads for array and matrix
+def p_var_dim(p):
+    """var_dim : LS expression RS
+               | LS expression COMMA expression RS
+               | empty"""
 
 
 def p_store_attr(p):
@@ -369,7 +393,14 @@ def p_store_operand(p):
 def p_void_call(p):
     """void_call : ID call1 params_init LP call2 RP
                  | ID call1 params_init LP RP"""
-    handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
+    if p[2] is None:
+        if dirFunciones.directorio_funciones[p[1]][FuncAttr.IS_GLOBAL] == 'method':
+            print("ERROR: cannot call class method", p[1], "as standalone function.")
+            exit()
+        handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
+    else:
+        set_prefix(p[1] + ".")  # TODO: use instance of object in function call
+        handle_fun_call(p[2], dirFunciones.get_dir_funciones(), parameter_stack.pop())
 
 
 def p_params_init(p):
@@ -380,12 +411,17 @@ def p_params_init(p):
 def p_call1(p):
     """call1 : DOT ID found_method
              | empty"""
+    try:
+        p[0] = p[2]
+    except IndexError:
+        p[0] = None
 
 
 def p_found_method(p):
     """found_method :"""
     obj = dirFunciones.get_var_type(p[-3], curr_scope, curr_class)
     validate_method(obj, p[-1])
+
 
 
 def p_call2(p):
@@ -480,14 +516,14 @@ def p_while_end(p):
 # FROM
 def p_from_st(p):
     """from_st : FROM assignment gen_from_start UNTIL expression gen_from_jmp DO LB statement RB gen_from_end"""
-    global curr_from_var
-    curr_from_var = p[2]
 
 
 def p_gen_from_start(p):
     """gen_from_start : """
     global curr_from_var
-    gen_from_start(curr_from_var)
+    curr_from_var = p[-1]
+    curr_from_m = dirFunciones.get_var_address(curr_from_var)
+    gen_from_start(curr_from_var, curr_from_m)
 
 
 def p_gen_from_jmp(p):

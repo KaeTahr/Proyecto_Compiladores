@@ -1,13 +1,18 @@
 program returnTest;
 
+variables {
+    int: a;
+}
+
 int function getX() {
     variables {
         int: x;
     }
+    x = 115;
     return(x);
 }
 
 main() {
     # esto es un comment
-
+    a = getX();
 }

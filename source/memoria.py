@@ -14,7 +14,8 @@ virtual_memory = {
     'temporal': {
         'int': {'initial': 7000, 'count': 0},
         'float': {'initial': 8000, 'count': 0},
-        'char': {'initial': 9000, 'count': 0},
+        'char': {'initial': 9000, 'count': 0}
+
     },
     'constant': {
         'int': {'initial': 10000, 'count': 0},
@@ -24,8 +25,7 @@ virtual_memory = {
     }
 }
 
-
-valid_types = ['int', 'char', 'float', 'bool', 'string']
+valid_types = ['int', 'char', 'float', 'string']
 
 
 def get_avail(scope, v_type):
@@ -56,4 +56,3 @@ def reset_temp():
     virtual_memory['temporal']['int']['count'] = 0
     virtual_memory['temporal']['float']['count'] = 0
     virtual_memory['temporal']['char']['count'] = 0
-    virtual_memory['temporal']['bool']['count'] = 0

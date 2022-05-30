@@ -32,6 +32,7 @@ tabla_oper = {
 
 
 def add_constant(value, const_type):
+    value = str(value)
     if value not in tabla_const:
         address = get_avail('constant', const_type)
         tabla_const[value] = [const_type, address]
@@ -43,14 +44,14 @@ def add_constant(value, const_type):
 
 def get_const_add(value):
     if tabla_const:
-        return tabla_const[value][1]
+        return tabla_const[str(value)][1]
     else:
         return 'undefined'
 
 
 def get_const_type(value):
     if tabla_const:
-        return tabla_const[value][0]
+        return tabla_const[str(value)][0]
     else:
         return 'undefined'
 

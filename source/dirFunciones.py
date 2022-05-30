@@ -68,10 +68,14 @@ def get_var_type(var_id, scope, curr_class):
         exit()
 
 
-def get_var_address(var_id):
-    for scope in directorio_funciones:
-        if var_id in directorio_funciones[scope][FuncAttr.VAR_TABLE]:
-            return directorio_funciones[scope][FuncAttr.VAR_TABLE][var_id][2]
+def get_var_address(var_id, scope, global_scope):
+    if var_id in directorio_funciones[scope][FuncAttr.VAR_TABLE]:
+        return directorio_funciones[scope][FuncAttr.VAR_TABLE][var_id][2]
+    elif var_id in directorio_funciones[global_scope][FuncAttr.VAR_TABLE]:
+        return directorio_funciones[global_scope][FuncAttr.VAR_TABLE][var_id][2]
+    else:
+        print("Variable", var_id, "is not declared")
+        exit()
 
 
 def sign_function(id):

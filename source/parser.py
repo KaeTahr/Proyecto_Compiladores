@@ -61,7 +61,7 @@ def p_program(p):
                 char_count += 1
         tmps = fun[dirFunciones.FuncAttr.TEMP_AMOUNT]
         dir_fun_string += ',' + key + ',' + str(int_count) + ',' + str(float_count) + ',' + str(char_count)
-        dir_fun_string += ',' + str(tmps[0]) + ',' + str(tmps[1]) + ',' + str(tmps[2])
+        dir_fun_string += ',' + str(tmps[0]) + ',' + str(tmps[1]) + ',' + str(tmps[2]) + ',' + str(fun[FuncAttr.RETURN_ADDRESS])
 
     dir_fun_string += '\n'
 
@@ -251,7 +251,7 @@ def p_fun_start(p):
         return_address = tablaVars.add_variable('_' + curr_scope, curr_fun_type, 'variable', scope_global)
     else:
         return_address = -1
-    dirFunciones.fun_start(curr_scope, get_instruction_pointer() + 1, return_address)
+    dirFunciones.fun_start(curr_scope, get_instruction_pointer(), return_address)
     fun_start()
 
 
@@ -377,7 +377,7 @@ def p_store_attr(p):
     global curr_operand_type
     name = str(p[-3] + p[-2] + p[-1])
     operand_stack.append(name)
-    m_operand_stack.append(dirFunciones.get_var_address(name))
+    m_operand_stack.append(dirFunciones.get_var_address(name, curr_scope, scope_global))
     curr_operand_type = dirFunciones.get_var_type(name, curr_scope, curr_class)
     type_stack.append(curr_operand_type)
 
@@ -386,7 +386,7 @@ def p_store_operand(p):
     """store_operand :"""
     global curr_operand_type
     operand_stack.append(p[-1])
-    m_operand_stack.append(dirFunciones.get_var_address(p[-1]))
+    m_operand_stack.append(dirFunciones.get_var_address(p[-1], curr_scope, scope_global))
     curr_operand_type = dirFunciones.get_var_type(p[-1], curr_scope, curr_class)
     type_stack.append(curr_operand_type)
 
@@ -524,7 +524,7 @@ def p_gen_from_start(p):
     """gen_from_start : """
     global curr_from_var
     curr_from_var = p[-1]
-    curr_from_m = dirFunciones.get_var_address(curr_from_var)
+    curr_from_m = dirFunciones.get_var_address(curr_from_var, curr_scope, scope_global)
     gen_from_start(curr_from_var, curr_from_m)
 
 

@@ -7,14 +7,12 @@ variables {
 
 main() {
     # esto es un comment
-    while(x * x + 5 <= y) do {
-        x = 500 / y;
-        if( x / 2 > 3) then {
-            x = x + 1;
-        }
-        outf = outf;
+    x = 0;
+    y = 10;
+    while(x < y) do {
+        write("inside the while");
+        write(x);
+        x = x + 1;
     }
-    outw = outw;
-
     write("Sali del while");
 }

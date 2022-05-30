@@ -161,7 +161,12 @@ def gotof(lo, ro, t):
         ip_continue()
 
 def gotot(lo, ro, t):
-    ip_continue()
+    lo = m.memory_read(int(lo))
+    res = (lo == FALSE)
+    if (res):
+        ip_continue()
+    else:
+        set_ip(int(t))
 
 def era(lo, ro, t):
     ip_continue()

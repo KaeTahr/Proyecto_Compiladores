@@ -1,7 +1,7 @@
 program testFunDir;
 
 variables {
-    int : iCount;
+    int : iCount, x, y, z;
     float : fResult;
     char : cInitial;
 }
@@ -52,10 +52,23 @@ void function hello() {
     write("Hello world!");
 }
 
+int function sumaInt(a : int, b : int)
+{
+    variables {
+        int : i;
+    }
+    i = 1;
+   return (a + b + i); 
+}
+
 main() {
-    hello();
+    x = 5;
+    y = 4;
+    z = sumaInt(x - x + x, y - y);
+    write(z);
+    #hello();
     #write(clasifica());
-    fResult = promedio(1.0, 2);
+    #fResult = promedio(1.0, 2);
     #write(fResult);
     #fResult = promedio(fResult, 2);
 }

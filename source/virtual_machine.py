@@ -11,7 +11,7 @@ def get_ip():
 
 def set_ip(target):
     global ip
-    ip = target
+    ip = target - 1
 
 def ip_continue():
     global ip
@@ -114,7 +114,7 @@ def lte(lo, ro, t):
 def and_et(lo, ro, t):
     lo = m.memory_read(int(lo))
     ro = m.memory_read(int(ro))
-    res = (lo == 0) and (ro == 0)
+    res = (lo == FALSE) and (ro == FALSE)
     if res:
         res = TRUE
     else:
@@ -125,7 +125,7 @@ def and_et(lo, ro, t):
 def or_vel(lo, ro, t):
     lo = m.memory_read(int(lo))
     ro = m.memory_read(int(ro))
-    res = (lo == 0) or (ro == 0)
+    res = (lo == FALSE) or (ro == FALSE)
     if res:
         res = TRUE
     else:
@@ -150,6 +150,34 @@ def write(lo, ro, t):
     ip_continue()
 
 def goto(lo, ro, t):
+    set_ip(int(t))
+
+def gotof(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    res = (lo == FALSE)
+    if (res):
+        set_ip(int(t))
+    else:
+        ip_continue()
+
+def gotot(lo, ro, t):
+    lo = m.memory_read(int(lo))
+    res = (lo == FALSE)
+    if (res):
+        ip_continue()
+    else:
+        set_ip(int(t))
+
+def era(lo, ro, t):
+    ip_continue()
+
+def endfunc(lo, ro, t):
+    ip_continue()
+
+def parameter(lo, ro, t):
+    ip_continue()
+
+def gosub(lo, ro, t):
     ip_continue()
 
 op_codes = [
@@ -170,6 +198,12 @@ op_codes = [
     read,
     write,
     goto,
+    gotof,
+    gotot,
+    era,
+    endfunc,
+    parameter,
+    gosub
     # TODO: Complete this list
 ]
 

@@ -226,6 +226,7 @@ def gen_from_jmp():
     temp_result = "t" + str(temporal_counter)
     m_temp = get_avail('temporal', result_type)
     temporal_counter += 1
+    add_local_temp(result_type)
 
     add_local_temp(temp_result)
     quad_list.append(['<', start, target, temp_result])
@@ -367,6 +368,7 @@ def handle_fun_call(fun_id, df, params_count):
         m_temp = get_avail('temporal', f[FuncAttr.RETURN_TYPE])
         temp_result = "t" + str(temporal_counter)
         temporal_counter += 1
+        add_local_temp(f[FuncAttr.RETURN_TYPE])
         m_op = tablaConst.get_oper_code('=')
         m_quad_list.append([m_op, f[FuncAttr.RETURN_ADDRESS], '', m_temp])
         quad_list.append(['=', f[FuncAttr.RETURN_ADDRESS], '', temp_result])

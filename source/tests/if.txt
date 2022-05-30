@@ -5,25 +5,30 @@ variables {
 }
 
 main() {
+    write("if test");
     # if simple
+    a = 5;
+    b = 0;
     if(a != b) then {
+        write("inside first if");
 
-        if (b != a) then {
-            b = a + b;
+        if (b) then {
+            write("nested if");
 
         } else {
-            b = a + a;
-            # write("lmao");
+            write("nested else");
         }
-        out = out + out;
+        write("ending the first if");
     }
-    out2 = out2 + out2;
+    write("out of the if");
 
     # if-else
-    if(33+77 == 100) then {
-        T = a + b;
+    if(23+77 == 100) then {
+        write("we know basic addition!");
 
     } else { # comment en medio
-        F = a + b;
+        write("you shouldn't see this");
     }
+
+    write("bye!!!");
 }

@@ -92,6 +92,8 @@ def p_ini_quads(p):
 def p_fill_goto_main(p):
     """fill_goto_main :"""
     gen_goto_main()
+    global curr_scope
+    curr_scope = scope_global
 
 
 def p_store_program(p):

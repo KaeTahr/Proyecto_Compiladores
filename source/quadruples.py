@@ -1,4 +1,3 @@
-from typing import Type
 import tablaConst
 from cuboSemantico import *
 from memoria import *
@@ -82,8 +81,7 @@ def gen_quad_exp(valid_operators):
                 add_local_temp(result_type)
 
             else:
-                print("ERROR: Type mismatch in expression!")
-                exit()
+                raise TypeError("ERROR: Type mismatch in expression!")
 
 
 # ASSIGNMENT
@@ -111,17 +109,14 @@ def gen_quad_assignment():
                 m_quad_list.append(m_quad)
                 instruction_pointer += 1
             else:
-                print("ERROR: Type mismatch in assignment:", left_operand, operator, right_operand)
-                exit()
-
+                raise TypeError("ERROR: Type mismatch in assignment:", left_operand, operator, right_operand)
 
 # IF
 def gen_quad_if():
     global type_stack, quad_list, instruction_pointer
     exp_type = type_stack.pop()
     if exp_type != 'int':
-        print("ERROR Type mismatch!")
-        raise TypeError
+        raise TypeError("ERROR Type mismatch!")
     else:
         # ID
         result = operand_stack.pop()
@@ -353,11 +348,18 @@ def handle_fun_call(fun_id, df, params_count):
     # Now, initiate parameters with expression result
 
     m_op = tablaConst.get_oper_code('PARAMETER')
+    quad_stack = []
+    m_quad_stack = []
     for i in range(params_count):
-        quad_list.append(['PARAMETER', operand_stack.pop(), '', params_count - i])
-        m_quad_list.append([m_op, m_operand_stack.pop(), '', params_count - i])
-        instruction_pointer += 1
+        quad_stack.append(['PARAMETER', operand_stack.pop(), '', params_count - i])
+        m_quad_stack.append([m_op, m_operand_stack.pop(), '', params_count - i])
 
+    for i in range(params_count):
+        q = quad_stack.pop()
+        m = m_quad_stack.pop()
+        quad_list.append(q)
+        m_quad_list.append(m)
+        instruction_pointer += 1
     # OK, try to execute
     quad_list.append(['GoSub', fun_id, '', f[FuncAttr.START]])
     # Memory

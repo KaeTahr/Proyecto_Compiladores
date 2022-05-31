@@ -1,6 +1,7 @@
 from csv import excel_tab
 from enum import IntEnum
 from importlib.abc import ExecutionLoader
+from re import S
 
 class memoryContext(IntEnum):
     GLOBAL = 0,
@@ -182,12 +183,14 @@ def start_subroutine(fun, ip):
     memory[memoryContext.LOCAL] = c[StackMemory.LOCAL_MEM]
     memory[memoryContext.TEMPORAL] = c[StackMemory.TMP_MEM]
 
-def end_subroutine(value_address):
+def end_subroutine(value_address = None):
     prev = execution_stack.pop()
-    value = memory_read(value_address)
-    memory[memoryContext.LOCAL] = prev[1]
-    memory[memoryContext.TEMPORAL] = prev[2]
-    f = prev[3]
-    address = dir_fun[f][2]
-    memory_write(value, address)
-    return prev[0]
+    if value_address != None:
+        value = memory_read(value_address)
+        f = prev[StackMemory.EXPECTING_RETURN]
+        address = dir_fun[f][2]
+    memory[memoryContext.LOCAL] = prev[StackMemory.LOCAL_MEM]
+    memory[memoryContext.TEMPORAL] = prev[StackMemory.TMP_MEM]
+    if value_address != None:
+        memory_write(value, address)
+    return prev[StackMemory.IP]

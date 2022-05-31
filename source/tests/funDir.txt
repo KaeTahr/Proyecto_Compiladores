@@ -52,7 +52,7 @@ void function hello() {
     write("Hello world!");
 }
 
-float function sumaInt(a : int, b : float)
+float function sumaInt(a : int, b : float, c : int)
 {
     variables {
         int : i;
@@ -61,19 +61,14 @@ float function sumaInt(a : int, b : float)
     write(a);
     write(b);
     i = 1;
-   return (a + b + i); 
+   return (a + b + c); 
 }
 
 int function fib(i: int)
 {
-    write("in fib");
     if(i <= 1) then {
         return (i);
     }
-    if (i == 2) then {
-        return(1);
-    }
-    write(i);
     return ((fib(i-1)) + (fib(i-2)));
 }
 
@@ -81,14 +76,15 @@ main() {
     x = 5;
     y = 4;
     write("this is were the fun begins");
-    a = sumaInt(x, 4.0);
+    a = sumaInt(x, 4.0, 1);
     write(a);
     x = fib(6);
     write("fib:");
     write(x);
-    #hello();
+    hello();
     #write(clasifica());
     #fResult = promedio(1.0, 2);
     #write(fResult);
     #fResult = promedio(fResult, 2);
+    write("bye bye~");
 }

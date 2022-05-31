@@ -35,7 +35,6 @@ def add(lo, ro, t):
     lo = m.memory_read(int(lo))
     ro = m.memory_read(int(ro))
     res = lo + ro
-    #print (str(lo) +  ' + ' + str(ro)) 
     m.memory_write(res, t)
     ip_continue()
 
@@ -177,7 +176,11 @@ def era(lo, ro, t):
     ip_continue()
 
 def endfunc(lo, ro, t):
+    global ip
+    new_ip  = m.end_subroutine()
+    ip = new_ip
     ip_continue()
+    
 
 def parameter(lo, ro, t):
     m.handle_param(lo, int(t))

@@ -2,8 +2,7 @@ from dirFunciones import FuncAttr, directorio_funciones, FuncAttr
 from memoria import *
 from tablaObjetos import tabla_obj
 
-
-# AGREGAR VARIABLE A TABLA DE VARIABLES
+R = 1
 
 
 def add_variable(var_id, var_type, var_kind, scope):
@@ -18,7 +17,7 @@ def add_variable(var_id, var_type, var_kind, scope):
                 address = get_avail("global", var_type)
             else:
                 address = get_avail("local", var_type)
-            directorio_funciones[scope][2][var_id] = [var_type, var_kind, address]
+            directorio_funciones[scope][2][var_id] = [var_type, var_kind, address, False, [], 0]
             return address
             # new_variable_log(var_id, scope)  # log info
 
@@ -46,7 +45,8 @@ def print_var_table():
                 print("\nVariables table for FUNCTION", scope)
             for var in directorio_funciones[scope][FuncAttr.VAR_TABLE]:
                 print("ID:", var, "\tType:", directorio_funciones[scope][FuncAttr.VAR_TABLE][var][0], "\tKind:",
-                      directorio_funciones[scope][2][var][1], "\tAddress:", directorio_funciones[scope][FuncAttr.VAR_TABLE][var][2])
+                      directorio_funciones[scope][2][var][1], "\tAddress:",
+                      directorio_funciones[scope][FuncAttr.VAR_TABLE][var][2])
             print("---------------------------------------------------------------")
 
 
@@ -64,3 +64,36 @@ def instantiate_obj(var_id, class_id, scope):
                 name = str(var_id + "." + attr)
                 var_type = tabla_obj[parent]['attributes'][attr]
                 add_variable(name, var_type, 'attribute', scope)
+
+
+def set_array(var_id, scope):
+    global R
+    R = 1
+    if var_id in directorio_funciones[scope][2]:
+        directorio_funciones[scope][2][var_id][3] = True
+
+
+def set_dim1(var_id, scope, dim):
+    global R
+    directorio_funciones[scope][2][var_id][4].append(dim)
+    R = (dim + 1) * R
+
+
+def set_dim2(var_id, scope, dim):
+    global R
+    directorio_funciones[scope][2][var_id][4].append(dim)
+    R = (dim + 1) * R
+
+
+def arr_end(var_id, scope):
+    global R
+    cont = 1
+    size = R
+    for dim in directorio_funciones[scope][2][var_id][4]:
+        m = R / (dim + 1)
+        if cont == 1:
+            directorio_funciones[scope][2][var_id][5] = m
+        R = m
+        cont += 1
+    virtual_address = directorio_funciones[scope][2][var_id][2] + size  # TODO: Update next avail
+

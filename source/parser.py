@@ -19,6 +19,7 @@ in_object = False
 curr_class = ''
 parameter_stack = []
 has_return = False
+curr_array = ''
 
 
 # PROGRAMA
@@ -220,10 +221,31 @@ def p_store_id(p):
 
 
 def p_list1(p):
-    """list1 : LS CTEI RS
-             | LS CTEI COMMA CTEI RS
+    """list1 : LS found_array CTEI store_dim1 RS arr_end
+             | LS found_array CTEI store_dim1 COMMA CTEI store_dim2 RS arr_end
              | empty"""
 
+
+def p_found_array(p):
+    """found_array :"""
+    global curr_array
+    curr_array = p[-3]
+    tablaVars.set_array(curr_array, curr_scope)  # TODO: Do I need global scope?
+
+
+def p_store_dim1(p):
+    """store_dim1 :"""
+    tablaVars.set_dim1(curr_array, curr_scope, p[-1])
+
+
+def p_store_dim2(p):
+    """store_dim2 :"""
+    tablaVars.set_dim2(curr_array, curr_scope, p[-1])
+
+
+def p_arr_end(p):
+    """arr_end :"""
+    tablaVars.arr_end(curr_array, curr_scope)
 
 def p_list2(p):
     """list2 : COMMA lista_ids

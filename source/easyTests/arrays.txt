@@ -1,0 +1,10 @@
+program arraysTest;
+
+variables {
+    int: A[5];
+    int: B[2,2];
+}
+
+main () {
+    write("DONE");
+}

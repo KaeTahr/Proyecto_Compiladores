@@ -139,6 +139,9 @@ def assign(lo, ro, t):
     ip_continue()
 
 def ret(lo, ro, t):
+    global ip
+    new_ip  = m.end_subroutine(t)
+    ip = new_ip
     ip_continue()
 
 def read(lo, ro, t):
@@ -169,16 +172,23 @@ def gotot(lo, ro, t):
         set_ip(int(t))
 
 def era(lo, ro, t):
+    m.prepare_context(t)
     ip_continue()
 
 def endfunc(lo, ro, t):
+    global ip
+    new_ip  = m.end_subroutine()
+    ip = new_ip
     ip_continue()
+    
 
 def parameter(lo, ro, t):
+    m.handle_param(lo, int(t))
     ip_continue()
 
 def gosub(lo, ro, t):
-    ip_continue()
+    m.start_subroutine(lo, ip)
+    set_ip(int(t))
 
 op_codes = [
     mult, # 0
@@ -213,7 +223,7 @@ def eval(quad):
     left_operand = quad[0]
     right_operand = quad[1]
     target = quad[2]
-    op_codes[op](left_operand, right_operand, int(target))
+    op_codes[op](left_operand, right_operand, target)
 
 
 def main(ovejota):

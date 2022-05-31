@@ -2,7 +2,7 @@ program testFunDir;
 
 variables {
     int : iCount, x, y, z;
-    float : fResult;
+    float : fResult, a, b, c;
     char : cInitial;
 }
 
@@ -52,23 +52,39 @@ void function hello() {
     write("Hello world!");
 }
 
-int function sumaInt(a : int, b : int)
+float function sumaInt(a : int, b : float, c : int)
 {
     variables {
         int : i;
     }
+    write("sum in function");
+    write(a);
+    write(b);
     i = 1;
-   return (a + b + i); 
+   return (a + b + c); 
+}
+
+int function fib(i: int)
+{
+    if(i <= 1) then {
+        return (i);
+    }
+    return ((fib(i-1)) + (fib(i-2)));
 }
 
 main() {
     x = 5;
     y = 4;
-    z = sumaInt(x - x + x, y - y);
-    write(z);
-    #hello();
+    write("this is were the fun begins");
+    a = sumaInt(x, 4.0, 1);
+    write(a);
+    x = fib(6);
+    write("fib:");
+    write(x);
+    hello();
     #write(clasifica());
     #fResult = promedio(1.0, 2);
     #write(fResult);
     #fResult = promedio(fResult, 2);
+    write("bye bye~");
 }

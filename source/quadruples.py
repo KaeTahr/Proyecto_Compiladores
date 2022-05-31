@@ -41,6 +41,9 @@ def add_local_temp(t):
 
 def get_total_tmps():
     return (total_temporal_int, total_temporal_float, total_temporal_char)
+
+def get_local_tmps():
+    return(local_temporal_int, local_temporal_float, local_temporal_char)
 # gen_quad 0-4
 
 def gen_goto_main():
@@ -373,7 +376,7 @@ def handle_fun_call(fun_id, df, params_count):
         add_local_temp(f[FuncAttr.RETURN_TYPE])
         m_op = tablaConst.get_oper_code('=')
         m_quad_list.append([m_op, f[FuncAttr.RETURN_ADDRESS], '', m_temp])
-        quad_list.append(['=', f[FuncAttr.RETURN_ADDRESS], '', temp_result])
+        quad_list.append(['=', '_' + signature[1], '', temp_result])
         instruction_pointer += 1
         type_stack.append(signature[0])
         operand_stack.append(temp_result)

@@ -80,7 +80,7 @@ def p_program(p):
 def p_count_temps(p):
     """count_temps :"""
     f = dirFunciones.directorio_funciones[scope_global]
-    f[dirFunciones.FuncAttr.TEMP_AMOUNT] = get_total_tmps()
+    f[dirFunciones.FuncAttr.TEMP_AMOUNT] = get_local_tmps()
 
 def p_ini_quads(p):
     """ini_quads :"""
@@ -94,6 +94,9 @@ def p_fill_goto_main(p):
     gen_goto_main()
     global curr_scope
     curr_scope = scope_global
+    reset_temp()
+    fun_start()
+    
 
 
 def p_store_program(p):

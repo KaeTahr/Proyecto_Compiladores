@@ -62,7 +62,8 @@ def p_program(p):
                 char_count += 1
         tmps = fun[dirFunciones.FuncAttr.TEMP_AMOUNT]
         dir_fun_string += ',' + key + ',' + str(int_count) + ',' + str(float_count) + ',' + str(char_count)
-        dir_fun_string += ',' + str(tmps[0]) + ',' + str(tmps[1]) + ',' + str(tmps[2]) + ',' + str(fun[FuncAttr.RETURN_ADDRESS])
+        dir_fun_string += ',' + str(tmps[0]) + ',' + str(tmps[1]) + ',' + str(tmps[2]) + ',' + str(
+            fun[FuncAttr.RETURN_ADDRESS])
 
     dir_fun_string += '\n'
 
@@ -71,17 +72,19 @@ def p_program(p):
     for i, q in enumerate(m_quad_list):
         print(i + 1, q)
         f.write(str(q[0]) + ',' +
-            str(q[1]) + ',' + 
-            str(q[2]) + ',' +
-            str(q[3]) + '\n')
+                str(q[1]) + ',' +
+                str(q[2]) + ',' +
+                str(q[3]) + '\n')
     f.close()
     print("\nInstruction Pointer:", get_instruction_pointer())
     p[0] = "\nInput is a valid program.\n"
+
 
 def p_count_temps(p):
     """count_temps :"""
     f = dirFunciones.directorio_funciones[scope_global]
     f[dirFunciones.FuncAttr.TEMP_AMOUNT] = get_local_tmps()
+
 
 def p_ini_quads(p):
     """ini_quads :"""
@@ -97,7 +100,6 @@ def p_fill_goto_main(p):
     curr_scope = scope_global
     reset_temp()
     fun_start()
-    
 
 
 def p_store_program(p):
@@ -221,8 +223,8 @@ def p_store_id(p):
 
 
 def p_list1(p):
-    """list1 : LS found_array CTEI store_dim1 RS arr_end
-             | LS found_array CTEI store_dim1 COMMA CTEI store_dim2 RS arr_end
+    """list1 : LS found_array CTEI store_dim RS arr_end
+             | LS found_array CTEI store_dim COMMA CTEI store_dim RS mat_end
              | empty"""
 
 
@@ -233,19 +235,20 @@ def p_found_array(p):
     tablaVars.set_array(curr_array, curr_scope)  # TODO: Do I need global scope?
 
 
-def p_store_dim1(p):
-    """store_dim1 :"""
-    tablaVars.set_dim1(curr_array, curr_scope, p[-1])
-
-
-def p_store_dim2(p):
-    """store_dim2 :"""
-    tablaVars.set_dim2(curr_array, curr_scope, p[-1])
+def p_store_dim(p):
+    """store_dim :"""
+    tablaVars.set_dim(curr_array, curr_scope, p[-1])
 
 
 def p_arr_end(p):
     """arr_end :"""
-    tablaVars.arr_end(curr_array, curr_scope)
+    tablaVars.arr_end(curr_array, curr_scope, scope_global)
+
+
+def p_mat_end(p):
+    """mat_end :"""
+    tablaVars.mat_end(curr_array, curr_scope, scope_global)
+
 
 def p_list2(p):
     """list2 : COMMA lista_ids
@@ -448,7 +451,6 @@ def p_found_method(p):
     """found_method :"""
     obj = dirFunciones.get_var_type(p[-3], curr_scope, curr_class)
     validate_method(obj, p[-1])
-
 
 
 def p_call2(p):

@@ -56,3 +56,10 @@ def reset_temp():
     virtual_memory['temporal']['int']['count'] = 0
     virtual_memory['temporal']['float']['count'] = 0
     virtual_memory['temporal']['char']['count'] = 0
+
+
+def update_avail(v_type, scope, size):
+    global virtual_memory
+    for i in range(1, size):
+        virtual_memory[scope][v_type]['count'] += 1  # update count
+

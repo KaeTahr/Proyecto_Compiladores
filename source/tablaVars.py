@@ -2,8 +2,6 @@ from dirFunciones import FuncAttr, directorio_funciones, FuncAttr
 from memoria import *
 from tablaObjetos import tabla_obj
 
-R = 1
-
 
 def add_variable(var_id, var_type, var_kind, scope):
     if scope in directorio_funciones:  # buscar scope en directorio de funciones
@@ -17,7 +15,7 @@ def add_variable(var_id, var_type, var_kind, scope):
                 address = get_avail("global", var_type)
             else:
                 address = get_avail("local", var_type)
-            directorio_funciones[scope][2][var_id] = [var_type, var_kind, address, False, [], 0]
+            directorio_funciones[scope][2][var_id] = [var_type, var_kind, address, False, []]
             return address
             # new_variable_log(var_id, scope)  # log info
 
@@ -67,33 +65,32 @@ def instantiate_obj(var_id, class_id, scope):
 
 
 def set_array(var_id, scope):
-    global R
-    R = 1
     if var_id in directorio_funciones[scope][2]:
         directorio_funciones[scope][2][var_id][3] = True
 
 
-def set_dim1(var_id, scope, dim):
-    global R
+def set_dim(var_id, scope, dim):
     directorio_funciones[scope][2][var_id][4].append(dim)
-    R = (dim + 1) * R
 
 
-def set_dim2(var_id, scope, dim):
-    global R
-    directorio_funciones[scope][2][var_id][4].append(dim)
-    R = (dim + 1) * R
-
-
-def arr_end(var_id, scope):
-    global R
-    cont = 1
-    size = R
-    for dim in directorio_funciones[scope][2][var_id][4]:
-        m = R / (dim + 1)
-        if cont == 1:
-            directorio_funciones[scope][2][var_id][5] = m
-        R = m
-        cont += 1
+def arr_end(var_id, scope, g_scope):
+    size = directorio_funciones[scope][2][var_id][4][0]
     virtual_address = directorio_funciones[scope][2][var_id][2] + size  # TODO: Update next avail
+    v_type = directorio_funciones[scope][FuncAttr.VAR_TABLE][var_id][0]
+    if scope == g_scope:
+        update_avail(v_type, 'global', size)
+    else:
+        update_avail(v_type, 'local', size)
+    print("Last address of", var_id, virtual_address)
 
+
+def mat_end(var_id, scope, g_scope):
+    size = directorio_funciones[scope][2][var_id][4][0] * directorio_funciones[scope][2][var_id][4][1]
+    virtual_address = directorio_funciones[scope][2][var_id][2] + size  # TODO: Update next avail
+    v_type = directorio_funciones[scope][FuncAttr.VAR_TABLE][var_id][0]
+    if scope == g_scope:
+        update_avail(v_type, 'global', size)
+    else:
+        update_avail(v_type, 'local', size)
+    print("Last address of", var_id, virtual_address)
+    # m is dim2 + 1

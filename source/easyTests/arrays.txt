@@ -1,8 +1,11 @@
 program arraysTest;
 
-variables {
-    int: A[5];
-    int: B[2,2];
+void function test() {
+    variables {
+        int: A[5];
+        int: B[2,7];
+    }
+    write("FUNCTION");
 }
 
 main () {

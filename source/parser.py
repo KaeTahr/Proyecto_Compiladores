@@ -401,8 +401,6 @@ def p_var_dim(p):
 
 def p_verify_dim(p):
     """verify_dim :"""
-    # print("verify_dim")
-    # breakpoint()
     if tablaVars.verify_dim(p[-2], curr_scope, scope_global):
         array_indexing1()
     elif not tablaVars.verify_dim(p[-2], curr_scope, scope_global):
@@ -413,8 +411,6 @@ def p_verify_dim(p):
 
 def p_gen_verify1(p):
     """gen_verify1 :"""
-    # print("gen_verify1")
-    # breakpoint()
     lim_s = tablaVars.get_arr_dim(p[-3], 0, curr_scope, scope_global)
     m = 1
     array_verify(lim_s, True, m)
@@ -422,8 +418,6 @@ def p_gen_verify1(p):
 
 def p_gen_verify2(p):
     """gen_verify2 :"""
-    # print("gen_verify2")
-    # breakpoint()
     lim_s = tablaVars.get_arr_dim(p[-3], 0, curr_scope, scope_global)
     m = tablaVars.get_arr_m(p[-3], curr_scope, scope_global)
     array_verify(lim_s, False, m)
@@ -431,24 +425,18 @@ def p_gen_verify2(p):
 
 def p_gen_verify3(p):
     """gen_verify3 :"""
-    # print("gen_verify3")
-    # breakpoint()
-    #  lim_s = tablaVars.get_arr_dim(p[-6], 0, curr_scope, scope_global)
-    mat_verify()
+    lim_s = tablaVars.get_arr_dim(p[-6], 1, curr_scope, scope_global)
+    mat_verify(lim_s)
 
 
 def p_end_arr(p):
     """end_arr :"""
-    # print("end_arr")
-    # breakpoint()
     addr = dirFunciones.get_var_address(p[-5], curr_scope, scope_global)
     dim_end(addr)
 
 
 def p_end_mat(p):
     """end_mat :"""
-    # print("end_mat")
-    # breakpoint()
     addr = dirFunciones.get_var_address(p[-8], curr_scope, scope_global)
     dim_end(addr)
 

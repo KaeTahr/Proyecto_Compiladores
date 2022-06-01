@@ -409,15 +409,17 @@ def array_verify(lim_s, last_dim, m):
         operand_stack.append(temp_result)
 
 
-def mat_verify():
+def mat_verify(lim_s):
     global temporal_counter, instruction_pointer
     # ID
+    quad_list.append(['VERIFY', operand_stack[-1], 0, lim_s])
+    instruction_pointer += 1
+
     aux2 = operand_stack.pop()
     aux1 = operand_stack.pop()
     temp_result = "t" + str(temporal_counter)
     temporal_counter += 1
     quad_list.append(['+', aux1, aux2, temp_result])
-    breakpoint()
     instruction_pointer += 1
     operand_stack.append(temp_result)
 

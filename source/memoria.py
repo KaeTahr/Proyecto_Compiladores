@@ -14,8 +14,8 @@ virtual_memory = {
     'temporal': {
         'int': {'initial': 7000, 'count': 0},
         'float': {'initial': 8000, 'count': 0},
-        'char': {'initial': 9000, 'count': 0}
-
+        'char': {'initial': 9000, 'count': 0},
+        'pointer': {'initial': 50000, 'count': 0}
     },
     'constant': {
         'int': {'initial': 10000, 'count': 0},
@@ -62,4 +62,3 @@ def update_avail(v_type, scope, size):
     global virtual_memory
     for i in range(1, size):
         virtual_memory[scope][v_type]['count'] += 1  # update count
-

@@ -1,9 +1,9 @@
 program arraysTest;
 
 variables {
-    int: i, A[9], j, B[5,7], p;
+    int: i, j, k, A[9], B[5];
 }
 
 main () {
-    B[A[i+j]*i , i+j] = A[i-p] * p;
+    A[B[i]+j] = k * j + i;
 }

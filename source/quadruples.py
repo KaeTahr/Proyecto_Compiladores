@@ -395,40 +395,41 @@ def array_indexing1():
 
 
 def array_verify(lim_s, last_dim, m):
-    global temporal_counter
+    global temporal_counter, instruction_pointer
     # ID
     quad_list.append(['VERIFY', operand_stack[-1], 0, lim_s])
+    instruction_pointer += 1
     if not last_dim:
         # ID
         aux = operand_stack.pop()
         temp_result = "t" + str(temporal_counter)
         temporal_counter += 1
         quad_list.append(['*', aux, m, temp_result])
+        instruction_pointer += 1
         operand_stack.append(temp_result)
 
 
 def mat_verify():
-    global temporal_counter
+    global temporal_counter, instruction_pointer
     # ID
     aux2 = operand_stack.pop()
     aux1 = operand_stack.pop()
     temp_result = "t" + str(temporal_counter)
     temporal_counter += 1
     quad_list.append(['+', aux1, aux2, temp_result])
+    breakpoint()
+    instruction_pointer += 1
     operand_stack.append(temp_result)
 
 
 def dim_end(vir_addr):
-    global temporal_counter, temporal_pointer
+    global temporal_pointer, instruction_pointer
     aux1 = operand_stack.pop()
-    temp_result = "t" + str(temporal_counter)
-    temporal_counter += 1
-    quad_list.append(['+', aux1, 0, temp_result])  # TODO: is this needed? should 0 be '0'?
     tp = "tp" + str(temporal_pointer)
     temporal_pointer += 1
-    quad_list.append(['+', temp_result, vir_addr, tp])  # TODO: should tp be a different kind of temp?
+    quad_list.append(['+', aux1, vir_addr, tp])
+    instruction_pointer += 1
     operand_stack.append(tp)
-
     operator_stack.pop()  # eliminate fake bottom
 
 

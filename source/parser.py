@@ -27,10 +27,10 @@ def p_program(p):
     """program : PROGRAM ini_quads ID store_program SEMI prog1 prog2 prog3 fill_goto_main main count_temps"""
     tablaVars.print_var_table()
     # print_obj_table()
-    # tablaConst.print_const_table()
-    # print("\nOperand stack:\t", operand_stack)
-    # print("Type stack:\t", type_stack)
-    # print("Operator stack:\t", operator_stack)
+    tablaConst.print_const_table()
+    print("\nOperand stack:\t", operand_stack)
+    print("Type stack:\t", type_stack)
+    print("Operator stack:\t", operator_stack)
     # print(dirFunciones.directorio_funciones)
     print("\nQuadruples:")
     for i, q in enumerate(quad_list):

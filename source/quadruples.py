@@ -26,7 +26,6 @@ dim_stack = []
 m_prefix = ''
 
 
-
 def get_instruction_pointer():
     return instruction_pointer
 
@@ -43,11 +42,15 @@ def add_local_temp(t):
         local_temporal_char += 1
         total_temporal_char += 1
 
+
 def get_total_tmps():
     return (total_temporal_int, total_temporal_float, total_temporal_char)
 
+
 def get_local_tmps():
-    return(local_temporal_int, local_temporal_float, local_temporal_char)
+    return (local_temporal_int, local_temporal_float, local_temporal_char)
+
+
 # gen_quad 0-4
 
 def gen_goto_main():
@@ -55,9 +58,10 @@ def gen_goto_main():
     quad_list[0][-1] = instruction_pointer
     m_quad_list[0][-1] = instruction_pointer
 
+
 # EXPRESSIONS
 def gen_quad_exp(valid_operators):
-    global operand_stack, operator_stack, type_stack, quad_list, temporal_counter, instruction_pointer
+    global temporal_counter, instruction_pointer
     if operator_stack:
         current_operator = operator_stack[-1]
         if current_operator in valid_operators:
@@ -93,7 +97,7 @@ def gen_quad_exp(valid_operators):
 
 # ASSIGNMENT
 def gen_quad_assignment():
-    global operand_stack, operator_stack, type_stack, quad_list, temporal_counter, instruction_pointer
+    global temporal_counter, instruction_pointer
     if operator_stack:
         current_operator = operator_stack[-1]
         if current_operator == '=':
@@ -118,9 +122,10 @@ def gen_quad_assignment():
             else:
                 raise TypeError("ERROR: Type mismatch in assignment:", left_operand, operator, right_operand)
 
+
 # IF
 def gen_quad_if():
-    global type_stack, quad_list, instruction_pointer
+    global instruction_pointer
     exp_type = type_stack.pop()
     if exp_type != 'int':
         raise TypeError("ERROR Type mismatch!")
@@ -141,12 +146,12 @@ def gen_end_if():
     global instruction_pointer
     start = jump_list.pop()
     start -= 1
-    quad_list[start][-1] = instruction_pointer 
+    quad_list[start][-1] = instruction_pointer
     m_quad_list[start][-1] = instruction_pointer
 
 
 def gen_quad_else():
-    global instruction_pointer, quad_list
+    global instruction_pointer
     start = jump_list.pop()
     start -= 1
     # ID
@@ -259,7 +264,7 @@ def gen_from_end():
 
 # READ
 def gen_quad_read():
-    global instruction_pointer, quad_list, operand_stack, type_stack
+    global instruction_pointer
     # ID
     read_operand = operand_stack.pop()
     read_type = type_stack.pop()
@@ -274,7 +279,7 @@ def gen_quad_read():
 
 # WRITE
 def gen_quad_write():
-    global instruction_pointer, quad_list, operand_stack, type_stack
+    global instruction_pointer
     # ID
     write_operand = operand_stack.pop()
     write_type = type_stack.pop()

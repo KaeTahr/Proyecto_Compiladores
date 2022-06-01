@@ -21,7 +21,6 @@ jump_list = []
 from_tmp = []
 m_from_tmp = []
 m_quad_list = []  # quadruplos con direcciones
-dim_stack = []
 
 m_prefix = ''
 

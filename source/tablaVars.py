@@ -75,22 +75,45 @@ def set_dim(var_id, scope, dim):
 
 def arr_end(var_id, scope, g_scope):
     size = directorio_funciones[scope][2][var_id][4][0]
-    virtual_address = directorio_funciones[scope][2][var_id][2] + size  # TODO: Update next avail
+    # virtual_address = directorio_funciones[scope][2][var_id][2] + size - 1
     v_type = directorio_funciones[scope][FuncAttr.VAR_TABLE][var_id][0]
     if scope == g_scope:
         update_avail(v_type, 'global', size)
     else:
         update_avail(v_type, 'local', size)
-    print("Last address of", var_id, virtual_address)
+    # print("Last address of", var_id, virtual_address)
 
 
 def mat_end(var_id, scope, g_scope):
     size = directorio_funciones[scope][2][var_id][4][0] * directorio_funciones[scope][2][var_id][4][1]
-    virtual_address = directorio_funciones[scope][2][var_id][2] + size  # TODO: Update next avail
+    # virtual_address = directorio_funciones[scope][2][var_id][2] + size - 1
     v_type = directorio_funciones[scope][FuncAttr.VAR_TABLE][var_id][0]
     if scope == g_scope:
         update_avail(v_type, 'global', size)
     else:
         update_avail(v_type, 'local', size)
-    print("Last address of", var_id, virtual_address)
+    # print("Last address of", var_id, virtual_address)
     # m is dim2 + 1
+
+
+def verify_dim(var_id, scope, g_scope):
+    if var_id in directorio_funciones[scope][2]:
+        return directorio_funciones[scope][2][var_id][3]
+    elif var_id in directorio_funciones[g_scope][2]:
+        return directorio_funciones[g_scope][2][var_id][3]
+
+
+def get_arr_dim(var_id, dim, scope, g_scope):
+    if var_id in directorio_funciones[scope][2]:
+        return directorio_funciones[scope][2][var_id][4][dim]
+
+    elif var_id in directorio_funciones[g_scope][2]:
+        return directorio_funciones[g_scope][2][var_id][4][dim]
+
+
+def get_arr_m(var_id, scope, g_scope):
+    if var_id in directorio_funciones[scope][2]:
+        return directorio_funciones[scope][2][var_id][4][1] + 1
+
+    elif var_id in directorio_funciones[g_scope][2]:
+        return directorio_funciones[scope][2][var_id][4][1] + 1

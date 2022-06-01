@@ -1,13 +1,9 @@
 program arraysTest;
 
-void function test() {
-    variables {
-        int: A[5];
-        int: B[2,7];
-    }
-    write("FUNCTION");
+variables {
+    int: i, A[9], j, B[5,7], p;
 }
 
 main () {
-    write("DONE");
+    B[A[i+j]*i , i+j] = A[i-p] * p;
 }

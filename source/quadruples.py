@@ -9,6 +9,7 @@ operator_stack = []
 type_stack = []
 instruction_pointer = 2
 temporal_counter = 1  # total
+temporal_pointer = 1
 local_temporal_int = 0
 local_temporal_float = 0
 local_temporal_char = 0
@@ -20,7 +21,10 @@ jump_list = []
 from_tmp = []
 m_from_tmp = []
 m_quad_list = []  # quadruplos con direcciones
+dim_stack = []
+
 m_prefix = ''
+
 
 
 def get_instruction_pointer():
@@ -331,7 +335,7 @@ def handle_fun_call(fun_id, df, params_count):
     signature = (f[FuncAttr.RETURN_TYPE], fun_id, f[FuncAttr.PARAMETERS])
     is_void = signature[0] == 'void'
     # GENERATE ERA
-    quad_list.append(['ERA', '', '', fun_id])  # TODO: Is this ok? methods?
+    quad_list.append(['ERA', '', '', fun_id])  # TODO: methods?
     # Memory
     m_op = tablaConst.get_oper_code('ERA')
     m_quad_list.append([m_op, '', '', fun_id])
@@ -381,6 +385,51 @@ def handle_fun_call(fun_id, df, params_count):
         type_stack.append(signature[0])
         operand_stack.append(temp_result)
         m_operand_stack.append(m_temp)
+
+
+def array_indexing1():
+    id = operand_stack.pop()
+    type = type_stack.pop()
+    operator_stack.append('(')
+    tablaConst.add_constant(0, 'int')  # in case 0 has not been declared, used for lower lim
+
+
+def array_verify(lim_s, last_dim, m):
+    global temporal_counter
+    # ID
+    quad_list.append(['VERIFY', operand_stack[-1], 0, lim_s])
+    if not last_dim:
+        # ID
+        aux = operand_stack.pop()
+        temp_result = "t" + str(temporal_counter)
+        temporal_counter += 1
+        quad_list.append(['*', aux, m, temp_result])
+        operand_stack.append(temp_result)
+
+
+def mat_verify():
+    global temporal_counter
+    # ID
+    aux2 = operand_stack.pop()
+    aux1 = operand_stack.pop()
+    temp_result = "t" + str(temporal_counter)
+    temporal_counter += 1
+    quad_list.append(['+', aux1, aux2, temp_result])
+    operand_stack.append(temp_result)
+
+
+def dim_end(vir_addr):
+    global temporal_counter, temporal_pointer
+    aux1 = operand_stack.pop()
+    temp_result = "t" + str(temporal_counter)
+    temporal_counter += 1
+    quad_list.append(['+', aux1, 0, temp_result])  # TODO: is this needed? should 0 be '0'?
+    tp = "tp" + str(temporal_pointer)
+    temporal_pointer += 1
+    quad_list.append(['+', temp_result, vir_addr, tp])  # TODO: should tp be a different kind of temp?
+    operand_stack.append(tp)
+
+    operator_stack.pop()  # eliminate fake bottom
 
 
 def print_id_q():

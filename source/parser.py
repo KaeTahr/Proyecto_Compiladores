@@ -27,11 +27,11 @@ def p_program(p):
     """program : PROGRAM ini_quads ID store_program SEMI prog1 prog2 prog3 fill_goto_main main count_temps"""
     tablaVars.print_var_table()
     # print_obj_table()
-    tablaConst.print_const_table()
+    # tablaConst.print_const_table()
     # print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
-    print(dirFunciones.directorio_funciones)
+    # print(dirFunciones.directorio_funciones)
     print("\nQuadruples:")
     for i, q in enumerate(quad_list):
         print(i + 1, q)
@@ -76,7 +76,7 @@ def p_program(p):
                 str(q[2]) + ',' +
                 str(q[3]) + '\n')
     f.close()
-    print("\nInstruction Pointer:", get_instruction_pointer())
+    # print("\nInstruction Pointer:", get_instruction_pointer())
     p[0] = "\nInput is a valid program.\n"
 
 
@@ -232,7 +232,7 @@ def p_found_array(p):
     """found_array :"""
     global curr_array
     curr_array = p[-3]
-    tablaVars.set_array(curr_array, curr_scope)  # TODO: Do I need global scope?
+    tablaVars.set_array(curr_array, curr_scope)
 
 
 def p_store_dim(p):
@@ -393,11 +393,64 @@ def p_var(p):
     p[0] = p[1]
 
 
-# TODO: quads for array and matrix
 def p_var_dim(p):
-    """var_dim : LS expression RS
-               | LS expression COMMA expression RS
+    """var_dim : verify_dim LS expression gen_verify1 RS end_arr
+               | verify_dim LS expression gen_verify2 COMMA expression gen_verify3 RS end_mat
                | empty"""
+
+
+def p_verify_dim(p):
+    """verify_dim :"""
+    # print("verify_dim")
+    # breakpoint()
+    if tablaVars.verify_dim(p[-2], curr_scope, scope_global):
+        array_indexing1()
+    elif not tablaVars.verify_dim(p[-2], curr_scope, scope_global):
+        print("ERROR: variable", p[-2], "is not an array")
+        exit()
+    p[0] = p[-2]
+
+
+def p_gen_verify1(p):
+    """gen_verify1 :"""
+    # print("gen_verify1")
+    # breakpoint()
+    lim_s = tablaVars.get_arr_dim(p[-3], 0, curr_scope, scope_global)
+    m = 1
+    array_verify(lim_s, True, m)
+
+
+def p_gen_verify2(p):
+    """gen_verify2 :"""
+    # print("gen_verify2")
+    # breakpoint()
+    lim_s = tablaVars.get_arr_dim(p[-3], 0, curr_scope, scope_global)
+    m = tablaVars.get_arr_m(p[-3], curr_scope, scope_global)
+    array_verify(lim_s, False, m)
+
+
+def p_gen_verify3(p):
+    """gen_verify3 :"""
+    # print("gen_verify3")
+    # breakpoint()
+    #  lim_s = tablaVars.get_arr_dim(p[-6], 0, curr_scope, scope_global)
+    mat_verify()
+
+
+def p_end_arr(p):
+    """end_arr :"""
+    # print("end_arr")
+    # breakpoint()
+    addr = dirFunciones.get_var_address(p[-5], curr_scope, scope_global)
+    dim_end(addr)
+
+
+def p_end_mat(p):
+    """end_mat :"""
+    # print("end_mat")
+    # breakpoint()
+    addr = dirFunciones.get_var_address(p[-8], curr_scope, scope_global)
+    dim_end(addr)
 
 
 def p_store_attr(p):

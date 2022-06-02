@@ -394,6 +394,7 @@ def p_var(p):
     p[0] = p[1]
 
 
+# LEFT HERE
 def p_var_dim(p):
     """var_dim : verify_dim LS expression gen_verify1 RS end_arr
                | verify_dim LS expression gen_verify2 COMMA expression gen_verify3 RS end_mat

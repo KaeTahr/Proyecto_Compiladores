@@ -26,8 +26,8 @@ tabla_oper = {
     'ERA': 19,
     'ENDFUNC': 20,
     'PARAMETER': 21,
-    'GOSUB': 22
-
+    'GOSUB': 22,
+    'VERIFY': 23
 }
 
 

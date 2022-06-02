@@ -51,7 +51,6 @@ def get_local_tmps():
 
 
 # gen_quad 0-4
-
 def gen_goto_main():
     global instruction_pointer
     quad_list[0][-1] = instruction_pointer
@@ -391,6 +390,7 @@ def handle_fun_call(fun_id, df, params_count):
         m_operand_stack.append(m_temp)
 
 
+# LEFT HERE
 def array_indexing1():
     id = operand_stack.pop()
     type = type_stack.pop()

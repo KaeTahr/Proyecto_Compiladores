@@ -17,7 +17,6 @@ curr_from_var = ''
 scope_global = ''
 in_object = False
 curr_class = ''
-parameter_stack = []
 has_return = False
 
 
@@ -27,7 +26,7 @@ def p_program(p):
     tablaVars.print_var_table()
     # print_obj_table()
     tablaConst.print_const_table()
-    # print("\nOperand stack:\t", operand_stack)
+    #print("\nOperand stack:\t", operand_stack)
     # print("Type stack:\t", type_stack)
     # print("Operator stack:\t", operator_stack)
     print(dirFunciones.directorio_funciones)
@@ -396,22 +395,32 @@ def p_store_operand(p):
 
 # VOID CALL
 def p_void_call(p):
-    """void_call : ID call1 params_init LP call2 RP
+    """void_call : ID call1 params_init LP call2 RP gen_call
                  | ID call1 params_init LP RP"""
-    if p[2] is None:
-        if dirFunciones.directorio_funciones[p[1]][FuncAttr.IS_GLOBAL] == 'method':
-            print("ERROR: cannot call class method", p[1], "as standalone function.")
-            exit()
-        handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
-    else:
-        set_prefix(p[1] + ".")  # TODO: use instance of object in function call
-        handle_fun_call(p[2], dirFunciones.get_dir_funciones(), parameter_stack.pop())
+    # call1 = .method
+    # if call1 = None then you are calling ID()
+    # else, you are calling ID.method()
+    p[0] = p[1]
 
+def p_gen_call(p):
+    """gen_call :"""
+    fun_id = p[-2]
+    gen_call(fun_id, dirFunciones.directorio_funciones)
 
 def p_params_init(p):
     """params_init :"""
-    parameter_stack.append(0)
-
+    fun = p[-1]
+    id = p[-2]
+    if fun is None:
+        if dirFunciones.directorio_funciones[id][FuncAttr.IS_GLOBAL] == 'method':
+            print("ERROR: cannot call class method", id, "as standalone function.")
+            exit()
+        gen_era(id, dirFunciones.directorio_funciones)
+        p[0] = id
+    else:
+        set_prefix(id + ".")  # TODO: use instance of object in function call
+        gen_era(fun, dirFunciones.directorio_funciones)
+        p[0] = fun
 
 def p_call1(p):
     """call1 : DOT ID found_method
@@ -431,7 +440,8 @@ def p_found_method(p):
 
 def p_call2(p):
     """call2 : expression call3"""
-    parameter_stack[-1] += 1
+    gen_param(p[-2], dirFunciones.directorio_funciones)
+    p[0] = p[-2]
 
 
 def p_call3(p):
@@ -622,10 +632,10 @@ def p_store_operator(p):
 
 
 def p_fact(p):
-    """fact : LP store_operator expression RP paren_end
-            | void_call
+    """fact : void_call
             | var_cte
-            | var"""
+            | var
+            | LP store_operator expression RP paren_end"""
 
 
 def p_paren_end(p):
@@ -639,6 +649,7 @@ def p_var_cte(p):
     """var_cte : CTEI store_int
                | CTEF store_float
                | CTEC store_char"""
+    p[0] = p[1]
 
 
 def p_store_int(p):

@@ -322,8 +322,8 @@ def fun_end():
     instruction_pointer += 1
     return (local_temporal_int, local_temporal_float, local_temporal_char)
 
-
-def handle_fun_call(fun_id, df, params_count):
+param_stack = []
+def gen_era(fun_id, df):
     global instruction_pointer, temporal_counter
     if fun_id not in df:
         raise Exception('Attempted to call undeclared function', fun_id)
@@ -335,41 +335,39 @@ def handle_fun_call(fun_id, df, params_count):
     # Memory
     m_op = tablaConst.get_oper_code('ERA')
     m_quad_list.append([m_op, '', '', fun_id])
+    param_stack.append(0)
     instruction_pointer += 1
-    # Verify parameters
-    # first, verify correct amount
-    if len(signature[2]) != params_count:
-        raise Exception("Function call doesn't match function signature")
-    # now check types
-    p_types = []
-    for i in range(params_count):
-        p_types.append(type_stack.pop())
 
-    p_types.reverse()
-    if tuple(p_types) != signature[2]:
+def gen_param(fun_id, df):
+    global instruction_pointer
+    p_type = type_stack.pop()
+    position = param_stack[-1]
+    f = df[fun_id]
+    signature = (f[FuncAttr.RETURN_TYPE], fun_id, f[FuncAttr.PARAMETERS])
+    params = signature[2]
+    if p_type != params[position]:
         raise TypeError('Mismatch in expected parameters type')
     # Now, initiate parameters with expression result
+    param_stack[-1] += 1
 
     m_op = tablaConst.get_oper_code('PARAMETER')
-    quad_stack = []
-    m_quad_stack = []
-    for i in range(params_count):
-        quad_stack.append(['PARAMETER', operand_stack.pop(), '', params_count - i])
-        m_quad_stack.append([m_op, m_operand_stack.pop(), '', params_count - i])
 
-    for i in range(params_count):
-        q = quad_stack.pop()
-        m = m_quad_stack.pop()
-        quad_list.append(q)
-        m_quad_list.append(m)
-        instruction_pointer += 1
+    quad_list.append(['PARAMETER', operand_stack.pop(), '', param_stack[-1]])
+    m_quad_list.append([m_op, m_operand_stack.pop(), '', param_stack[-1]])
+    instruction_pointer += 1
+
+def gen_call(fun_id, df):
+    global instruction_pointer, temporal_counter
+    f = df[fun_id]
+    signature = (f[FuncAttr.RETURN_TYPE], fun_id, f[FuncAttr.PARAMETERS])
+    params = param_stack.pop()
     # OK, try to execute
     quad_list.append(['GoSub', fun_id, '', f[FuncAttr.START]])
     # Memory
     m_op = tablaConst.get_oper_code('GOSUB')
     m_quad_list.append([m_op, fun_id, '', f[FuncAttr.START]])
     instruction_pointer += 1
-    if not is_void:  # No es una expresion si es void
+    if signature[0] != 'void':  # No es una expresion si es void
         m_temp = get_avail('temporal', f[FuncAttr.RETURN_TYPE])
         temp_result = "t" + str(temporal_counter)
         temporal_counter += 1

@@ -8,17 +8,9 @@ main() {
     write("if test");
     # if simple
     a = 5;
-    b = 0;
-    if(a != b) then {
+    b = 1;
+    if(a == 1 || b == 1) then {
         write("inside first if");
-
-        if (b) then {
-            write("nested if");
-
-        } else {
-            write("nested else");
-        }
-        write("ending the first if");
     }
     write("out of the if");
 

@@ -5,6 +5,7 @@ variables {
 }
 
 main() {
+    a = 4 + (3 - 2) * 2 + 1;
     # esto es un comment
     write("starting xd");
     a = 1;

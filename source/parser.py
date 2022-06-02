@@ -446,12 +446,14 @@ def p_gen_verify3(p):
 def p_end_arr(p):
     """end_arr :"""
     addr = dirFunciones.get_var_address(p[-5], curr_scope, scope_global)
+    tablaConst.add_constant(addr, 'int')
     dim_end(addr)
 
 
 def p_end_mat(p):
     """end_mat :"""
     addr = dirFunciones.get_var_address(p[-8], curr_scope, scope_global)
+    tablaConst.add_constant(addr, 'int')
     dim_end(addr)
 
 

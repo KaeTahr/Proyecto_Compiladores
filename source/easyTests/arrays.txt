@@ -5,5 +5,5 @@ variables {
 }
 
 main () {
-    B[ A[i+j]*i, i+j ] = A[i-p] * p;
+    B[A[i+j]*i, i+j] = A[i-p] * p;
 }

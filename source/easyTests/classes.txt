@@ -1,0 +1,26 @@
+program classTest;
+
+class Persona {
+    attributes
+        int: age;
+        float: height;
+        char: initial; # first letter of name
+}
+
+
+class Estudiante {
+    attributes
+
+        float: promedio;
+};
+
+variables {
+    int: x
+    float: y;
+    Estudiante: john;
+}
+
+main() {
+    x = john.getEdad();
+    write("John's age is: ", x);
+}

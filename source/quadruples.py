@@ -455,10 +455,11 @@ def dim_end(vir_addr):
     m_aux1 = m_operand_stack.pop()
     tp = "tp" + str(temporal_pointer)
     temporal_pointer += 1
-    m_res = get_avail('temporal', 'pointer')
+    m_res = get_avail('temporal', 'pointer')  # TEMPORAL POINTER
     m_op = tablaConst.get_oper_code('+')
     quad_list.append(['+', aux1, vir_addr, tp])
-    m_quad_list.append([m_op, m_aux1, vir_addr, m_res])
+    m_addr = tablaConst.get_const_add(vir_addr)
+    m_quad_list.append([m_op, m_aux1, m_addr, m_res])
     instruction_pointer += 1
     operand_stack.append(tp)
     m_operand_stack.append(m_res)

@@ -2,32 +2,16 @@
 
 *Kevin Chinchilla - A00825945*
 
-# Entrega 6
-En esta entrega generamos código para objetos, y funciones.
+# Entrega 7
+En esta entrega funciona ejecución de estatutos no líneales y llamadas a funciones.
+Se hace el cambio de contexto en la maquina virutal, y funcionan llamadas recursivas.
 
-En cuanto a **funciones**, se genera ERA, llamándolo con el ID de la función
-Se hace RETURN a un espacio de memoria global, por lo que todavía no soporta
-llamadas recursivas como la siguiente:
+TODO:
+- Arreglos y matrices - estamos trabajando en ello
+- Encontramos una bug al hacer llamadas de funciones como fib(i - 1) + fib (i - 2).
 
-Pero es algo que planeamos resolver para la entrega final.
+Esta llamada causa que se sume el resultado de la primera llamada, con i, y despues envia este resultado como parametro de la segunda llamda (restandole el 2).
 
-```
-fun1()
-{
-    ..
-    fun1() + fun1()
-}
-```
+Si funciona se se llama como:
 
-En cuanto a **objetos**, se guardan atributos como variables, siendo 
-obj.atributo.
-Se hacen todas las validaciones relevantes, tanto que el atributo exista, y que
-pertenezca a la clase (o a una clase padre).
-
-De la misma manera, estos atributos ya se compilan para expresiones.
-
-Todavía no se generan cuádruplos referenciando memoria, sin embargo, ya esta 
-definido el módulo, que se prueba en expresiones de assignment (estas
-ya aparecen referenciando direcciones de memoria).
-
-Para la proxima entrega planeamos ya tener ejecución de código.
+(fib(i - 1)) + (fib(i - 2))

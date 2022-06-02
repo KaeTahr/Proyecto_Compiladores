@@ -19,7 +19,6 @@ total_temporal_char = 0
 quad_list = []  # quadruplos con IDs
 jump_list = []
 from_tmp = []
-m_from_tmp = []
 m_quad_list = []  # quadruplos con direcciones
 
 m_prefix = ''
@@ -390,9 +389,9 @@ def handle_fun_call(fun_id, df, params_count):
         m_operand_stack.append(m_temp)
 
 
-# LEFT HERE
 def array_indexing1():
     id = operand_stack.pop()
+    m_id =m_operand_stack.pop()
     type = type_stack.pop()
     operator_stack.append('(')
     tablaConst.add_constant(0, 'int')  # in case 0 has not been declared, used for lower lim
@@ -403,14 +402,25 @@ def array_verify(lim_s, last_dim, m):
     # ID
     quad_list.append(['VERIFY', operand_stack[-1], 0, lim_s])
     instruction_pointer += 1
+    # MEMORY
+    m_op = tablaConst.get_oper_code('VERIFY')
+    m_inf = tablaConst.get_const_add(0)
+    m_sup = tablaConst.get_const_add(lim_s)
+    m_quad_list.append([m_op, m_operand_stack[-1], m_inf, m_sup])
     if not last_dim:
         # ID
         aux = operand_stack.pop()
+        m_aux = m_operand_stack.pop()
         temp_result = "t" + str(temporal_counter)
         temporal_counter += 1
         quad_list.append(['*', aux, m, temp_result])
         instruction_pointer += 1
         operand_stack.append(temp_result)
+        m_op = tablaConst.get_oper_code('*')
+        m_m = tablaConst.get_const_add(m)
+        m_res = get_avail('temporal', 'int')
+        m_quad_list.append([m_op, m_aux, m_m, m_res])
+        m_operand_stack.append(m_res)
 
 
 def mat_verify(lim_s):
@@ -418,24 +428,40 @@ def mat_verify(lim_s):
     # ID
     quad_list.append(['VERIFY', operand_stack[-1], 0, lim_s])
     instruction_pointer += 1
+    # MEMORY
+    m_op = tablaConst.get_oper_code('VERIFY')
+    m_inf = tablaConst.get_const_add(0)
+    m_sup = tablaConst.get_const_add(lim_s)
+    m_quad_list.append([m_op, m_operand_stack[-1], m_inf, m_sup])
 
     aux2 = operand_stack.pop()
     aux1 = operand_stack.pop()
+    m_aux2 = m_operand_stack.pop()
+    m_aux1 = m_operand_stack.pop()
     temp_result = "t" + str(temporal_counter)
     temporal_counter += 1
+    m_res = get_avail('temporal', 'int')
+    m_op = tablaConst.get_oper_code('+')
     quad_list.append(['+', aux1, aux2, temp_result])
+    m_quad_list.append([m_op, m_aux1, m_aux2, m_res])
     instruction_pointer += 1
     operand_stack.append(temp_result)
+    m_operand_stack.append(m_res)
 
 
 def dim_end(vir_addr):
     global temporal_pointer, instruction_pointer
     aux1 = operand_stack.pop()
+    m_aux1 = m_operand_stack.pop()
     tp = "tp" + str(temporal_pointer)
     temporal_pointer += 1
+    m_res = get_avail('temporal', 'pointer')
+    m_op = tablaConst.get_oper_code('+')
     quad_list.append(['+', aux1, vir_addr, tp])
+    m_quad_list.append([m_op, m_aux1, vir_addr, m_res])
     instruction_pointer += 1
     operand_stack.append(tp)
+    m_operand_stack.append(m_res)
     operator_stack.pop()  # eliminate fake bottom
 
 

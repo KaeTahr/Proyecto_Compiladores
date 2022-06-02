@@ -413,21 +413,33 @@ def p_verify_dim(p):
 
 def p_gen_verify1(p):
     """gen_verify1 :"""
+    if type_stack[-1] != 'int':
+        print("ERROR array indexing expression must be of type INT", p[-3])
+        exit()
     lim_s = tablaVars.get_arr_dim(p[-3], 0, curr_scope, scope_global)
-    m = 1
-    array_verify(lim_s, True, m)
+    tablaConst.add_constant(lim_s, 'int')
+    array_verify(lim_s, True, '')
 
 
 def p_gen_verify2(p):
     """gen_verify2 :"""
+    if type_stack[-1] != 'int':
+        print("ERROR array indexing expression must be of type INT", p[-3])
+        exit()
     lim_s = tablaVars.get_arr_dim(p[-3], 0, curr_scope, scope_global)
     m = tablaVars.get_arr_m(p[-3], curr_scope, scope_global)
+    tablaConst.add_constant(lim_s, 'int')
+    tablaConst.add_constant(m, 'int')
     array_verify(lim_s, False, m)
 
 
 def p_gen_verify3(p):
     """gen_verify3 :"""
+    if type_stack[-1] != 'int':
+        print("ERROR array indexing expression must be of type INT", p[-6])
+        exit()
     lim_s = tablaVars.get_arr_dim(p[-6], 1, curr_scope, scope_global)
+    tablaConst.add_constant(lim_s, 'int')
     mat_verify(lim_s)
 
 

@@ -1,0 +1,43 @@
+program patito;
+
+variables {
+    int: i, j, p, arr[12], mat[12,9];
+}
+
+int function fact(j: int) {
+    variables {int: i;}
+
+    i = j + (p - j * 2 + j);
+    if (j == 1) then {
+        return(j);
+    }
+    else {
+        return(j * (fact(j-1)));
+    }
+}
+
+void function inicia(y: int) {
+    variables {int: x;}
+    x = 0;
+    while(x < 12) do {
+        arr[x] = y * x;
+        x = x + 1;
+    }
+}
+
+main () {
+    read(p);
+    j = p * 2;
+    i = 0;
+    inicia(p*j-5);
+    while(i < 11) do {
+        arr[i] = arr[i] * fact(arr[i]-p);
+        mat[i, arr[i+p]*p] = arr[i];
+        i = i + 1;
+    }
+    while(i >= 0) do {
+        write("resultado", arr[i], (fact(i+2)));
+        write(mat[i,p*2-i]);
+        i = i - 1;
+    }
+}

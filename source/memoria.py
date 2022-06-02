@@ -25,7 +25,7 @@ virtual_memory = {
     }
 }
 
-valid_types = ['int', 'char', 'float', 'string']
+valid_types = ['int', 'char', 'float', 'string', 'pointer']
 
 
 def get_avail(scope, v_type):

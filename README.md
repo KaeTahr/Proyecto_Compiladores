@@ -2,16 +2,11 @@
 
 *Kevin Chinchilla - A00825945*
 
-# Entrega 7
-En esta entrega funciona ejecución de estatutos no líneales y llamadas a funciones.
-Se hace el cambio de contexto en la maquina virutal, y funcionan llamadas recursivas.
+# Entrega 8
+En esta entrega, esta terminada la definición de código intermedio, y ejecución
+de arreglos y matrices.
 
 TODO:
-- Arreglos y matrices - estamos trabajando en ello
-- Encontramos una bug al hacer llamadas de funciones como fib(i - 1) + fib (i - 2).
+- No hemos arreglado la bug de llamada de funciones
+- Nos hace falta generacion de código y ejecucion de clases y objetos.
 
-Esta llamada causa que se sume el resultado de la primera llamada, con i, y despues envia este resultado como parametro de la segunda llamda (restandole el 2).
-
-Si funciona se se llama como:
-
-(fib(i - 1)) + (fib(i - 2))

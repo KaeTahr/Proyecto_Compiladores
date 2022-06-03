@@ -13,13 +13,16 @@ temporal_pointer = 1
 local_temporal_int = 0
 local_temporal_float = 0
 local_temporal_char = 0
+local_temporal_pointer = 0
 total_temporal_int = 0
 total_temporal_float = 0
 total_temporal_char = 0
+total_temporal_pointer = 0
 quad_list = []  # quadruplos con IDs
 jump_list = []
 from_tmp = []
 m_quad_list = []  # quadruplos con direcciones
+m_from_tmp = []
 
 m_prefix = ''
 
@@ -29,7 +32,7 @@ def get_instruction_pointer():
 
 
 def add_local_temp(t):
-    global local_temporal_int, local_temporal_char, local_temporal_float, total_temporal_char, total_temporal_float, total_temporal_int
+    global local_temporal_int, local_temporal_char, local_temporal_float, total_temporal_char, total_temporal_float, total_temporal_int, local_temporal_pointer, total_temporal_pointer
     if t == 'int':
         local_temporal_int += 1
         total_temporal_int += 1
@@ -39,14 +42,17 @@ def add_local_temp(t):
     if t == 'char':
         local_temporal_char += 1
         total_temporal_char += 1
+    if t == 'pointer':
+        local_temporal_pointer +=1
+        total_temporal_pointer += 1
 
 
 def get_total_tmps():
-    return (total_temporal_int, total_temporal_float, total_temporal_char)
+    return (total_temporal_int, total_temporal_float, total_temporal_char, total_temporal_pointer)
 
 
 def get_local_tmps():
-    return (local_temporal_int, local_temporal_float, local_temporal_char)
+    return (local_temporal_int, local_temporal_float, local_temporal_char, local_temporal_pointer)
 
 
 # gen_quad 0-4
@@ -313,10 +319,11 @@ def gen_quad_return(f):
 
 # FUNCTIONS
 def fun_start():
-    global local_temporal_char, local_temporal_float, local_temporal_int
+    global local_temporal_char, local_temporal_float, local_temporal_int, local_temporal_pointer
     local_temporal_int = 0
     local_temporal_float = 0
     local_temporal_char = 0
+    local_temporal_pointer = 0
 
 
 def fun_end():
@@ -326,7 +333,7 @@ def fun_end():
     m_op = tablaConst.get_oper_code('ENDFUNC')
     m_quad_list.append([m_op, '', '', ''])
     instruction_pointer += 1
-    return (local_temporal_int, local_temporal_float, local_temporal_char)
+    return (local_temporal_int, local_temporal_float, local_temporal_char, local_temporal_pointer)
 
 
 def handle_fun_call(fun_id, df, params_count):
@@ -413,6 +420,7 @@ def array_verify(lim_s, last_dim, m):
         m_aux = m_operand_stack.pop()
         temp_result = "t" + str(temporal_counter)
         temporal_counter += 1
+        add_local_temp('int')
         quad_list.append(['*', aux, m, temp_result])
         instruction_pointer += 1
         operand_stack.append(temp_result)
@@ -440,6 +448,7 @@ def mat_verify(lim_s):
     m_aux1 = m_operand_stack.pop()
     temp_result = "t" + str(temporal_counter)
     temporal_counter += 1
+    add_local_temp('int')
     m_res = get_avail('temporal', 'int')
     m_op = tablaConst.get_oper_code('+')
     quad_list.append(['+', aux1, aux2, temp_result])
@@ -455,6 +464,7 @@ def dim_end(vir_addr):
     m_aux1 = m_operand_stack.pop()
     tp = "tp" + str(temporal_pointer)
     temporal_pointer += 1
+    add_local_temp('pointer')
     m_res = get_avail('temporal', 'pointer')  # TEMPORAL POINTER
     m_op = tablaConst.get_oper_code('+')
     quad_list.append(['+', aux1, vir_addr, tp])

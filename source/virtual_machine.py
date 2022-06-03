@@ -135,7 +135,7 @@ def or_vel(lo, ro, t):
 
 def assign(lo, ro, t):
     lo = m.memory_read(int(lo))
-    m.memory_write(lo, t)
+    m.memory_write_no_pointer(lo, t)
     ip_continue()
 
 def ret(lo, ro, t):
@@ -190,6 +190,14 @@ def gosub(lo, ro, t):
     m.start_subroutine(lo, ip)
     set_ip(int(t))
 
+def verify(lo, ro, t):
+    lo = m.memory_read(lo)
+    ro = m.memory_read(ro)
+    t = m.memory_read(t)
+    if (lo < ro or lo >= t):
+        raise IndexError("Tried to access array out of bounds")
+    ip_continue()
+
 op_codes = [
     mult, # 0
     div, # 1
@@ -213,8 +221,8 @@ op_codes = [
     era,
     endfunc,
     parameter,
-    gosub
-    # TODO: Complete this list
+    gosub,
+    verify
 ]
 
 def eval(quad):

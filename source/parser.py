@@ -7,6 +7,7 @@ from quadruples import *
 from tablaObjetos import *
 from lexer import tokens
 import sys
+from math import prod
 
 curr_fun_type = ''
 curr_var_type = ''
@@ -53,17 +54,21 @@ def p_program(p):
         char_count = 0
         for v in vt:
             v = vt[v]
-            t = v[0]
+            a = v[tablaVars.V.IS_ARRAY]
+            t = v[tablaVars.V.DATATYPE]
+            size = 1
+            if a:
+                size = prod(v[tablaVars.V.DIMS])
             if t == 'int':
-                int_count += 1
+                int_count += 1 * size
             elif t == 'float':
-                float_count += 1
+                float_count += 1 * size
             elif t == 'char':
-                char_count += 1
+                char_count += 1 * size
+
         tmps = fun[dirFunciones.FuncAttr.TEMP_AMOUNT]
         dir_fun_string += ',' + key + ',' + str(int_count) + ',' + str(float_count) + ',' + str(char_count)
-        dir_fun_string += ',' + str(tmps[0]) + ',' + str(tmps[1]) + ',' + str(tmps[2]) + ',' + str(
-            fun[FuncAttr.RETURN_ADDRESS])
+        dir_fun_string += ',' + str(tmps[0]) + ',' + str(tmps[1]) + ',' + str(tmps[2]) + ',' + str(tmps[3]) + ',' + str(fun[FuncAttr.RETURN_ADDRESS])
 
     dir_fun_string += '\n'
 

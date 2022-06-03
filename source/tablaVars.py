@@ -1,7 +1,14 @@
 from dirFunciones import FuncAttr, directorio_funciones, FuncAttr
 from memoria import *
 from tablaObjetos import tabla_obj
+from enum import IntEnum
 
+class V(IntEnum):
+    DATATYPE = 0,
+    VAR_KIND = 1,
+    ADDRESS = 2,
+    IS_ARRAY = 3,
+    DIMS = 4
 
 def add_variable(var_id, var_type, var_kind, scope):
     if scope in directorio_funciones:  # buscar scope en directorio de funciones

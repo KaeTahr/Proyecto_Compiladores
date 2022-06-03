@@ -407,12 +407,12 @@ def array_indexing1():
 def array_verify(lim_s, last_dim, m):
     global temporal_counter, instruction_pointer
     # ID
-    quad_list.append(['VERIFY', operand_stack[-1], 0, lim_s])
+    quad_list.append(['VERIFY', operand_stack[-1], 0, lim_s-1])
     instruction_pointer += 1
     # MEMORY
     m_op = tablaConst.get_oper_code('VERIFY')
     m_inf = tablaConst.get_const_add(0)
-    m_sup = tablaConst.get_const_add(lim_s)
+    m_sup = tablaConst.get_const_add(lim_s-1)
     m_quad_list.append([m_op, m_operand_stack[-1], m_inf, m_sup])
     if not last_dim:
         # ID
@@ -434,12 +434,12 @@ def array_verify(lim_s, last_dim, m):
 def mat_verify(lim_s):
     global temporal_counter, instruction_pointer
     # ID
-    quad_list.append(['VERIFY', operand_stack[-1], 0, lim_s])
+    quad_list.append(['VERIFY', operand_stack[-1], 0, lim_s-1])
     instruction_pointer += 1
     # MEMORY
     m_op = tablaConst.get_oper_code('VERIFY')
     m_inf = tablaConst.get_const_add(0)
-    m_sup = tablaConst.get_const_add(lim_s)
+    m_sup = tablaConst.get_const_add(lim_s-1)
     m_quad_list.append([m_op, m_operand_stack[-1], m_inf, m_sup])
 
     aux2 = operand_stack.pop()

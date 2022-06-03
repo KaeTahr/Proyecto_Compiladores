@@ -120,7 +120,7 @@ def get_arr_dim(var_id, dim, scope, g_scope):
 
 def get_arr_m(var_id, scope, g_scope):
     if var_id in directorio_funciones[scope][2]:
-        return directorio_funciones[scope][2][var_id][4][1] + 1
+        return directorio_funciones[scope][2][var_id][4][1]
 
     elif var_id in directorio_funciones[g_scope][2]:
-        return directorio_funciones[scope][2][var_id][4][1] + 1
+        return directorio_funciones[scope][2][var_id][4][1]

@@ -423,6 +423,7 @@ def p_gen_verify1(p):
         exit()
     lim_s = tablaVars.get_arr_dim(p[-3], 0, curr_scope, scope_global)
     tablaConst.add_constant(lim_s, 'int')
+    tablaConst.add_constant(lim_s-1, 'int')
     array_verify(lim_s, True, '')
 
 
@@ -434,6 +435,7 @@ def p_gen_verify2(p):
     lim_s = tablaVars.get_arr_dim(p[-3], 0, curr_scope, scope_global)
     m = tablaVars.get_arr_m(p[-3], curr_scope, scope_global)
     tablaConst.add_constant(lim_s, 'int')
+    tablaConst.add_constant(lim_s - 1, 'int')
     tablaConst.add_constant(m, 'int')
     array_verify(lim_s, False, m)
 
@@ -445,6 +447,7 @@ def p_gen_verify3(p):
         exit()
     lim_s = tablaVars.get_arr_dim(p[-6], 1, curr_scope, scope_global)
     tablaConst.add_constant(lim_s, 'int')
+    tablaConst.add_constant(lim_s - 1, 'int')
     mat_verify(lim_s)
 
 

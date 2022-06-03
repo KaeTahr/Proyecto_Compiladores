@@ -194,7 +194,7 @@ def verify(lo, ro, t):
     lo = m.memory_read(lo)
     ro = m.memory_read(ro)
     t = m.memory_read(t)
-    if (lo < ro or lo >= t):
+    if (lo < ro or lo > t):
         raise IndexError("Tried to access array out of bounds")
     ip_continue()
 

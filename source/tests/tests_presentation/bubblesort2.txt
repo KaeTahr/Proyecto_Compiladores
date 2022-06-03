@@ -1,0 +1,63 @@
+program bubblesorttest;
+
+variables
+{
+    int: arr[20], N, i;
+}
+
+void function bubblesort(N : int)
+{
+    variables {
+        int: i, j;
+        int: temp;
+    int: hasSwapped;
+    }
+    i = 0;
+    j = 0;
+    hasSwapped = 1;
+
+    while(hasSwapped == 1) do {
+        hasSwapped = 0;
+        from i = 0 until N - 1 do
+        {
+        if(arr[i] > arr[i+1]) then {
+            temp = arr[i];
+            arr[i] = arr[i+1];
+            arr[i + 1] = temp;
+            hasSwapped = 1;
+            }
+        i = i + 1;
+        }
+    }
+}
+
+main()
+{
+    N = 20;
+    arr[0] = 81;
+    arr[1] = 53;
+    arr[2] = 47;
+    arr[3] = 51;
+    arr[4] = 52;
+    arr[5] = 99;
+    arr[6] = 48;
+    arr[7] = 1;
+    arr[8] = 46;
+    arr[9] = 17;
+    arr[10] = 27;
+    arr[11] = 41;
+    arr[12] = 25;
+    arr[13] = 67;
+    arr[14] = 29;
+    arr[15] = 30;
+    arr[16] = 10;
+    arr[17] = 16;
+    arr[18] = 95;
+    arr[19] = 24;
+    bubblesort(20);
+
+    from i = 0 until 20 do {
+        write(arr[i]);
+        i = i + 1;
+    }
+}

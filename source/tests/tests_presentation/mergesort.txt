@@ -1,0 +1,107 @@
+program megesorttest;
+
+variables
+{
+    int: arr[20];
+}
+
+void function merge(l:int, m:int, r:int)
+{
+    variables {
+        int: i, j, k, n1, n2, L[20], R[20];
+    }
+    n1 = m - l + 1;
+    n2 = r - m;
+
+    from i = 0 until n1 do {
+        L[i] = arr[l + i];
+        i = i + 1;
+    }
+
+    from j = 0 until n2 do {
+        R[j] = arr[m + 1 + j];
+        j = j + 1;
+    }
+
+    i = 0;
+    j = 0;
+    k = l;
+    while( (i < n1) & (j < n2)) do {
+        if(L[i] <= R[j]) then {
+            arr[k] = L[i];
+            i = i + 1;
+        }
+        else
+        {
+            arr[k] = R[j];
+            j = j + 1;
+        }
+        k = k + 1;
+    }
+
+    while (i < n1) do {
+        arr[k] = L[i];
+        i = i + 1;
+        k = k + 1;
+    }
+
+    while (j < n2) do {
+        arr[k] = R[j];
+        j = j + 1;
+        k = k + 1;
+    }
+}
+
+void function mergesort(l: int, r: int)
+{
+    variables {
+        int : m;
+    } 
+
+    if ( l < r) then {
+        m = l + (r - l) / 2;
+        mergesort(l, m);
+        mergesort(m + 1, r);
+        merge(l, m, r);
+    }
+
+}
+
+void function printarr() {
+   variables {
+       int: i;
+   } 
+    from i = 0 until 20 do {
+        write(arr[i]);
+        i = i + 1;
+    }
+}
+
+
+main()
+{
+    arr[0] = 81;
+    arr[1] = 53;
+    arr[2] = 47;
+    arr[3] = 51;
+    arr[4] = 52;
+    arr[5] = 99;
+    arr[6] = 48;
+    arr[7] = 1;
+    arr[8] = 46;
+    arr[9] = 17;
+    arr[10] = 27;
+    arr[11] = 41;
+    arr[12] = 25;
+    arr[13] = 67;
+    arr[14] = 29;
+    arr[15] = 30;
+    arr[16] = 10;
+    arr[17] = 16;
+    arr[18] = 95;
+    arr[19] = 24;
+    mergesort(0, 19);
+
+    printarr();
+
+}

@@ -1,10 +1,18 @@
 program readTest;
 
 variables {
-    int: x;
+    char: x;
 }
 
 main() {
     # esto es un comment
+    write("Please enter the character 'c'");
     read(x);
+    if (x == '/') then {
+        write("So obedient!");
+    }
+    else {
+        write("bad.");
+    }
+
 }

@@ -228,6 +228,7 @@ op_codes = [
 ]
 
 def eval(quad):
+    '''All quadruple operations start here.'''
     op = quad.pop(0)
     op = int(op)
     left_operand = quad[0]
@@ -237,6 +238,9 @@ def eval(quad):
 
 
 def main(ovejota):
+    '''Reads thorugh the file.
+    Expects the first line to be constants, the second line to be functions.
+    All other lines are expected to be quads.'''
     lines = open(ovejota, "r").readlines()
     constants = lines.pop(0)
     quad = constants.strip().split(',')

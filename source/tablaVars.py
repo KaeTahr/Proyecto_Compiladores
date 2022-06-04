@@ -11,6 +11,13 @@ class V(IntEnum):
     DIMS = 4
 
 def add_variable(var_id, var_type, var_kind, scope):
+    '''Ads a variable  given:
+        its id
+        its type (int, float, char...)
+        its kind (local, global...)
+        its scope
+        Ends compilation with an error if trying to add an existing variable,
+        or trying to use an unknown scope'''
     if scope in directorio_funciones:  # buscar scope en directorio de funciones
 
         if var_id in directorio_funciones[scope][FuncAttr.VAR_TABLE]:
@@ -72,15 +79,19 @@ def instantiate_obj(var_id, class_id, scope):
 
 
 def set_array(var_id, scope):
+    '''Flags a given var in a given scope as an array'''
     if var_id in directorio_funciones[scope][2]:
         directorio_funciones[scope][2][var_id][3] = True
 
 
 def set_dim(var_id, scope, dim):
+    '''adds a dimention to a given array in a given scope.'''
     directorio_funciones[scope][2][var_id][4].append(dim)
 
 
 def arr_end(var_id, scope, g_scope):
+    '''Called at the end of an array defintion. Calls update_avail to correct
+    the next available memory address'''
     size = directorio_funciones[scope][2][var_id][4][0]
     # virtual_address = directorio_funciones[scope][2][var_id][2] + size - 1
     v_type = directorio_funciones[scope][FuncAttr.VAR_TABLE][var_id][0]
@@ -92,6 +103,8 @@ def arr_end(var_id, scope, g_scope):
 
 
 def mat_end(var_id, scope, g_scope):
+    '''Called at the end of a matrix defintion. Calls update_avail to correct
+    the next available memory address'''
     size = directorio_funciones[scope][2][var_id][4][0] * directorio_funciones[scope][2][var_id][4][1]
     # virtual_address = directorio_funciones[scope][2][var_id][2] + size - 1
     v_type = directorio_funciones[scope][FuncAttr.VAR_TABLE][var_id][0]

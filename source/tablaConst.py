@@ -32,6 +32,7 @@ tabla_oper = {
 
 
 def add_constant(value, const_type):
+    '''Asks for memory for a new constant and adds it to memory.'''
     value = str(value)
     if value not in tabla_const:
         address = get_avail('constant', const_type)
@@ -43,6 +44,7 @@ def add_constant(value, const_type):
 
 
 def get_const_add(value):
+    '''Gets the virtual memory address of a constant.'''
     if tabla_const:
         return tabla_const[str(value)][1]
     else:
@@ -50,6 +52,7 @@ def get_const_add(value):
 
 
 def get_const_type(value):
+    '''Gets the type of a given contant'''
     if tabla_const:
         return tabla_const[str(value)][0]
     else:
@@ -57,6 +60,7 @@ def get_const_type(value):
 
 
 def get_oper_code(operator):
+    '''Gets an opcode given a human-readable operation'''
     return tabla_oper[operator]
 
 

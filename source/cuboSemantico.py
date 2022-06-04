@@ -146,6 +146,10 @@ cuboSemantico = {
 
 
 def validateOperation(leftOp, rightOp, operator):
+    '''Validates if operations can be done by their given types.
+    returns the resulting type, or ends the compilation with an error if the 
+    operation cannot be done.
+    '''
     if leftOp in cuboSemantico:  # buscar izquierdo
         if rightOp in cuboSemantico[leftOp]:  # buscar derecho
             if operator in cuboSemantico[leftOp][rightOp]:  # buscar operador

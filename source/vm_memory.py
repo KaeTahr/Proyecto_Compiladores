@@ -232,6 +232,11 @@ def start_subroutine(fun, ip):
     memory[memoryContext.TEMPORAL] = c[StackMemory.TMP_MEM]
 
 def end_subroutine(value_address = None):
+    '''Ends a subroutine. By default it offers no return value.
+    If a return address is given, reads the return value in the given
+    address, and writes it where the previous operation in the stack is expecting
+    it.
+    Returns the instruction pointer at the top of the memory execution stack'''
     prev = execution_stack.pop()
     if value_address != None:
         value = memory_read(value_address)

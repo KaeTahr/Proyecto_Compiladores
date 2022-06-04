@@ -28,6 +28,9 @@ def get_dir_funciones():
 
 # add function to function directory
 def add_function(fun_id, fun_type, kind):
+    '''Adds a function to the function table.
+    Ends compilation with an error if the function is already
+    in the table.'''
     if fun_id in directorio_funciones:  # function already exists
         print("ERROR: function", fun_id, "already exists in function directory.")
         exit()
@@ -37,6 +40,7 @@ def add_function(fun_id, fun_type, kind):
 
 
 def new_function_log(fun_id):
+    '''Debug log for adding a new function'''
     print("\n-------------------------FUNCTION----------------------------------")
     print('New entry in function directory:')
     print("ID:", fun_id, "\tType:",
@@ -46,6 +50,9 @@ def new_function_log(fun_id):
 
 
 def get_var_type(var_id, scope, curr_class):
+    '''Returns the type of a variable, given a variable id, and a scope
+    Ends compilation with an error if attempting to find an undeclared
+    variable'''
     first = list(directorio_funciones.keys())[0]  # reference to global scope
     if curr_class:
         parent = tabla_obj[curr_class]['parent']  # check if class is child of another
@@ -69,6 +76,7 @@ def get_var_type(var_id, scope, curr_class):
 
 
 def get_var_address(var_id, scope, global_scope):
+    '''Returns the memory address of a given variable'''
     if var_id in directorio_funciones[scope][FuncAttr.VAR_TABLE]:
         return directorio_funciones[scope][FuncAttr.VAR_TABLE][var_id][2]
     elif var_id in directorio_funciones[global_scope][FuncAttr.VAR_TABLE]:
@@ -79,21 +87,16 @@ def get_var_address(var_id, scope, global_scope):
 
 
 def sign_function(id):
+    '''Called at the end of a function declaration. Stores the amount of paramters'''
     parameters = directorio_funciones[id][FuncAttr.VAR_TABLE]
     parameters = tuple(i[0] for i in list(parameters.values()))
     directorio_funciones[id][FuncAttr.PARAMETERS] = parameters
 
-
-def get_fun_signature(id):
-    if id in directorio_funciones:
-        f = directorio_funciones[id]
-        return f[FuncAttr.RETURN_TYPE], id, f[FuncAttr.PARAMETERS]
-    else:
-        print("ERROR: Attempted to call undefined function")
-        exit()
-
-
 def fun_start(id, ip, return_address):
+    '''Called at the start of a function declaration. Stores the quadruple number
+    where it is called to be used in GoSub operations, and the memory address
+    where the returned value is stored.
+    For void functions, call with a -1 return_address'''
     f = directorio_funciones[id]
     f[FuncAttr.START] = ip
     f[FuncAttr.RETURN_ADDRESS] = return_address
@@ -101,5 +104,7 @@ def fun_start(id, ip, return_address):
 
 
 def fun_end(id, tmp_count):
+    '''Called at the end of a function declaration.  Stores the amount
+    of temporary variables used.'''
     f = directorio_funciones[id]
     f[FuncAttr.TEMP_AMOUNT] = tmp_count

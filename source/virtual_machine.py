@@ -145,6 +145,8 @@ def ret(lo, ro, t):
     ip_continue()
 
 def read(lo, ro, t):
+    i = input("Input: ")
+    m.memory_write(i, t, safety = True)
     ip_continue()
 
 def write(lo, ro, t):

@@ -119,15 +119,22 @@ def memory_read_no_pointer(address):
     c, r, off = memory_lookup(address)
     return memory[c][r][off]
 
-def memory_write(value, address):
+def memory_write(value, address, safety = False):
     '''
-    Default write, writes to the address given, no pointer check
+    Default write, writes to the address given, no pointer check.
+    Safety is used to activate type validation, necessary for safer
+    user input, to prevent overflows.
     '''
     c, r, off = memory_lookup(address)
     if r == contextRanges.INT:
         value = int(value)
     elif r == contextRanges.FLOAT:
         value = float(value)
+    elif safety:
+        if len(value) > 1:
+            raise TypeError("Please input chars of length 1 only")
+        value = "'" + value + "'"
+
     memory[c][r][off] = value
 
 def memory_write_no_pointer(value, address):

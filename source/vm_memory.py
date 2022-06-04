@@ -101,7 +101,7 @@ def memory_lookup(address):
 
 def memory_read(address):     
     ''' 
-    by default, is address is a pointer, always read the value the pointer points to
+    by default, if address is a pointer, always read the value the pointer points to
     + tp x
     never done on pointers directly
     '''

@@ -11,27 +11,24 @@ class Persona {
 };
 
 class Estudiante inherits Persona {
-    attributes:
+    attributes
         float: average;
     methods
         float function getAverage() {return(average);}
-}
+};
 
 
 variables {
     Persona: asuka;
+    Estudiante: shinji;
     int: x;
     float: y;
     char: c;
 }
 
 main() {
-    read(x);
-    asuka.age = x;
-    write(asuka.age);
-
-    asuka.height = 1.60;
-    x = asuka.getAge2();
-    y = asuka.getHeight();
-    write(x,y);
+    shinji.age = 10;
+    shinji.height = 1.5;
+    shinji.average = 7.6;
+    write(shinji.age, shinji.height, shinji.average);
 }

@@ -4,28 +4,30 @@ virtual_memory = {
     'global': {
         'int': {'initial': 1000, 'count': 0},
         'float': {'initial': 2000, 'count': 0},
-        'char': {'initial': 3000, 'count': 0}
+        'char': {'initial': 3000, 'count': 0},
+        'object' : {'initial': 4000, 'count': 0}
     },
     'local': {
-        'int': {'initial': 4000, 'count': 0},
-        'float': {'initial': 5000, 'count': 0},
-        'char': {'initial': 6000, 'count': 0}
+        'int': {'initial': 5000, 'count': 0},
+        'float': {'initial': 6000, 'count': 0},
+        'char': {'initial': 7000, 'count': 0},
+        'object' : {'initial': 8000, 'count': 0}
     },
     'temporal': {
-        'int': {'initial': 7000, 'count': 0},
-        'float': {'initial': 8000, 'count': 0},
-        'char': {'initial': 9000, 'count': 0},
+        'int': {'initial': 9000, 'count': 0},
+        'float': {'initial': 10000, 'count': 0},
+        'char': {'initial': 11000, 'count': 0},
         'pointer': {'initial': 50000, 'count': 0}
     },
     'constant': {
-        'int': {'initial': 10000, 'count': 0},
-        'float': {'initial': 11000, 'count': 0},
-        'char': {'initial': 12000, 'count': 0},
-        'string': {'initial': 13000, 'count': 0}
+        'int': {'initial': 12000, 'count': 0},
+        'float': {'initial': 13000, 'count': 0},
+        'char': {'initial': 14000, 'count': 0},
+        'string': {'initial': 15000, 'count': 0}
     }
 }
 
-valid_types = ['int', 'char', 'float', 'string', 'pointer']
+valid_types = ['int', 'char', 'float', 'string', 'pointer', 'object']
 
 
 def get_avail(scope, v_type):
@@ -35,8 +37,18 @@ def get_avail(scope, v_type):
     - type (int, float, char, string, pointer)'''
     if v_type in valid_types:
         assigned_addr = virtual_memory[scope][v_type]['initial'] + virtual_memory[scope][v_type]['count']
-        if assigned_addr < virtual_memory[scope][v_type]['initial'] + addr_range - 1:
+        if assigned_addr < virtual_memory[scope][v_type]['initial'] + addr_range:
             virtual_memory[scope][v_type]['count'] += 1  # update count
+            return assigned_addr
+        else:
+            print("ERROR: Too many", scope, " variables of type", v_type)
+            exit()
+
+
+def get_avail_1(scope, v_type):
+    if v_type in valid_types:
+        assigned_addr = virtual_memory[scope][v_type]['initial'] + virtual_memory[scope][v_type]['count']
+        if assigned_addr < virtual_memory[scope][v_type]['initial'] + addr_range:
             return assigned_addr
         else:
             print("ERROR: Too many", scope, " variables of type", v_type)

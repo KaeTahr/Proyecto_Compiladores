@@ -1,5 +1,5 @@
 tabla_obj = {}
-
+# {class_name: {'attributes': {atributo_id: [type, position]}, 'methods': {mthd_id: type}, 'parent': ''}}
 
 def add_object(obj_id):
     if obj_id in tabla_obj:
@@ -12,7 +12,9 @@ def add_object(obj_id):
 
 def add_attribute(obj_id, attr_id, attr_type):
     if attr_id not in tabla_obj[obj_id]['attributes']:
-        tabla_obj[obj_id]['attributes'][attr_id] = attr_type
+        position = len(tabla_obj[obj_id]['attributes'])
+        tabla_obj[obj_id]['attributes'][attr_id] = [attr_type, position]
+        
 
 
 def add_method(obj_id, mthd_id, mthd_type):

@@ -17,7 +17,7 @@ curr_operand_type = ''
 curr_from_var = ''
 scope_global = ''
 in_object = False
-curr_class = ''
+curr_class = None
 parameter_stack = []
 has_return = False
 curr_array = ''
@@ -27,7 +27,7 @@ curr_array = ''
 def p_program(p):
     """program : PROGRAM ini_quads ID store_program SEMI prog1 prog2 prog3 fill_goto_main main count_temps"""
     tablaVars.print_var_table()
-    # print_obj_table()
+    print_obj_table()
     tablaConst.print_const_table()
     print("\nOperand stack:\t", operand_stack)
     print("Type stack:\t", type_stack)
@@ -52,12 +52,14 @@ def p_program(p):
         int_count = 0
         float_count = 0
         char_count = 0
+        object_count = 0
         for v in vt:
             v = vt[v]
             a = v[tablaVars.V.IS_ARRAY]
             t = v[tablaVars.V.DATATYPE]
+            is_object = v[tablaVars.V.VAR_KIND] == 'object'
             size = 1
-            if a:
+            if a or is_object:
                 size = prod(v[tablaVars.V.DIMS])
             if t == 'int':
                 int_count += 1 * size
@@ -65,9 +67,11 @@ def p_program(p):
                 float_count += 1 * size
             elif t == 'char':
                 char_count += 1 * size
+            elif is_object:
+                object_count += 1 * size
 
         tmps = fun[dirFunciones.FuncAttr.TEMP_AMOUNT]
-        dir_fun_string += ',' + key + ',' + str(int_count) + ',' + str(float_count) + ',' + str(char_count)
+        dir_fun_string += ',' + key + ',' + str(int_count) + ',' + str(float_count) + ',' + str(char_count) + ','  + str(object_count)
         dir_fun_string += ',' + str(tmps[0]) + ',' + str(tmps[1]) + ',' + str(tmps[2]) + ',' + str(tmps[3]) + ',' + str(fun[FuncAttr.RETURN_ADDRESS])
 
     dir_fun_string += '\n'
@@ -146,9 +150,10 @@ def p_store_object(p):
 
 def p_exit_class(p):
     """exit_class :"""
-    global curr_scope, in_object
+    global curr_scope, in_object, curr_class
     curr_scope = scope_global  # return to global scope after class definitions
     in_object = False
+    curr_class = None
 
 
 def p_class1(p):
@@ -470,7 +475,7 @@ def p_store_attr(p):
     global curr_operand_type
     name = str(p[-3] + p[-2] + p[-1])
     operand_stack.append(name)
-    m_operand_stack.append(dirFunciones.get_var_address(name, curr_scope, scope_global))
+    m_operand_stack.append(dirFunciones.get_var_address(name, curr_scope, scope_global, curr_class))
     curr_operand_type = dirFunciones.get_var_type(name, curr_scope, curr_class)
     type_stack.append(curr_operand_type)
 
@@ -479,7 +484,7 @@ def p_store_operand(p):
     """store_operand :"""
     global curr_operand_type
     operand_stack.append(p[-1])
-    m_operand_stack.append(dirFunciones.get_var_address(p[-1], curr_scope, scope_global))
+    m_operand_stack.append(dirFunciones.get_var_address(p[-1], curr_scope, scope_global, curr_class))
     curr_operand_type = dirFunciones.get_var_type(p[-1], curr_scope, curr_class)
     type_stack.append(curr_operand_type)
 
@@ -488,14 +493,14 @@ def p_store_operand(p):
 def p_void_call(p):
     """void_call : ID call1 params_init LP call2 RP
                  | ID call1 params_init LP RP"""
-    if p[2] is None:
+    if p[2] is None: # Regular function call
         if dirFunciones.directorio_funciones[p[1]][FuncAttr.IS_GLOBAL] == 'method':
             print("ERROR: cannot call class method", p[1], "as standalone function.")
             exit()
         handle_fun_call(p[1], dirFunciones.get_dir_funciones(), parameter_stack.pop())
-    else:
-        set_prefix(p[1] + ".")  # TODO: use instance of object in function call
-        handle_fun_call(p[2], dirFunciones.get_dir_funciones(), parameter_stack.pop())
+    else: # Method call
+        addr = dirFunciones.get_var_address(p[1], curr_scope, scope_global, curr_class)
+        handle_fun_call(p[2], dirFunciones.get_dir_funciones(), parameter_stack.pop(), addr)
 
 
 def p_params_init(p):
@@ -616,7 +621,7 @@ def p_gen_from_start(p):
     """gen_from_start : """
     global curr_from_var
     curr_from_var = p[-1]
-    curr_from_m = dirFunciones.get_var_address(curr_from_var, curr_scope, scope_global)
+    curr_from_m = dirFunciones.get_var_address(curr_from_var, curr_scope, scope_global, curr_class)
     gen_from_start(curr_from_var, curr_from_m)
 
 

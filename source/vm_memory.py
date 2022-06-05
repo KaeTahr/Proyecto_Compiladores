@@ -16,13 +16,18 @@ class StackMemory(IntEnum):
     IP = 0,
     LOCAL_MEM = 1,
     TMP_MEM = 2,
-    EXPECTING_RETURN = 3
+    EXPECTING_RETURN = 3,
+    OBJECT_BASE_ADDR = 4
 
 class Df(IntEnum):
     ID = 0,
     LOCAL_MEM = 1,
     TMP_MEM = 2,
     RETURN_ADDRESS = 3
+
+# Keeps track of which class we're in in the case of object calls
+method_stack = []
+curr_object = ''
 
 # fun_name: local_mem, tmp_mem, return_address
 dir_fun = {}
@@ -34,12 +39,14 @@ memory = [
         [], # int
         [], # float
         [], # char
+        [] #objetos
     ], 
 
     [ # local
         [],
         [],
         [],
+        [] # objetos
     ],
 
     [ # temporal
@@ -60,25 +67,27 @@ memory = [
 def memory_lookup(address):
     '''Given an address, returns a 3D tuple meant to be used to 
     access the memory map'''
-    address = int(address)
     context = 0
     mem_range = 0
     t_address = address
-    if address < 4000:
+    address = int(address)
+    if address < 1000:
+        address += curr_object
+    if address < 5000:
         context = memoryContext.GLOBAL
         t_address = address - 1000
-    elif address >= 4000 and address < 7000:
+    elif address >= 5000 and address < 9000:
         context = memoryContext.LOCAL
-        t_address = address - 4000
-    elif address >= 7000 and address < 10000:
+        t_address = address - 5000
+    elif address >= 9000 and address < 12000:
         context = memoryContext.TEMPORAL
-        t_address = address - 7000
-    elif address >= 10000 and address < 13000:
+        t_address = address - 9000
+    elif address >= 12000 and address < 15000:
         context = memoryContext.CONSTANT
-        t_address = address - 10000
-    elif address >= 13000 and address < 14000: # special string constant
+        t_address = address - 12000
+    elif address >= 15000 and address < 15000: # special string constant
         context = memoryContext.CONSTANT
-        return context, contextRanges.STRING, address - 13000, 
+        return context, contextRanges.STRING, address - 15000, 
     elif address >= 50000 and address < 51000: # special pointer temporal
         context = memoryContext.TEMPORAL
         return context, 3, address - 50000, 
@@ -94,10 +103,14 @@ def memory_lookup(address):
     elif t_address >= 2000 and t_address < 3000:
         mem_range = contextRanges.CHAR
         t_address -= 2000
+    elif t_address >= 3000 and t_address < 4000:
+        mem_range = 3 # OBJETO
+        t_address -= 3000
     else:
         raise MemoryError("overflow")
         
     return context, mem_range, t_address
+
 
 def memory_read(address):     
     ''' 
@@ -130,8 +143,8 @@ def memory_write(value, address, safety = False):
         value = int(value)
     elif r == contextRanges.FLOAT:
         value = float(value)
-    elif safety:
-        if len(value) > 1:
+    elif safety: #char
+        if r == contextRanges.CHAR and len(value) > 1:
             raise TypeError("Please input chars of length 1 only")
         value = "'" + value + "'"
 
@@ -176,35 +189,41 @@ def initiate_global_variables(t):
     memory[c][contextRanges.INT] = [None] * t[0]
     memory[c][contextRanges.FLOAT] = [None] * t[1]
     memory[c][contextRanges.CHAR] = [None] * t[2]
+    memory[c][3] = [None] * t[3] #Objetos /atributos
 
 def initiate_functions(func_list):
-    for i in range(0, len(func_list), 9):
+    for i in range(0, len(func_list), 10):
         id = func_list[i]
         ints = int(func_list[i+1])
         floats = int(func_list[i+2])
         chars = int(func_list[i+3])
-        t_ints = int(func_list[i+4])
-        t_floats = int(func_list[i+5])
-        t_chars = int(func_list[i+6])
-        t_pointers = int(func_list[i+7])
-        return_address = int(func_list[i+8])
-        dir_fun[id] = [(ints, floats, chars), (t_ints, t_floats, t_chars, t_pointers), return_address]
+        objects = int(func_list[i+4]) #attribute count
+        t_ints = int(func_list[i+5])
+        t_floats = int(func_list[i+6])
+        t_chars = int(func_list[i+7])
+        t_pointers = int(func_list[i+8])
+        return_address = int(func_list[i+9])
+        dir_fun[id] = [(ints, floats, chars, objects), (t_ints, t_floats, t_chars, t_pointers), return_address]
     
     initiate_global_variables(dir_fun[func_list[0]][0])
     initiate_temporary_variables(dir_fun[func_list[0]][1])
 
-def prepare_context(function):
+def prepare_context(object_address, function):
+    if object_address != '':
+        object_address = int(object_address)
+    method_stack.append(object_address)
     f = dir_fun[function]
-    new_context_local = [[], [], []]
+    new_context_local = [[], [], [], []]
     new_context_tmp = [[], [], [], []]
     new_context_local[contextRanges.INT] = [None] * f[0][0]
     new_context_local[contextRanges.FLOAT] = [None] * f[0][1]
     new_context_local[contextRanges.CHAR] = [None] * f[0][2]
+    new_context_local[3] = [None] * f[0][3] #objetos/atributos
     new_context_tmp[contextRanges.INT] = [None] * f[1][0]
     new_context_tmp[contextRanges.FLOAT] = [None] * f[1][1]
     new_context_tmp[contextRanges.CHAR] = [None] * f[1][2]
     new_context_tmp[3] = [None] * f[1][3] #pointers
-    execution_stack.append([-1, new_context_local, new_context_tmp])
+    execution_stack.append([-1, new_context_local, new_context_tmp, ''])
 
 def handle_param(address, param_num):
     c, r, off = memory_lookup(address)
@@ -221,10 +240,13 @@ def handle_param(address, param_num):
     execution_stack[-1][1][r][off] = v
 
 def start_subroutine(fun, ip):
+    global curr_object
     c = execution_stack.pop()
     prev_memory = memory[memoryContext.LOCAL].copy()
     prev_tmp = memory[memoryContext.TEMPORAL].copy()
-    prev = [ip, prev_memory, prev_tmp, fun]
+    # fun = expecting return from
+    prev = [ip, prev_memory, prev_tmp, fun, curr_object] 
+    curr_object = method_stack.pop()
     execution_stack.append(prev)
     if len(execution_stack) > 1000:
         raise MemoryError("Out of memory. Too many calls")
@@ -238,6 +260,7 @@ def end_subroutine(value_address = None):
     it.
     Returns the instruction pointer at the top of the memory execution stack'''
     prev = execution_stack.pop()
+    curr_object = prev[StackMemory.OBJECT_BASE_ADDR]
     if value_address != None:
         value = memory_read(value_address)
         f = prev[StackMemory.EXPECTING_RETURN]

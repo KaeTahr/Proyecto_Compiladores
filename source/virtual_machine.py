@@ -174,7 +174,7 @@ def gotot(lo, ro, t):
         set_ip(int(t))
 
 def era(lo, ro, t):
-    m.prepare_context(t)
+    m.prepare_context(lo, t)
     ip_continue()
 
 def endfunc(lo, ro, t):

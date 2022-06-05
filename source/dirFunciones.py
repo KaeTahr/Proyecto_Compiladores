@@ -65,25 +65,33 @@ def get_var_type(var_id, scope, curr_class):
         return directorio_funciones[first][FuncAttr.VAR_TABLE][var_id][0]
 
     elif var_id in tabla_obj[curr_class]['attributes']:  # search in object attributes
-        return tabla_obj[curr_class]['attributes'][var_id]
+        return tabla_obj[curr_class]['attributes'][var_id][0]
 
     elif parent and var_id in tabla_obj[parent]['attributes']:  # search in parent class attributes
-        return tabla_obj[parent]['attributes'][var_id]
+        return tabla_obj[parent]['attributes'][var_id][0]
 
     else:  # variable was not found
         print("ERROR: variable", var_id, "not found in scope", scope)
         exit()
 
 
-def get_var_address(var_id, scope, global_scope):
+def get_var_address(var_id, scope, global_scope, curr_class = None):
     '''Returns the memory address of a given variable'''
     if var_id in directorio_funciones[scope][FuncAttr.VAR_TABLE]:
         return directorio_funciones[scope][FuncAttr.VAR_TABLE][var_id][2]
+
+    elif curr_class != None:
+        parent = tabla_obj[curr_class]['parent']  # check if class is child of another
+        if var_id in tabla_obj[curr_class]['attributes']:  # search in object attributes
+            return tabla_obj[curr_class]['attributes'][var_id][1]
+
+        elif parent and var_id in tabla_obj[parent]['attributes']:  # search in parent class attributes
+            return tabla_obj[parent]['attributes'][var_id][1]
+        
     elif var_id in directorio_funciones[global_scope][FuncAttr.VAR_TABLE]:
         return directorio_funciones[global_scope][FuncAttr.VAR_TABLE][var_id][2]
     else:
-        print("Variable", var_id, "is not declared")
-        exit()
+        raise Exception("Variable " + var_id + " is not declared") 
 
 
 def sign_function(id):

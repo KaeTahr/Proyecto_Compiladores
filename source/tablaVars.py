@@ -19,16 +19,25 @@ def add_variable(var_id, var_type, var_kind, scope):
         Ends compilation with an error if trying to add an existing variable,
         or trying to use an unknown scope'''
     if scope in directorio_funciones:  # buscar scope en directorio de funciones
-
+        if var_kind == 'object' or var_kind == 'attribute':
+            avail_type = 'object'
+        else:
+            avail_type = var_type
         if var_id in directorio_funciones[scope][FuncAttr.VAR_TABLE]:
             print("ERROR: variable", var_id, "already exists in scope:", scope)
             exit()
 
         else:
             if directorio_funciones[scope][FuncAttr.RETURN_TYPE] == "program":
-                address = get_avail("global", var_type)
+                if var_kind == 'object':
+                    address = get_avail_1("global", "object")
+                else:
+                    address = get_avail("global", avail_type)
             else:
-                address = get_avail("local", var_type)
+                if var_kind == 'object':
+                    address = get_avail_1("local", "object")
+                else:
+                    address = get_avail("local", avail_type)
             directorio_funciones[scope][2][var_id] = [var_type, var_kind, address, False, []]
             return address
             # new_variable_log(var_id, scope)  # log info
@@ -63,19 +72,26 @@ def print_var_table():
 
 
 def instantiate_obj(var_id, class_id, scope):
+    size = 0
     parent = tabla_obj[class_id]['parent']
     if tabla_obj[class_id]['attributes']:
         for attr in tabla_obj[class_id]['attributes']:
             name = str(var_id + "." + attr)
-            var_type = tabla_obj[class_id]['attributes'][attr]
+            var_type = tabla_obj[class_id]['attributes'][attr][0]
+            
             add_variable(name, var_type, 'attribute', scope)
+            size += 1
 
     if parent:
         if tabla_obj[parent]['attributes']:
             for attr in tabla_obj[parent]['attributes']:
                 name = str(var_id + "." + attr)
-                var_type = tabla_obj[parent]['attributes'][attr]
+                var_type = tabla_obj[parent]['attributes'][attr][0]
                 add_variable(name, var_type, 'attribute', scope)
+                size += 1
+    
+    set_dim(var_id, scope, size)
+    
 
 
 def set_array(var_id, scope):

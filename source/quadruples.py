@@ -337,8 +337,7 @@ def gen_quad_return(f):
     res = operand_stack.pop()
 
     m_res = m_operand_stack.pop()  # Memory
-    if f[FuncAttr.IS_GLOBAL] == 'method':
-        m_res = res
+    
 
     if curr_type != f[FuncAttr.RETURN_TYPE]:  # catches void function with return
         print("ERROR: Type mismatch in function return!", f[FuncAttr.RETURN_TYPE], "returns", curr_type)
@@ -375,7 +374,7 @@ def fun_end():
     return (local_temporal_int, local_temporal_float, local_temporal_char, local_temporal_pointer)
 
 
-def handle_fun_call(fun_id, df, params_count):
+def handle_fun_call(fun_id, df, params_count, object_address = ''):
     '''Generates all quads associated with a function call.
     Checks if the calleed function is declared,
     next, validates parameter amount and types, using the latest expressions
@@ -388,10 +387,10 @@ def handle_fun_call(fun_id, df, params_count):
     signature = (f[FuncAttr.RETURN_TYPE], fun_id, f[FuncAttr.PARAMETERS])
     is_void = signature[0] == 'void'
     # GENERATE ERA
-    quad_list.append(['ERA', '', '', fun_id])  # TODO: methods?
+    quad_list.append(['ERA', object_address, '', fun_id])  # TODO: methods?
     # Memory
     m_op = tablaConst.get_oper_code('ERA')
-    m_quad_list.append([m_op, '', '', fun_id])
+    m_quad_list.append([m_op, object_address, '', fun_id])
     instruction_pointer += 1
     # Verify parameters
     # first, verify correct amount

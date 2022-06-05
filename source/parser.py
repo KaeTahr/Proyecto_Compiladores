@@ -89,7 +89,7 @@ def p_count_temps(p):
     """count_temps :"""
     f = dirFunciones.directorio_funciones[scope_global]
     f[dirFunciones.FuncAttr.TEMP_AMOUNT] = get_local_tmps()
-    type_stack.clear()  # TODO: maybe delete, type stack leftovers from append in assignment for use in from
+    type_stack.clear()
 
 
 def p_ini_quads(p):

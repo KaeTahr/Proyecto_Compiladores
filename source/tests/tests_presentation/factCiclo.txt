@@ -15,6 +15,7 @@ int function factorial(a:int){
 }
 
 main(){
-    N = factorial(7);
+    read(N);
+    N = factorial(N);
     write(N);
 }

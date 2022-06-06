@@ -1,0 +1,18 @@
+program factorialRecursivo;
+
+variables {
+    int: x;
+}
+
+int function factorial(n:int){
+    if (n == 1) then {
+        return(1);
+    }
+    return(n * (factorial(n - 1)));
+}
+
+main(){
+    read(x);
+    x = factorial(x);
+    write(x);
+}

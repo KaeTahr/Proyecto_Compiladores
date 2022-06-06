@@ -115,7 +115,7 @@ def lte(lo, ro, t):
 def and_et(lo, ro, t):
     lo = m.memory_read(int(lo))
     ro = m.memory_read(int(ro))
-    res = (lo == TRUE) and (ro == TRUE)
+    res = (lo > 0) and (ro > 0)
     if res:
         res = TRUE
     else:

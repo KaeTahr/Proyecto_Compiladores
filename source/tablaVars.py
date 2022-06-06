@@ -152,4 +152,4 @@ def get_arr_m(var_id, scope, g_scope):
         return directorio_funciones[scope][2][var_id][4][1]
 
     elif var_id in directorio_funciones[g_scope][2]:
-        return directorio_funciones[scope][2][var_id][4][1]
+        return directorio_funciones[g_scope][2][var_id][4][1]

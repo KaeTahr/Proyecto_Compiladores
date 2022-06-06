@@ -85,7 +85,7 @@ def memory_lookup(address):
     elif address >= 12000 and address < 15000:
         context = memoryContext.CONSTANT
         t_address = address - 12000
-    elif address >= 15000 and address < 15000: # special string constant
+    elif address >= 15000 and address < 16000: # special string constant
         context = memoryContext.CONSTANT
         return context, contextRanges.STRING, address - 15000, 
     elif address >= 50000 and address < 51000: # special pointer temporal

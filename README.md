@@ -1,5 +1,5 @@
 # Language++
-A small programming language for our Compiler Design Class.
+A small programming language for our Compiler Design class.
 
 ## Syntax
 The language requires the first line of every program to be:
@@ -63,7 +63,7 @@ write(add(3,4));
 The language has some limitations:
 - Objects declared locally in functions may have their methods not work.
 - As classes must be defined before globals, methods may not interact with globals
-- 2D matrices and array are supported, but not as attrbiutes
+- 2D matrices and arrays are supported, but not as attributes
 
 ## Compiling a program
 In order to compile the program, run the parser located in source directory, on the text file containing your source code:
@@ -74,7 +74,7 @@ python parser.py source.txt
 ## Running a program
  The parser will generate a file called intermediate.out.
  
- In order to run your program, just must run this file using the virual machine
+ In order to run your program, you must run this file using the virual machine
  
  ```shell
  python virtualmachine.py intermediate.out

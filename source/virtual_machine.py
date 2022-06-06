@@ -1,4 +1,5 @@
 import sys
+import pyparsing as pp
 import vm_memory as m
 
 TRUE = 1
@@ -114,7 +115,7 @@ def lte(lo, ro, t):
 def and_et(lo, ro, t):
     lo = m.memory_read(int(lo))
     ro = m.memory_read(int(ro))
-    res = (lo == FALSE) and (ro == FALSE)
+    res = (lo == TRUE) and (ro == TRUE)
     if res:
         res = TRUE
     else:
@@ -125,7 +126,7 @@ def and_et(lo, ro, t):
 def or_vel(lo, ro, t):
     lo = m.memory_read(int(lo))
     ro = m.memory_read(int(ro))
-    res = (lo == FALSE) or (ro == FALSE)
+    res = (lo > 0) or (ro > 0)
     if res:
         res = TRUE
     else:
@@ -243,7 +244,8 @@ def main(ovejota):
     All other lines are expected to be quads.'''
     lines = open(ovejota, "r").readlines()
     constants = lines.pop(0)
-    quad = constants.strip().split(',')
+    quad = constants.strip()
+    quad = pp.common.comma_separated_list.parseString(quad).asList()
     quad.pop(0)
     m.initiate_constants(quad)
     functions = lines.pop(0)

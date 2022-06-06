@@ -1,0 +1,47 @@
+program binarySearchTest;
+
+variables {
+    int: arr[10], res, x;
+}
+
+int function binarySearch(l:int, r:int, x:int){
+    variables {int: mid;}
+
+    if (r >= l) then {
+        mid = l + (r - l) / 2;
+
+        if (arr[mid] == x) then {
+            return(mid);
+        }
+
+        if (arr[mid] > x) then {
+            return((binarySearch(l, mid - 1, x)));
+        }
+
+        return((binarySearch(mid + 1, r, x)));
+    }
+    return(999);
+}
+
+main() {
+    arr[0] = 5;
+    arr[1] = 23;
+    arr[2] = 25;
+    arr[3] = 31;
+    arr[4] = 33;
+    arr[5] = 43;
+    arr[6] = 45;
+    arr[7] = 53;
+    arr[8] = 61;
+    arr[9] = 81;
+
+    read(x);
+
+    res = binarySearch(0, 9, x);
+
+    if (res == 999) then {
+        write("X WAS NOT FOUND");
+    } else {
+        write(res);
+    }
+}

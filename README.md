@@ -12,9 +12,9 @@ After this, classes can be defined using the following syntax:
 ```C++
 class ClassName {
   attributes
-    int at1;
-    float at2;
-    char at3;
+    int: at1;
+    float: at2;
+    char: at3;
   methods
     int function getAt1() { return(at1); }
   };

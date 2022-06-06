@@ -1,4 +1,4 @@
-program factorialRecursivo;
+program oldMaid;
 
 class Player {
     attributes
@@ -171,6 +171,8 @@ void function startGame()
                 card = pHuman.swapCards(input);
                 pPC.insertCard(card);
                 if (pPC.checkWin()) then {
+                    pHuman.recordGame(0);
+                    pPC.recordGame(1);
                     write("I win!!!!", "current score:",  pHuman.wins, "from", pHuman.games);
                     pPC.startPC();
                     pHuman.startHuman();

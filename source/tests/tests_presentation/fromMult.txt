@@ -1,30 +1,22 @@
-program testMultMat;
+program fromMult;
 
 variables {
-    int: S[2,2], P[2,2], Q[2,2];
+    int: S[2,3], P[3,2], Q[2,2];
     int: m,r,k;
     int: d1, d2, d3, d4;
 }
 
 void function multMat(A:int, B:int, G:int, H:int) {
-    m = 0;
-    r = 0;
-    k = 0;
-
     if (B == G) then {
-        while(m < A) do {
-            while(r < H) do {
+        from m = 0 until A do {
+            from r = 0 until H do {
                 Q[m,r] = 0;
-                write(Q[m,r]);
-                while(k < G) do {
+                from k = 0 until G do {
                     Q[m,r] = Q[m,r] + S[m,k] * P[k,r];
-                    write(Q[m,r]);
                     k = k + 1;
                 }
-                k = 0;
                 r = r + 1;
             }
-            r = 0;
             m = m + 1;
         }
     }
@@ -32,19 +24,23 @@ void function multMat(A:int, B:int, G:int, H:int) {
 
 main () {
     d1 = 2;
-    d2 = 2;
-    d3 = 2;
+    d2 = 3;
+    d3 = 3;
     d4 = 2;
 
     S[0,0] = 1;
     S[0,1] = 2;
-    S[1,0] = 3;
-    S[1,1] = 4;
+    S[0,2] = 3;
+    S[1,0] = 4;
+    S[1,1] = 5;
+    S[1,2] = 6;
 
-    P[0,0] = 5;
-    P[0,1] = 6;
-    P[1,0] = 7;
-    P[1,1] = 8;
+    P[0,0] = 10;
+    P[0,1] = 11;
+    P[1,0] = 20;
+    P[1,1] = 21;
+    P[2,0] = 30;
+    P[2,1] = 31;
 
     multMat(d1, d2, d3, d4);
     write("RESULT");

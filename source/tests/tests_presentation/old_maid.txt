@@ -1,0 +1,187 @@
+program factorialRecursivo;
+
+class Player {
+    attributes
+        char: left, right;
+        int: wins, games;
+    methods
+        void function init() {
+            wins = 0;
+            games = 0;
+        }
+        void function recordGame(isWin : int) {
+            if (isWin) then {
+                wins = wins + 1;
+            }
+            games = games + 1;
+        }
+        int function checkWin() {
+            return (left == right);
+        }
+        char function swapCards(card : char) {
+            variables {
+                char : tmp;
+            }
+            if (card == 'L') then {
+                tmp = left;
+                left = 'E';
+                return(tmp);
+            }
+            else { if (card == 'R') then {
+                tmp = right;
+                right = 'E';
+                return(tmp);
+            }}
+            return('X');
+        }
+        void function shuffle(swap : int) {
+            if (swap) then {
+                tmp = left;
+                left = right;
+                right = tmp;
+            }
+        }
+        void function insertCard(card : char) {
+            if (left == 'E') then {
+                left = card;
+            }
+            else {
+                right = card;
+            }
+        }
+};
+
+class PC inherits Player {
+    methods
+        void function startPC() {
+            left = 'A';
+            right = 'J';
+        }
+};
+
+class Human inherits Player {
+    methods
+        void function startHuman() {
+            left = 'A';
+            right = 'E';
+        }
+};
+
+variables {
+    int: randIndex, randomNumbers[30];
+    PC : pPC;
+    Human : pHuman;
+}
+
+void function initRand(){
+    randomNumbers[0] = 0;
+    randomNumbers[1] = 1;
+    randomNumbers[2] = 1;
+    randomNumbers[3] = 1;
+    randomNumbers[4] = 0;
+    randomNumbers[5] = 1;
+    randomNumbers[6] = 1;
+    randomNumbers[7] = 1;
+    randomNumbers[8] = 0;
+    randomNumbers[9] = 0;
+    randomNumbers[10] = 1;
+    randomNumbers[11] = 0;
+    randomNumbers[12] = 1;
+    randomNumbers[13] = 1;
+    randomNumbers[14] = 1;
+    randomNumbers[15] = 0;
+    randomNumbers[16] = 0;
+    randomNumbers[17] = 0;
+    randomNumbers[18] = 0;
+    randomNumbers[19] = 0;
+    randomNumbers[20] = 0;
+    randomNumbers[21] = 0;
+    randomNumbers[22] = 0;
+    randomNumbers[23] = 1;
+    randomNumbers[24] = 1;
+    randomNumbers[25] = 1;
+    randomNumbers[26] = 1;
+    randomNumbers[27] = 0;
+    randomNumbers[28] = 1;
+    randomNumbers[29] = 1;
+}
+
+int function rand()
+{
+    variables {
+        int : ret;
+    }
+    ret = randomNumbers[randIndex];
+    randIndex = randIndex + 1;
+    if (randIndex >= 30) then {
+        randIndex = 0;
+    }
+    return(ret);
+}
+
+void function startGame() 
+{
+    variables {
+        char : input, card;
+    }
+    # initialization
+    write("Enter a number between 1-30:");
+    read(randIndex);
+    randIndex = randIndex - 1;
+    initRand();
+    # players init
+    pPC.init();
+    pPC.startPC();
+    pHuman.init();
+    pHuman.startHuman();
+
+    # game loop
+    input = '1';
+    write("Input Q to quit");
+    while (input != 'Q') do {
+        pPC.shuffle(rand());
+        write("choose left(L) or right(R) or (Q) to exit");
+        write("Your cards (left, right):", pHuman.left, pHuman.right);
+        read(input);
+        if ((input == 'L') || (input == 'R')) then {
+            card = pPC.swapCards(input);
+            pHuman.insertCard(card);
+            write("Your hand (left, right): ", pHuman.left, pHuman.right);
+            if (pHuman.checkWin()) then {
+                pHuman.recordGame(1);
+                pPC.recordGame(0);
+                write("You won!!!!", "current score:", pHuman.wins, "from", pHuman.games);
+                pPC.startPC();
+                pHuman.startHuman();
+                write("New game? (Q to exit)");
+                read(input);
+            }
+            else {
+                write("Swap your hand?(Y/N)");
+                read(input);
+                pHuman.shuffle(input == 'Y');
+                # PC TURN
+                write("My turn...");
+                if (rand()) then {
+                    input = 'L';
+                }
+                else {
+                    input = 'R';
+                }
+                card = pHuman.swapCards(input);
+                pPC.insertCard(card);
+                if (pPC.checkWin()) then {
+                    write("I win!!!!", "current score:",  pHuman.wins, "from", pHuman.games);
+                    pPC.startPC();
+                    pHuman.startHuman();
+                    write("New game? (Q to exit)");
+                    read(input);
+                }
+            }
+        }
+    }
+}
+
+main() {
+    startGame();
+}

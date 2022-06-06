@@ -1,0 +1,40 @@
+program findTest;
+
+variables {
+    int: arr[10], res, x;
+}
+
+int function find(size:int, x:int){
+    variables {int: i;}
+
+    from i = 0 until size + 1 do {
+        if(arr[i] == x) then {
+            return(i);
+        }
+        i = i + 1;
+    }
+    return(999);
+}
+
+main() {
+    arr[0] = 5;
+    arr[1] = 23;
+    arr[2] = 25;
+    arr[3] = 31;
+    arr[4] = 33;
+    arr[5] = 43;
+    arr[6] = 45;
+    arr[7] = 53;
+    arr[8] = 61;
+    arr[9] = 81;
+
+    read(x);
+
+    res = find(9, x);
+
+    if (res == 999) then {
+        write("X WAS NOT FOUND");
+    } else {
+        write(res);
+    }
+}

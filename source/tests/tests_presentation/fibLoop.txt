@@ -1,0 +1,26 @@
+program fibLoop;
+
+variables {
+    int: n, res;
+}
+
+void function fibonacci(count:int){
+    variables{int: i, sum, num1, num2;}
+    i = 1;
+    num1 = 0;
+    num2 = 1;
+    sum = 0;
+    while(i<=count) do {
+        write(num1);
+        sum = num1 + num2;
+        num1 = num2;
+        num2 = sum;
+        i = i + 1;
+    }
+}
+
+
+main() {
+    read(n);
+    fibonacci(n);
+}

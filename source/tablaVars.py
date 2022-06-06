@@ -74,13 +74,6 @@ def print_var_table():
 def instantiate_obj(var_id, class_id, scope):
     size = 0
     parent = tabla_obj[class_id]['parent']
-    if tabla_obj[class_id]['attributes']:
-        for attr in tabla_obj[class_id]['attributes']:
-            name = str(var_id + "." + attr)
-            var_type = tabla_obj[class_id]['attributes'][attr][0]
-            
-            add_variable(name, var_type, 'attribute', scope)
-            size += 1
 
     if parent:
         if tabla_obj[parent]['attributes']:
@@ -89,9 +82,16 @@ def instantiate_obj(var_id, class_id, scope):
                 var_type = tabla_obj[parent]['attributes'][attr][0]
                 add_variable(name, var_type, 'attribute', scope)
                 size += 1
-    
+
+    if tabla_obj[class_id]['attributes']:
+        for attr in tabla_obj[class_id]['attributes']:
+            name = str(var_id + "." + attr)
+            var_type = tabla_obj[class_id]['attributes'][attr][0]
+
+            add_variable(name, var_type, 'attribute', scope)
+            size += 1
+
     set_dim(var_id, scope, size)
-    
 
 
 def set_array(var_id, scope):

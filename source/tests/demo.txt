@@ -1,0 +1,48 @@
+program test;
+
+class Persona {
+    attributes
+        int: edad;
+        float: estatura;
+        char: inicial;
+    methods
+        int function getEdad() {return(edad);}
+        float function getEstaturaCM(n:int) {return(estatura*n);}
+        char function getInicial() {return(inicial);}
+};
+
+class Estudiante inherits Persona {
+    attributes
+        float: promedio;
+    methods
+        float function getPromedio() {return(promedio);}
+};
+
+variables {
+    int: x, y;
+    float: a, b;
+    Persona: juan;
+    Estudiante: mario;
+}
+
+int function resta(num1:int, num2:int) {
+    variables {
+        int: res;
+    }
+    res = num1 - num2;
+    return(res);
+}
+
+void function hello() {
+    write("Hello World!");
+}
+
+main() {
+    juan.edad = 15;
+    mario.edad = 17;
+    mario.promedio = 8.6;
+    x = juan.getEdad();
+    y = mario.getEdad();
+    a = mario.getPromedio();
+    write(x,y,a);
+}

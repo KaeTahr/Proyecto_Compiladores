@@ -12,9 +12,12 @@ def add_object(obj_id):
 
 def add_attribute(obj_id, attr_id, attr_type):
     if attr_id not in tabla_obj[obj_id]['attributes']:
-        position = len(tabla_obj[obj_id]['attributes'])
+        parent = tabla_obj[obj_id]['parent']
+        if parent:
+            position = len(tabla_obj[parent]['attributes']) + len(tabla_obj[obj_id]['attributes'])
+        else:
+            position = len(tabla_obj[obj_id]['attributes'])
         tabla_obj[obj_id]['attributes'][attr_id] = [attr_type, position]
-        
 
 
 def add_method(obj_id, mthd_id, mthd_type):
